@@ -154,8 +154,8 @@ body {
  * ===================================================== */
 
 .top-navbar {
-    background: #ffffff;
-    border-bottom: 1px solid #dee2e6;
+    background: linear-gradient(135deg, #2d7a3a 0%, #3a8f4a 30%, #4a9f5a 60%, #3a8f4a 100%);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
     padding: 10px 20px;
     position: sticky;
     top: 0;
@@ -272,6 +272,7 @@ body {
 .main-content {
     flex: 1;
     padding: 20px;
+    padding-bottom: 60px;
     overflow-x: hidden;
 }
 
@@ -283,7 +284,15 @@ body {
     background: #ffffff;
     border-top: 1px solid #dee2e6;
     padding: 15px 20px;
-    margin-top: auto;
+    position: fixed;
+    bottom: 0;
+    left: 260px;
+    right: 0;
+    z-index: 998;
+}
+
+.sidebar.collapsed ~ #page-content-wrapper .app-footer {
+    left: 70px;
 }
 
 .footer-brand {
@@ -500,6 +509,22 @@ body {
     padding: 12px 15px;
     vertical-align: middle;
     border-bottom: 1px solid #f0f0f0;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    display: inline-block;
+    width: auto;
+    padding: 4px 8px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.dataTables_wrapper .dataTables_length label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .table-hover tbody tr:hover {
