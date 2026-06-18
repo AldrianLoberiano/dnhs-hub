@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ");
             $stmt->execute([
                 $studentId, $docTypeId, $newFileName, $fileName, 
-                "uploads/documents/$newFileName", $fileExt, $fileSize, 
+                "assets/uploads/documents/$newFileName", $fileExt, $fileSize, 
                 $version, $notes ?: null, $_SESSION['user_id']
             ]);
             
