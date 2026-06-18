@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <div class="page-header">
-    <h4><i class="fas fa-user-plus me-2"></i>Add Student</h4>
+    <h4>Add Student</h4>
     <a href="index.php" class="btn btn-outline-secondary">
         <i class="fas fa-arrow-left me-1"></i>Back to List
     </a>
