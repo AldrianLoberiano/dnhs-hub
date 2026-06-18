@@ -94,13 +94,13 @@ body {
     width: 100%;
     padding: 12px;
     font-weight: 500;
-    background: #0D6EFD;
-    border-color: #0D6EFD;
+    background: #198754;
+    border-color: #198754;
 }
 
 .btn-login:hover {
-    background: #0b5ed7;
-    border-color: #0a58ca;
+    background: #157347;
+    border-color: #146c43;
 }
 
 .login-footer {
