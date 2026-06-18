@@ -69,7 +69,7 @@ $docTypes = $stmt->fetchAll();
 ?>
 
 <div class="page-header">
-    <h4><i class="fas fa-folder-open me-2"></i>Student Documents</h4>
+    <h4>Student Documents</h4>
     <a href="upload.php" class="btn btn-primary">
         <i class="fas fa-upload me-1"></i>Upload Document
     </a>
