@@ -107,7 +107,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <div class="page-header">
-    <h4>Upload Document</h4>
+    <div>
+        <h4>Upload Document</h4>
+        <small style="color: rgba(255,255,255,0.8);">Upload a new document for a student</small>
+    </div>
     <a href="index.php" class="btn btn-outline-secondary">
         <i class="fas fa-arrow-left me-1"></i>Back to List
     </a>
