@@ -23,7 +23,14 @@ if (isLoggedIn()) {
 
 requireAuth();
 
-$currentPage = basename($_SERVER['PHP_SELF'], '.php');
+// Detect current module from URL path
+$scriptPath = $_SERVER['PHP_SELF'];
+$currentPage = basename($scriptPath, '.php');
+$currentDir = basename(dirname($scriptPath));
+// For index.php pages, use the folder name instead
+if ($currentPage === 'index') {
+    $currentPage = $currentDir;
+}
 $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
 ?>
 <!DOCTYPE html>
@@ -71,7 +78,7 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
                     <?php endif; ?>
                     
                     <li class="nav-item">
-                        <a class="nav-link <?php echo in_array($currentPage, ['students', 'student_view', 'student_add', 'student_edit']) ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/students/index.php">
+                        <a class="nav-link <?php echo in_array($currentPage, ['students', 'view', 'add', 'edit', 'archived']) ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/students/index.php">
                             <i class="fas fa-user-graduate"></i>
                             <span>Student Records</span>
                         </a>
