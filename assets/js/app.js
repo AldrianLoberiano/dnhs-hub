@@ -36,8 +36,7 @@ function showToast(type, message, duration) {
             '<div class="toast-title">' + titles[type] + '</div>' +
             '<p class="toast-message">' + message + '</p>' +
         '</div>' +
-        '<button class="toast-close" onclick="removeToast(this.parentElement)">&times;</button>' +
-        '<div class="toast-progress"></div>';
+        '<button class="toast-close" onclick="removeToast(this.parentElement)">&times;</button>';
     
     container.appendChild(toast);
     
