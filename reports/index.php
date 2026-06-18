@@ -100,7 +100,10 @@ switch ($reportType) {
 ?>
 
 <div class="page-header">
-    <h4>Reports</h4>
+    <div>
+        <h4>Reports</h4>
+        <small style="color: rgba(255,255,255,0.8);">Generate and view system reports</small>
+    </div>
     <div class="d-flex gap-2">
         <button onclick="window.print()" class="btn btn-outline-primary no-print">
             <i class="fas fa-print me-1"></i>Print
