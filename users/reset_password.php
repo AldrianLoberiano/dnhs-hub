@@ -5,7 +5,7 @@
  * Reset user password
  */
 
-require_once __DIR__ . '/../../includes/header.php';
+require_once __DIR__ . '/../includes/header.php';
 requireAdmin();
 
 $db = getDBConnection();
@@ -29,6 +29,9 @@ $pageTitle = 'Reset Password - DNHS Hub';
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $errors[] = 'Invalid security token.';
+    } else {
     $password = $_POST['password'] ?? '';
     $confirmPassword = $_POST['confirm_password'] ?? '';
     
@@ -44,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         logAudit('Reset Password', 'User Management', "Reset password for user: {$user['username']}");
         setFlashMessage('success', 'Password reset successfully.');
         redirect(APP_URL . '/users/index.php');
+    }
     }
 }
 ?>
@@ -73,6 +77,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endif; ?>
                 
                 <form method="POST">
+                    <?php generateCSRFToken(); ?>
+                    <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
                     <div class="mb-3">
                         <label class="form-label">New Password *</label>
                         <input type="password" class="form-control" name="password" required>
@@ -93,4 +99,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </div>
 
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>
