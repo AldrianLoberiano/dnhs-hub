@@ -127,33 +127,116 @@ body {
  * ===================================================== */
 
 .top-navbar {
-    background: #ffffff;
-    border-bottom: 1px solid #dee2e6;
+    background: linear-gradient(135deg, #2d7a3a 0%, #3a8f4a 30%, #4a9f5a 60%, #3a8f4a 100%);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
     padding: 10px 20px;
     position: sticky;
     top: 0;
     z-index: 999;
 }
 
+.top-navbar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -10%;
+    width: 50%;
+    height: 100%;
+    background: rgba(129, 199, 132, 0.4);
+    transform: skewX(-20deg);
+    pointer-events: none;
+    clip-path: inset(0);
+}
+
+.top-navbar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -10%;
+    width: 35%;
+    height: 100%;
+    background: rgba(27, 135, 84, 0.5);
+    transform: skewX(-20deg);
+    pointer-events: none;
+    clip-path: inset(0);
+}
+
 .top-navbar .btn-link {
-    color: #495057;
+    color: #ffffff;
     text-decoration: none;
     font-size: 18px;
     padding: 5px 10px;
+    position: relative;
+    z-index: 1;
 }
 
 .top-navbar .btn-link:hover {
-    color: #0D6EFD;
+    color: #d4edda;
 }
 
 .top-navbar .dropdown-toggle::after {
     margin-left: 5px;
 }
 
+.top-navbar .dropdown-toggle {
+    color: #ffffff;
+    position: relative;
+    z-index: 1;
+}
+
+.top-navbar .dropdown-toggle .badge {
+    background: #ffffff;
+    color: #198754;
+}
+
+.top-navbar .dropdown-menu {
+    z-index: 1050 !important;
+}
+
 .notification-dropdown {
     width: 350px;
     max-height: 400px;
     overflow-y: auto;
+    z-index: 1050 !important;
+}
+
+.top-navbar .form-control {
+    border: none;
+    background: rgba(255,255,255,0.25);
+    color: #ffffff;
+    position: relative;
+    z-index: 1;
+}
+
+.top-navbar .form-control::placeholder {
+    color: rgba(255,255,255,0.8);
+}
+
+.top-navbar .form-control:focus {
+    background: rgba(255,255,255,0.35);
+    box-shadow: none;
+    color: #ffffff;
+}
+
+.top-navbar .input-group-text {
+    background: rgba(255,255,255,0.25);
+    border: none;
+    color: #ffffff;
+    position: relative;
+    z-index: 1;
+}
+
+.top-navbar .btn-outline-secondary {
+    background: rgba(255,255,255,0.25);
+    border: none;
+    color: #ffffff;
+    position: relative;
+    z-index: 1;
+}
+
+.top-navbar .btn-outline-secondary:hover {
+    background: rgba(255,255,255,0.4);
+    color: #ffffff;
 }
 
 .notification-dropdown .dropdown-item {
@@ -478,8 +561,8 @@ body {
  * Utility Classes
  * ===================================================== */
 
-.text-primary { color: #0D6EFD !important; }
-.bg-primary { background-color: #0D6EFD !important; }
+.text-primary { color: #198754 !important; }
+.bg-primary { background-color: #198754 !important; }
 
 .border-bottom { border-bottom: 1px solid #dee2e6 !important; }
 
