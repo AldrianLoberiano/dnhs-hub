@@ -71,7 +71,10 @@ $docTypes = $stmt->fetchAll();
 ?>
 
 <div class="page-header">
-    <h4>Document Requests</h4>
+    <div>
+        <h4>Document Requests</h4>
+        <small style="color: rgba(255,255,255,0.8);">Track and process all document requests</small>
+    </div>
     <a href="add.php" class="btn btn-primary">
         <i class="fas fa-plus me-1"></i>New Request
     </a>
