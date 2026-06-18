@@ -7,24 +7,33 @@
 var APP_URL = window.location.origin + '/dnhs-hub';
 
 $(document).ready(function() {
-    // Initialize DataTables
+    // Initialize DataTables - only on tables that exist and have thead
     if ($.fn.DataTable) {
-        $('.data-table').DataTable({
-            responsive: true,
-            pageLength: 10,
-            order: [[0, 'desc']],
-            language: {
-                search: "Search:",
-                lengthMenu: "Show _MENU_ entries",
-                info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                paginate: {
-                    first: "First",
-                    last: "Last",
-                    next: "Next",
-                    previous: "Previous"
-                },
-                emptyTable: "No data available",
-                zeroRecords: "No matching records found"
+        $('.data-table').each(function() {
+            var $table = $(this);
+            if ($table.find('thead').length && $table.find('tbody tr').length) {
+                try {
+                    $table.DataTable({
+                        responsive: true,
+                        pageLength: 10,
+                        order: [[0, 'desc']],
+                        language: {
+                            search: "Search:",
+                            lengthMenu: "Show _MENU_ entries",
+                            info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                            paginate: {
+                                first: "First",
+                                last: "Last",
+                                next: "Next",
+                                previous: "Previous"
+                            },
+                            emptyTable: "No data available",
+                            zeroRecords: "No matching records found"
+                        }
+                    });
+                } catch(e) {
+                    console.log('DataTables init skipped:', e.message);
+                }
             }
         });
     }
