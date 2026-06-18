@@ -111,22 +111,6 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
                             <span>Reports</span>
                         </a>
                     </li>
-                    
-                    <?php if (isAdmin()): ?>
-                    <li class="nav-item">
-                        <a class="nav-link <?php echo $currentPage === 'audit' ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/audit/index.php">
-                            <i class="fas fa-history"></i>
-                            <span>Audit Logs</span>
-                        </a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a class="nav-link <?php echo $currentPage === 'backup' ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/backup/index.php">
-                            <i class="fas fa-database"></i>
-                            <span>Backup & Restore</span>
-                        </a>
-                    </li>
-                    <?php endif; ?>
                 </ul>
             </nav>
         </div>
