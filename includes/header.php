@@ -51,7 +51,7 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-logo">
-                    <i class="fas fa-school"></i>
+                    <img src="<?php echo APP_URL; ?>/assets/images/school-logo.png" alt="School Logo">
                 </div>
                 <div class="sidebar-brand">
                     <h5>DNHS Hub</h5>
@@ -63,7 +63,7 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link <?php echo $currentPage === 'dashboard' ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/dashboard.php">
-                            <i class="fas fa-tachometer-alt"></i>
+                            <i class="fas fa-grip"></i>
                             <span>Dashboard</span>
                         </a>
                     </li>
@@ -196,6 +196,12 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li><a class="dropdown-item" href="<?php echo APP_URL; ?>/profile.php"><i class="fas fa-user me-2"></i>Profile</a></li>
+                                <?php if (isAdmin()): ?>
+                                <li><a class="dropdown-item" href="<?php echo APP_URL; ?>/audit/index.php"><i class="fas fa-history me-2"></i>Audit Logs</a></li>
+                                <li><a class="dropdown-item" href="<?php echo APP_URL; ?>/backup/index.php"><i class="fas fa-database me-2"></i>Backup & Restore</a></li>
+                                <?php endif; ?>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="<?php echo APP_URL; ?>/profile.php"><i class="fas fa-cog me-2"></i>Settings</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item text-danger" href="<?php echo APP_URL; ?>/logout.php"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                             </ul>
