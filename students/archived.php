@@ -37,7 +37,7 @@ $students = $stmt->fetchAll();
 ?>
 
 <div class="page-header">
-    <h4><i class="fas fa-archive me-2"></i>Archived Students</h4>
+    <h4>Archived Students</h4>
     <a href="index.php" class="btn btn-outline-secondary">
         <i class="fas fa-arrow-left me-1"></i>Back to Active Students
     </a>
