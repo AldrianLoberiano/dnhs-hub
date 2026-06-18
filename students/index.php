@@ -62,7 +62,10 @@ $batches = $stmt->fetchAll(PDO::FETCH_COLUMN);
 ?>
 
 <div class="page-header">
-    <h4>Student Records</h4>
+    <div>
+        <h4>Student Records</h4>
+        <small style="color: rgba(255,255,255,0.8);">Manage and view all active student profiles</small>
+    </div>
     <a href="add.php" class="btn btn-primary">
         <i class="fas fa-plus me-1"></i>Add Student
     </a>
