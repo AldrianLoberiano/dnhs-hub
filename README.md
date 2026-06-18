@@ -1,6 +1,6 @@
 # DNHS Hub
 
-**A Centralized Student Records and Document Request Management System for Dayap National High School (Main)**
+**A Centralized Student Records and Document Request Management System for Dayap National High School**
 
 ---
 
