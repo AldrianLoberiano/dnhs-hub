@@ -115,7 +115,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <div class="page-header">
-    <h4>Edit Student</h4>
+    <div>
+        <h4>Edit Student</h4>
+        <small style="color: rgba(255,255,255,0.8);">Update existing student profile information</small>
+    </div>
     <div class="d-flex gap-2">
         <a href="index.php" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left me-1"></i>Back
