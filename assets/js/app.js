@@ -108,7 +108,12 @@ $(document).ready(function() {
     
     // Sidebar Toggle
     $('#sidebarToggle').on('click', function() {
-        $('#sidebar').toggleClass('show');
+        if ($(window).width() < 992) {
+            $('#sidebar').toggleClass('show');
+        } else {
+            $('#sidebar').toggleClass('collapsed');
+            $('#page-content-wrapper').toggleClass('page-content-wrapper-expanded');
+        }
     });
     
     // Close sidebar on mobile when clicking outside
