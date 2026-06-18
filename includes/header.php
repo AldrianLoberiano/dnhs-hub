@@ -210,4 +210,3 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
             
             <!-- Main Content -->
             <div class="container-fluid main-content">
-                <?php displayFlashMessage(); ?>
