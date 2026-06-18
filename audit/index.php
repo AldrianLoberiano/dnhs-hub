@@ -69,7 +69,7 @@ $modules = $stmt->fetchAll(PDO::FETCH_COLUMN);
 ?>
 
 <div class="page-header">
-    <h4><i class="fas fa-history me-2"></i>Audit Logs</h4>
+    <h4>Audit Logs</h4>
 </div>
 
 <!-- Filters -->
