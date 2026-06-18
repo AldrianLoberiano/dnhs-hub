@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <div class="page-header">
-    <h4><i class="fas fa-user-circle me-2"></i>My Profile</h4>
+    <h4>My Profile</h4>
 </div>
 
 <div class="row">
