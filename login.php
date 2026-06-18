@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="login-card">
             <div class="login-header">
                 <div class="school-logo">
-                    <i class="fas fa-school"></i>
+                    <img src="assets/images/school-logo.png" alt="School Logo">
                 </div>
                 <h1 class="system-name">DNHS Hub</h1>
                 <p class="system-subtitle">Student Records and Document Request Management System</p>
