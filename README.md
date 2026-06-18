@@ -342,7 +342,7 @@ This project is proprietary software developed for Dayap National High School. U
 
 ## Developer
 
-Developed for the Registrar's Office of Dita National High School.
+Developed for the Registrar's Office of Dayap National High School.
 
 ---
 
