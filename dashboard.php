@@ -91,11 +91,7 @@ $recentRequests = $stmt->fetchAll();
         <h4>Dashboard</h4>
         <small style="color: rgba(255,255,255,0.8);">Overview of student records and document requests</small>
     </div>
-    <div class="d-flex gap-2 align-items-center">
-        <button onclick="showToast('success', 'This is a success toast alert!')" class="btn btn-sm" style="background:#fff;color:#198754;border-color:#fff;">Test Success</button>
-        <button onclick="showToast('error', 'This is an error toast alert!')" class="btn btn-sm" style="background:#fff;color:#dc3545;border-color:#fff;">Test Error</button>
-        <span style="color: rgba(255,255,255,0.8);">Welcome, <?php echo sanitize($_SESSION['full_name']); ?></span>
-    </div>
+    <span style="color: rgba(255,255,255,0.8);">Welcome, <?php echo sanitize($_SESSION['full_name']); ?></span>
 </div>
 
 <!-- Summary Cards -->
