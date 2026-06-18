@@ -1,5 +1,26 @@
             </div>
             <!-- End Main Content -->
+            
+            <!-- Footer -->
+            <footer class="app-footer">
+                <div class="container-fluid">
+                    <div class="row align-items-center">
+                        <div class="col-md-4">
+                            <span class="footer-brand">DNHS Hub</span>
+                            <span class="footer-divider">|</span>
+                            <span class="footer-text">Dita National High School</span>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <span class="footer-text">&copy; <?php echo date('Y'); ?> Registrar's Office. All rights reserved.</span>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <a href="#" class="footer-link">Help</a>
+                            <a href="#" class="footer-link">Privacy</a>
+                            <a href="#" class="footer-link">Terms</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </div>
         <!-- End Page Content Wrapper -->
     </div>
