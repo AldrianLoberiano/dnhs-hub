@@ -4,6 +4,8 @@
  * Application-wide JavaScript functions
  */
 
+var APP_URL = window.location.origin + '/dnhs-hub';
+
 $(document).ready(function() {
     // Initialize DataTables
     if ($.fn.DataTable) {
@@ -64,7 +66,8 @@ $(document).ready(function() {
     $(document).on('click', '.notification-item', function() {
         var notifId = $(this).data('id');
         if (notifId) {
-            $.post('notifications/mark_read.php', { id: notifId });
+            $.post(APP_URL + '/notifications/mark_read.php', { id: notifId });
+            $(this).removeClass('bg-light');
         }
     });
     
@@ -110,7 +113,7 @@ $(document).ready(function() {
         var newStatus = select.val();
         
         if (confirm('Update status to "' + newStatus + '"?')) {
-            $.post('requests/update_status.php', {
+            $.post(APP_URL + '/requests/update_status.php', {
                 request_id: requestId,
                 status: newStatus
             }, function(response) {
