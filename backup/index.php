@@ -116,7 +116,7 @@ $backups = $stmt->fetchAll();
 ?>
 
 <div class="page-header">
-    <h4><i class="fas fa-database me-2"></i>Backup & Restore</h4>
+    <h4>Backup & Restore</h4>
 </div>
 
 <div class="row">
