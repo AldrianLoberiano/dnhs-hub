@@ -6,34 +6,103 @@
 
 var APP_URL = window.location.origin + '/dnhs-hub';
 
+// ============================================
+// Toast Alert System
+// ============================================
+function showToast(type, message, duration) {
+    duration = duration || 4000;
+    var container = document.getElementById('toastContainer');
+    if (!container) return;
+    
+    var icons = {
+        success: 'fas fa-check-circle',
+        error: 'fas fa-times-circle',
+        warning: 'fas fa-exclamation-triangle',
+        info: 'fas fa-info-circle'
+    };
+    
+    var titles = {
+        success: 'Success',
+        error: 'Error',
+        warning: 'Warning',
+        info: 'Information'
+    };
+    
+    var toast = document.createElement('div');
+    toast.className = 'toast-alert ' + type;
+    toast.innerHTML = 
+        '<i class="' + icons[type] + ' toast-icon"></i>' +
+        '<div class="toast-body">' +
+            '<div class="toast-title">' + titles[type] + '</div>' +
+            '<p class="toast-message">' + message + '</p>' +
+        '</div>' +
+        '<button class="toast-close" onclick="removeToast(this.parentElement)">&times;</button>' +
+        '<div class="toast-progress"></div>';
+    
+    container.appendChild(toast);
+    
+    // Auto remove after duration
+    setTimeout(function() {
+        removeToast(toast);
+    }, duration);
+}
+
+function removeToast(toast) {
+    if (!toast || !toast.parentElement) return;
+    toast.classList.add('hiding');
+    setTimeout(function() {
+        if (toast.parentElement) {
+            toast.parentElement.removeChild(toast);
+        }
+    }, 300);
+}
+
 $(document).ready(function() {
-    // Initialize DataTables - only on tables that exist and have thead
+    // Initialize DataTables - only on tables with proper structure
     if ($.fn.DataTable) {
         $('.data-table').each(function() {
             var $table = $(this);
-            if ($table.find('thead').length && $table.find('tbody tr').length) {
-                try {
-                    $table.DataTable({
-                        responsive: true,
-                        pageLength: 10,
-                        order: [[0, 'desc']],
-                        language: {
-                            search: "Search:",
-                            lengthMenu: "Show _MENU_ entries",
-                            info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                            paginate: {
-                                first: "First",
-                                last: "Last",
-                                next: "Next",
-                                previous: "Previous"
-                            },
-                            emptyTable: "No data available",
-                            zeroRecords: "No matching records found"
-                        }
-                    });
-                } catch(e) {
-                    console.log('DataTables init skipped:', e.message);
+            var $thead = $table.find('thead');
+            var $rows = $table.find('tbody tr');
+            
+            if (!$thead.length || !$rows.length) return;
+            
+            // Count columns from header
+            var colCount = $thead.find('th').length;
+            if (colCount === 0) return;
+            
+            // Verify all rows match column count
+            var valid = true;
+            $rows.each(function() {
+                var tdCount = $(this).find('td').length;
+                if (tdCount !== colCount && !$(this).find('td[colspan]').length) {
+                    valid = false;
+                    return false;
                 }
+            });
+            
+            if (!valid) return;
+            
+            try {
+                $table.DataTable({
+                    pageLength: 10,
+                    order: [[0, 'desc']],
+                    language: {
+                        search: "Search:",
+                        lengthMenu: "Show _MENU_ entries",
+                        info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                        paginate: {
+                            first: "First",
+                            last: "Last",
+                            next: "Next",
+                            previous: "Previous"
+                        },
+                        emptyTable: "No data available",
+                        zeroRecords: "No matching records found"
+                    }
+                });
+            } catch(e) {
+                console.log('DataTables init skipped:', e.message);
             }
         });
     }
