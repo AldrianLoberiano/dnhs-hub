@@ -52,11 +52,14 @@ $requests = $stmt->fetchAll();
 ?>
 
 <div class="page-header">
-    <h4><?php echo sanitize($student['first_name'] . ' ' . $student['last_name']); ?>
-        <?php if ($student['is_archived']): ?>
-            <span class="badge bg-secondary ms-2">Archived</span>
-        <?php endif; ?>
-    </h4>
+    <div>
+        <h4><?php echo sanitize($student['first_name'] . ' ' . $student['last_name']); ?>
+            <?php if ($student['is_archived']): ?>
+                <span class="badge bg-secondary ms-2">Archived</span>
+            <?php endif; ?>
+        </h4>
+        <small style="color: rgba(255,255,255,0.8);">Complete student profile and document history</small>
+    </div>
     <div class="d-flex gap-2">
         <a href="index.php" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left me-1"></i>Back
