@@ -100,7 +100,7 @@ switch ($reportType) {
 ?>
 
 <div class="page-header">
-    <h4><i class="fas fa-chart-bar me-2"></i>Reports</h4>
+    <h4>Reports</h4>
     <div class="d-flex gap-2">
         <button onclick="window.print()" class="btn btn-outline-primary no-print">
             <i class="fas fa-print me-1"></i>Print
