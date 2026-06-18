@@ -6,7 +6,7 @@
  */
 
 $pageTitle = 'Upload Document - DNHS Hub';
-require_once __DIR__ . '/../../includes/header.php';
+require_once __DIR__ . '/../includes/header.php';
 
 $db = getDBConnection();
 $studentId = intval($_GET['student_id'] ?? 0);
@@ -22,6 +22,9 @@ $docTypes = $stmt->fetchAll();
 
 // Process form
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $errors[] = 'Invalid security token.';
+    } else {
     $studentId = intval($_POST['student_id'] ?? 0);
     $docTypeId = intval($_POST['document_type_id'] ?? 0);
     $notes = trim($_POST['notes'] ?? '');
@@ -79,11 +82,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
             
             logAudit('Upload Document', 'Student Documents', "Uploaded document for student ID: $studentId");
+            
+            // Create notification for admin
+            $stmt = $db->prepare("SELECT id FROM users WHERE role = 'admin' AND is_active = 1");
+            $stmt->execute();
+            $admins = $stmt->fetchAll();
+            $studentName = '';
+            $stmt2 = $db->prepare("SELECT first_name, last_name FROM students WHERE id = ?");
+            $stmt2->execute([$studentId]);
+            $studentInfo = $stmt2->fetch();
+            if ($studentInfo) $studentName = $studentInfo['first_name'] . ' ' . $studentInfo['last_name'];
+            foreach ($admins as $admin) {
+                createNotification($admin['id'], 'Document Uploaded', "New document uploaded for student: $studentName", 'info', "../documents/index.php?student_id=$studentId");
+            }
+            
             setFlashMessage('success', 'Document uploaded successfully.');
             redirect(APP_URL . "/documents/index.php?student_id=$studentId");
         } else {
             $errors[] = 'Failed to upload file. Please try again.';
         }
+    }
     }
 }
 ?>
@@ -109,6 +127,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="row">
     <div class="col-lg-8">
         <form method="POST" enctype="multipart/form-data">
+                <?php generateCSRFToken(); ?>
+                <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
             <div class="card mb-4">
                 <div class="card-header">
                     <i class="fas fa-file-upload me-2"></i>Document Information
@@ -175,4 +195,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </div>
 
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>
