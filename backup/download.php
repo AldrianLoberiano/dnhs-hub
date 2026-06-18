@@ -5,7 +5,7 @@
  * Download a backup file
  */
 
-require_once __DIR__ . '/../../config/config.php';
+require_once __DIR__ . '/../config/config.php';
 requireAdmin();
 
 $db = getDBConnection();
