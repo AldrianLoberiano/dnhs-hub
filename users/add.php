@@ -6,13 +6,16 @@
  */
 
 $pageTitle = 'Add User - DNHS Hub';
-require_once __DIR__ . '/../../includes/header.php';
+require_once __DIR__ . '/../includes/header.php';
 requireAdmin();
 
 $db = getDBConnection();
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $errors[] = 'Invalid security token.';
+    } else {
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
     $confirmPassword = $_POST['confirm_password'] ?? '';
@@ -53,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         setFlashMessage('success', 'User created successfully.');
         redirect(APP_URL . '/users/index.php');
     }
+    }
 }
 ?>
 
@@ -76,6 +80,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="row">
     <div class="col-lg-8">
         <form method="POST">
+                <?php generateCSRFToken(); ?>
+                <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
             <div class="card mb-4">
                 <div class="card-header">
                     <i class="fas fa-user me-2"></i>Account Information
@@ -141,4 +147,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </div>
 
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>
