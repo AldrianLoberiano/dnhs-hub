@@ -5,7 +5,7 @@
  * Form to edit an existing user
  */
 
-require_once __DIR__ . '/../../includes/header.php';
+require_once __DIR__ . '/../includes/header.php';
 requireAdmin();
 
 $db = getDBConnection();
@@ -29,6 +29,9 @@ $pageTitle = 'Edit User - DNHS Hub';
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $errors[] = 'Invalid security token.';
+    } else {
     $firstName = trim($_POST['first_name'] ?? '');
     $middleName = trim($_POST['middle_name'] ?? '');
     $lastName = trim($_POST['last_name'] ?? '');
@@ -45,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         logAudit('Update User', 'User Management', "Updated user: {$user['username']}");
         setFlashMessage('success', 'User updated successfully.');
         redirect(APP_URL . '/users/index.php');
+    }
     }
     
     $user = array_merge($user, $_POST);
@@ -71,6 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="row">
     <div class="col-lg-8">
         <form method="POST">
+                <?php generateCSRFToken(); ?>
+                <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
             <div class="card mb-4">
                 <div class="card-header">
                     <i class="fas fa-user me-2"></i>User Information
@@ -118,4 +124,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </div>
 
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>
