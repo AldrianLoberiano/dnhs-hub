@@ -52,9 +52,7 @@ $requests = $stmt->fetchAll();
 ?>
 
 <div class="page-header">
-    <h4>
-        <i class="fas fa-user me-2"></i>
-        <?php echo sanitize($student['first_name'] . ' ' . $student['last_name']); ?>
+    <h4><?php echo sanitize($student['first_name'] . ' ' . $student['last_name']); ?>
         <?php if ($student['is_archived']): ?>
             <span class="badge bg-secondary ms-2">Archived</span>
         <?php endif; ?>
