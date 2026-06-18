@@ -5,7 +5,7 @@
  * Process status update for document requests
  */
 
-require_once __DIR__ . '/../../config/config.php';
+require_once __DIR__ . '/../config/config.php';
 requireAuth();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -77,6 +77,12 @@ $stmt->execute([$requestId, $currentStatus, $newStatus, $_SESSION['user_id'], $n
 
 // Log activity
 logAudit('Update Request Status', 'Document Requests', "Changed request {$request['tracking_number']} from $currentStatus to $newStatus");
+
+// Create notification for registrar who created the request
+if ($request['requested_by']) {
+    $notifMessage = "Request {$request['tracking_number']} status updated to: $newStatus";
+    createNotification($request['requested_by'], 'Request Updated', $notifMessage, 'info', "../requests/view.php?id=$requestId");
+}
 
 setFlashMessage('success', "Request status updated to $newStatus.");
 redirect(APP_URL . "/requests/view.php?id=$requestId");
