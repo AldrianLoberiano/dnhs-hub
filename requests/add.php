@@ -6,7 +6,7 @@
  */
 
 $pageTitle = 'New Request - DNHS Hub';
-require_once __DIR__ . '/../../includes/header.php';
+require_once __DIR__ . '/../includes/header.php';
 
 $db = getDBConnection();
 $studentId = intval($_GET['student_id'] ?? 0);
@@ -22,6 +22,9 @@ $docTypes = $stmt->fetchAll();
 
 // Process form
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $errors[] = 'Invalid security token.';
+    } else {
     $studentId = intval($_POST['student_id'] ?? 0);
     $docTypeId = intval($_POST['document_type_id'] ?? 0);
     $purpose = trim($_POST['purpose'] ?? '');
@@ -58,8 +61,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $student = $stmt->fetch();
         
         logAudit('Create Request', 'Document Requests', "Created request $trackingNumber for {$student['first_name']} {$student['last_name']}");
+        
+        // Create notification for admin
+        $stmt = $db->prepare("SELECT id FROM users WHERE role = 'admin' AND is_active = 1");
+        $stmt->execute();
+        $admins = $stmt->fetchAll();
+        foreach ($admins as $admin) {
+            createNotification($admin['id'], 'New Request', "New document request created: $trackingNumber for {$student['first_name']} {$student['last_name']}", 'info', "../requests/view.php?id=$requestId");
+        }
+        
         setFlashMessage('success', "Request created successfully. Tracking Number: $trackingNumber");
         redirect(APP_URL . "/requests/view.php?id=$requestId");
+    }
     }
 }
 
@@ -96,6 +109,8 @@ if ($studentId) {
 <div class="row">
     <div class="col-lg-8">
         <form method="POST">
+                <?php generateCSRFToken(); ?>
+                <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
             <div class="card mb-4">
                 <div class="card-header">
                     <i class="fas fa-file-alt me-2"></i>Request Details
@@ -169,4 +184,4 @@ if ($studentId) {
     </div>
 </div>
 
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>
