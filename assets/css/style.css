@@ -96,14 +96,14 @@ body {
 }
 
 .sidebar-nav .nav-link:hover {
-    background: #f8f9fa;
-    color: #0D6EFD;
+    background: #f0f0f0;
+    color: #198754;
 }
 
 .sidebar-nav .nav-link.active {
-    background: #e7f1ff;
-    color: #0D6EFD;
-    border-left-color: #0D6EFD;
+    background: #d4edda;
+    color: #198754;
+    border-left-color: #198754;
     font-weight: 500;
 }
 
@@ -194,15 +194,99 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #dee2e6;
+    padding: 15px 20px;
+    background: #0D6EFD;
+    border-radius: 4px;
 }
 
 .page-header h4 {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 600;
-    color: #212529;
+    color: #ffffff;
     margin: 0;
+}
+
+.page-header .btn {
+    font-size: 13px;
+}
+
+.page-header .btn-primary {
+    background: #ffffff;
+    color: #0D6EFD;
+    border-color: #ffffff;
+}
+
+.page-header .btn-primary:hover {
+    background: #f0f0f0;
+    color: #0b5ed7;
+    border-color: #f0f0f0;
+}
+
+.page-header .btn-outline-secondary {
+    color: #ffffff;
+    border-color: rgba(255,255,255,0.5);
+}
+
+.page-header .btn-outline-secondary:hover {
+    background: #ffffff;
+    color: #6c757d;
+    border-color: #ffffff;
+}
+
+.page-header .btn-outline-primary {
+    color: #ffffff;
+    border-color: rgba(255,255,255,0.5);
+}
+
+.page-header .btn-outline-primary:hover {
+    background: #ffffff;
+    color: #0D6EFD;
+    border-color: #ffffff;
+}
+
+.page-header .btn-outline-success {
+    color: #ffffff;
+    border-color: rgba(255,255,255,0.5);
+}
+
+.page-header .btn-outline-success:hover {
+    background: #ffffff;
+    color: #28a745;
+    border-color: #ffffff;
+}
+
+.page-header .btn-outline-danger {
+    color: #ffffff;
+    border-color: rgba(255,255,255,0.5);
+}
+
+.page-header .btn-outline-danger:hover {
+    background: #ffffff;
+    color: #dc3545;
+    border-color: #ffffff;
+}
+
+.page-header .btn-outline-warning {
+    color: #ffffff;
+    border-color: rgba(255,255,255,0.5);
+}
+
+.page-header .btn-outline-warning:hover {
+    background: #ffffff;
+    color: #ffc107;
+    border-color: #ffffff;
+}
+
+.page-header .btn-success {
+    background: #ffffff;
+    color: #28a745;
+    border-color: #ffffff;
+}
+
+.page-header .btn-success:hover {
+    background: #f0f0f0;
+    color: #28a745;
+    border-color: #f0f0f0;
 }
 
 /* =====================================================
