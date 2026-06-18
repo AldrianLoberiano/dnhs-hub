@@ -18,6 +18,9 @@ $user = $stmt->fetch();
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $errors[] = 'Invalid security token.';
+    } else {
     $currentPassword = $_POST['current_password'] ?? '';
     $newPassword = $_POST['new_password'] ?? '';
     $confirmPassword = $_POST['confirm_password'] ?? '';
@@ -46,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             setFlashMessage('success', 'Password changed successfully.');
             redirect(APP_URL . '/profile.php');
         }
+    }
     }
 }
 ?>
@@ -108,6 +112,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endif; ?>
                 
                 <form method="POST">
+                    <?php generateCSRFToken(); ?>
+                    <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
                     <div class="mb-3">
                         <label class="form-label">Current Password</label>
                         <input type="password" class="form-control" name="current_password" required>
