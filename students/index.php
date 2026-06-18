@@ -62,7 +62,7 @@ $batches = $stmt->fetchAll(PDO::FETCH_COLUMN);
 ?>
 
 <div class="page-header">
-    <h4><i class="fas fa-user-graduate me-2"></i>Student Records</h4>
+    <h4>Student Records</h4>
     <a href="add.php" class="btn btn-primary">
         <i class="fas fa-plus me-1"></i>Add Student
     </a>
