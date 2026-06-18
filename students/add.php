@@ -96,7 +96,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <div class="page-header">
-    <h4>Add Student</h4>
+    <div>
+        <h4>Add Student</h4>
+        <small style="color: rgba(255,255,255,0.8);">Register a new student record into the system</small>
+    </div>
     <a href="index.php" class="btn btn-outline-secondary">
         <i class="fas fa-arrow-left me-1"></i>Back to List
     </a>
