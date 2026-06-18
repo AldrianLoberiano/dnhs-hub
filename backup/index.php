@@ -6,7 +6,7 @@
  */
 
 $pageTitle = 'Backup & Restore - DNHS Hub';
-require_once __DIR__ . '/includes/header.php';
+require_once __DIR__ . '/../includes/header.php';
 requireAdmin();
 
 $db = getDBConnection();
@@ -18,6 +18,10 @@ if (!is_dir(BACKUPS_PATH)) {
 
 // Handle backup creation
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        setFlashMessage('error', 'Invalid security token.');
+        redirect(APP_URL . '/backup/index.php');
+    }
     if ($_POST['action'] === 'backup') {
         $filename = 'dnhs_hub_backup_' . date('Y-m-d_His') . '.sql';
         $filePath = BACKUPS_PATH . '/' . $filename;
@@ -126,6 +130,8 @@ $backups = $stmt->fetchAll();
                 <p class="text-muted">Create a backup of the entire database. The backup file will be saved to the server and can be downloaded.</p>
                 <form method="POST">
                     <input type="hidden" name="action" value="backup">
+                    <?php generateCSRFToken(); ?>
+                    <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-database me-1"></i>Create Backup Now
                     </button>
@@ -147,6 +153,8 @@ $backups = $stmt->fetchAll();
                 </div>
                 <form method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="action" value="restore">
+                    <?php generateCSRFToken(); ?>
+                    <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
                     <div class="mb-3">
                         <label class="form-label">Select Backup File (.sql)</label>
                         <input type="file" class="form-control" name="backup_file" accept=".sql" required>
@@ -205,4 +213,4 @@ $backups = $stmt->fetchAll();
     </div>
 </div>
 
-<?php require_once __DIR__ . '/includes/footer.php'; ?>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>
