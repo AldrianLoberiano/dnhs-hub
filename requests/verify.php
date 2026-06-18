@@ -5,7 +5,7 @@
  * QR code verification page for document requests
  */
 
-require_once __DIR__ . '/config/config.php';
+require_once __DIR__ . '/../config/config.php';
 
 $trackingNumber = trim($_GET['tracking'] ?? '');
 
