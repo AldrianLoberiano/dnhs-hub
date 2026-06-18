@@ -49,9 +49,12 @@ $statusHistory = $stmt->fetchAll();
 ?>
 
 <div class="page-header">
-    <h4>Request: <?php echo sanitize($request['tracking_number']); ?>
-        <span class="badge <?php echo getStatusBadgeClass($request['status']); ?> ms-2"><?php echo sanitize($request['status']); ?></span>
-    </h4>
+    <div>
+        <h4>Request: <?php echo sanitize($request['tracking_number']); ?>
+            <span class="badge <?php echo getStatusBadgeClass($request['status']); ?> ms-2"><?php echo sanitize($request['status']); ?></span>
+        </h4>
+        <small style="color: rgba(255,255,255,0.8);">View request details and update status</small>
+    </div>
     <div class="d-flex gap-2">
         <a href="index.php" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left me-1"></i>Back
