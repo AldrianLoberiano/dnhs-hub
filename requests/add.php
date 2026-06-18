@@ -89,7 +89,7 @@ if ($studentId) {
 ?>
 
 <div class="page-header">
-    <h4><i class="fas fa-plus me-2"></i>New Document Request</h4>
+    <h4>New Document Request</h4>
     <a href="index.php" class="btn btn-outline-secondary">
         <i class="fas fa-arrow-left me-1"></i>Back to List
     </a>
