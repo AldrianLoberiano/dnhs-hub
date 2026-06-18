@@ -416,22 +416,22 @@ body {
 }
 
 .btn-primary {
-    background: #0D6EFD;
-    border-color: #0D6EFD;
+    background: #198754;
+    border-color: #198754;
 }
 
 .btn-primary:hover {
-    background: #0b5ed7;
-    border-color: #0a58ca;
+    background: #157347;
+    border-color: #146c43;
 }
 
 .btn-outline-primary {
-    color: #0D6EFD;
-    border-color: #0D6EFD;
+    color: #198754;
+    border-color: #198754;
 }
 
 .btn-outline-primary:hover {
-    background: #0D6EFD;
+    background: #198754;
     color: #ffffff;
 }
 
