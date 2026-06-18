@@ -16,6 +16,10 @@ $error = '';
 
 // Process login form
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Validate CSRF token
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $error = 'Invalid security token. Please try again.';
+    } else {
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
     
@@ -54,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             logAudit('Failed Login', 'Authentication', 'Failed login attempt for username: ' . $username);
         }
     }
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -87,6 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
             
             <form method="POST" action="" class="login-form">
+                <?php generateCSRFToken(); ?>
+                <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <div class="input-group">
