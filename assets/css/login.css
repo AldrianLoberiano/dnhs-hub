@@ -86,8 +86,8 @@ body {
 }
 
 .login-form .form-control:focus {
-    border-color: #0D6EFD;
-    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+    border-color: #198754;
+    box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.15);
 }
 
 .btn-login {
