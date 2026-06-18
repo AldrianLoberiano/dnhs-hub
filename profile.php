@@ -55,7 +55,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <div class="page-header">
-    <h4>My Profile</h4>
+    <div>
+        <h4>My Profile</h4>
+        <small style="color: rgba(255,255,255,0.8);">View and update your account settings</small>
+    </div>
 </div>
 
 <div class="row">
