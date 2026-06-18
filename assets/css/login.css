@@ -1,0 +1,125 @@
+/* =====================================================
+ * DNHS Hub - Login Page Styles
+ * Professional School Administration Theme
+ * ===================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
+}
+
+.login-card {
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 40px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.school-logo {
+    width: 80px;
+    height: 80px;
+    background: #0D6EFD;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+.school-logo i {
+    font-size: 36px;
+    color: #ffffff;
+}
+
+.system-name {
+    font-size: 28px;
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 5px;
+}
+
+.system-subtitle {
+    font-size: 13px;
+    color: #6c757d;
+}
+
+.login-form {
+    margin-bottom: 20px;
+}
+
+.login-form .form-label {
+    font-weight: 500;
+    color: #495057;
+    font-size: 14px;
+}
+
+.login-form .input-group-text {
+    background: #f8f9fa;
+    border-color: #dee2e6;
+}
+
+.login-form .form-control {
+    border-color: #dee2e6;
+    padding: 10px 15px;
+}
+
+.login-form .form-control:focus {
+    border-color: #0D6EFD;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    font-weight: 500;
+    background: #0D6EFD;
+    border-color: #0D6EFD;
+}
+
+.btn-login:hover {
+    background: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+.login-footer {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #dee2e6;
+}
+
+.login-footer p {
+    font-size: 12px;
+    color: #6c757d;
+    margin: 0;
+}
+
+.alert {
+    font-size: 14px;
+    padding: 12px 15px;
+}
+
+.alert i {
+    margin-right: 5px;
+}
