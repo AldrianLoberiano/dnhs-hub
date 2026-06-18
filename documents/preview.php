@@ -28,6 +28,11 @@ if (!$doc) {
 
 $filePath = APP_ROOT . '/' . $doc['file_path'];
 
+// Fallback: check assets/uploads if file not found
+if (!file_exists($filePath)) {
+    $filePath = APP_ROOT . '/assets/' . $doc['file_path'];
+}
+
 if (!file_exists($filePath)) {
     setFlashMessage('error', 'Document file not found on server.');
     redirect(APP_URL . '/documents/index.php');
