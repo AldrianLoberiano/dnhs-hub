@@ -46,7 +46,7 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
     <link href="<?php echo APP_URL; ?>/assets/css/style.css" rel="stylesheet">
 </head>
 <body>
-    <div class="d-flex" id="wrapper">
+    <div id="wrapper">
         <!-- Sidebar -->
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
@@ -129,14 +129,10 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
                     <?php endif; ?>
                 </ul>
             </nav>
-            
-            <div class="sidebar-footer">
-                <small>&copy; <?php echo date('Y'); ?> DNHS Hub</small>
-            </div>
         </div>
         
         <!-- Page Content Wrapper -->
-        <div id="page-content-wrapper" class="w-100">
+        <div id="page-content-wrapper">
             <!-- Top Navigation -->
             <nav class="navbar navbar-expand-lg top-navbar">
                 <div class="container-fluid">
