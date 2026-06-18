@@ -27,8 +27,8 @@ requireAuth();
 $scriptPath = $_SERVER['PHP_SELF'];
 $currentPage = basename($scriptPath, '.php');
 $currentDir = basename(dirname($scriptPath));
-// For index.php pages, use the folder name instead
-if ($currentPage === 'index') {
+// Use folder name for sub-pages so all pages in a module highlight correctly
+if ($currentPage === 'index' || in_array($currentPage, ['add', 'edit', 'view', 'verify', 'update_status', 'download', 'delete', 'preview', 'upload', 'restore', 'archive', 'toggle_status', 'reset_password', 'stub', 'mark_read'])) {
     $currentPage = $currentDir;
 }
 $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
@@ -78,7 +78,7 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
                     <?php endif; ?>
                     
                     <li class="nav-item">
-                        <a class="nav-link <?php echo in_array($currentPage, ['students', 'view', 'add', 'edit', 'archived']) ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/students/index.php">
+                        <a class="nav-link <?php echo $currentPage === 'students' ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/students/index.php">
                             <i class="fas fa-user-graduate"></i>
                             <span>Student Records</span>
                         </a>
@@ -99,7 +99,7 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
                     </li>
                     
                     <li class="nav-item">
-                        <a class="nav-link <?php echo in_array($currentPage, ['requests', 'request_add', 'request_view']) ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/requests/index.php">
+                        <a class="nav-link <?php echo $currentPage === 'requests' ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/requests/index.php">
                             <i class="fas fa-file-alt"></i>
                             <span>Document Requests</span>
                         </a>
