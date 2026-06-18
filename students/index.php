@@ -6,7 +6,7 @@
  */
 
 $pageTitle = 'Student Records - DNHS Hub';
-require_once __DIR__ . '/../../includes/header.php';
+require_once __DIR__ . '/../includes/header.php';
 
 $db = getDBConnection();
 
@@ -185,4 +185,4 @@ $batches = $stmt->fetchAll(PDO::FETCH_COLUMN);
     </div>
 </div>
 
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>
