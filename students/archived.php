@@ -37,7 +37,10 @@ $students = $stmt->fetchAll();
 ?>
 
 <div class="page-header">
-    <h4>Archived Students</h4>
+    <div>
+        <h4>Archived Students</h4>
+        <small style="color: rgba(255,255,255,0.8);">View and restore previously archived student records</small>
+    </div>
     <a href="index.php" class="btn btn-outline-secondary">
         <i class="fas fa-arrow-left me-1"></i>Back to Active Students
     </a>
