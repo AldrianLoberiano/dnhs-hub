@@ -5,7 +5,7 @@
  * Mark a notification as read (AJAX endpoint)
  */
 
-require_once __DIR__ . '/../../config/config.php';
+require_once __DIR__ . '/../config/config.php';
 requireAuth();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
