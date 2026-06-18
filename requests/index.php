@@ -71,7 +71,7 @@ $docTypes = $stmt->fetchAll();
 ?>
 
 <div class="page-header">
-    <h4><i class="fas fa-file-alt me-2"></i>Document Requests</h4>
+    <h4>Document Requests</h4>
     <a href="add.php" class="btn btn-primary">
         <i class="fas fa-plus me-1"></i>New Request
     </a>
