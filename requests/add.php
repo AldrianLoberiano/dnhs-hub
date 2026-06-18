@@ -89,7 +89,10 @@ if ($studentId) {
 ?>
 
 <div class="page-header">
-    <h4>New Document Request</h4>
+    <div>
+        <h4>New Document Request</h4>
+        <small style="color: rgba(255,255,255,0.8);">Create a new document request for a student</small>
+    </div>
     <a href="index.php" class="btn btn-outline-secondary">
         <i class="fas fa-arrow-left me-1"></i>Back to List
     </a>
