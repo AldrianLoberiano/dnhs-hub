@@ -87,8 +87,8 @@ $recentRequests = $stmt->fetchAll();
 ?>
 
 <div class="page-header">
-    <h4><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h4>
-    <span class="text-muted">Welcome, <?php echo sanitize($_SESSION['full_name']); ?></span>
+    <h4>Dashboard</h4>
+    <span style="color: rgba(255,255,255,0.8);">Welcome, <?php echo sanitize($_SESSION['full_name']); ?></span>
 </div>
 
 <!-- Summary Cards -->
