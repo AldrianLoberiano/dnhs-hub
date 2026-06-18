@@ -53,7 +53,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <div class="page-header">
-    <h4>Reset Password</h4>
+    <div>
+        <h4>Reset Password</h4>
+        <small style="color: rgba(255,255,255,0.8);">Reset a user's login password</small>
+    </div>
     <a href="index.php" class="btn btn-outline-secondary">
         <i class="fas fa-arrow-left me-1"></i>Back
     </a>
