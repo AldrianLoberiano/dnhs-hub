@@ -33,7 +33,10 @@ $notifications = $stmt->fetchAll();
 ?>
 
 <div class="page-header">
-    <h4>Notifications</h4>
+    <div>
+        <h4>Notifications</h4>
+        <small style="color: rgba(255,255,255,0.8);">View all your notifications</small>
+    </div>
     <a href="?mark_all_read=1" class="btn btn-outline-primary">
         <i class="fas fa-check-double me-1"></i>Mark All as Read
     </a>
