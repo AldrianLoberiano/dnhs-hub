@@ -69,7 +69,10 @@ $modules = $stmt->fetchAll(PDO::FETCH_COLUMN);
 ?>
 
 <div class="page-header">
-    <h4>Audit Logs</h4>
+    <div>
+        <h4>Audit Logs</h4>
+        <small style="color: rgba(255,255,255,0.8);">View all system activity and changes</small>
+    </div>
 </div>
 
 <!-- Filters -->
