@@ -116,7 +116,10 @@ $backups = $stmt->fetchAll();
 ?>
 
 <div class="page-header">
-    <h4>Backup & Restore</h4>
+    <div>
+        <h4>Backup & Restore</h4>
+        <small style="color: rgba(255,255,255,0.8);">Create backups and restore database</small>
+    </div>
 </div>
 
 <div class="row">
