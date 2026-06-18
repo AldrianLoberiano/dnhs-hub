@@ -142,7 +142,7 @@ body {
     left: -10%;
     width: 50%;
     height: 100%;
-    background: rgba(129, 199, 132, 0.4);
+    background: rgba(60, 143, 74, 0.4);
     transform: skewX(-20deg);
     pointer-events: none;
     clip-path: inset(0);
@@ -155,7 +155,7 @@ body {
     right: -10%;
     width: 35%;
     height: 100%;
-    background: rgba(27, 135, 84, 0.5);
+    background: rgba(35, 100, 45, 0.5);
     transform: skewX(-20deg);
     pointer-events: none;
     clip-path: inset(0);
@@ -202,24 +202,24 @@ body {
 
 .top-navbar .form-control {
     border: none;
-    background: rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.35);
     color: #ffffff;
     position: relative;
     z-index: 1;
 }
 
 .top-navbar .form-control::placeholder {
-    color: rgba(255,255,255,0.8);
+    color: rgba(255,255,255,0.9);
 }
 
 .top-navbar .form-control:focus {
-    background: rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.5);
     box-shadow: none;
     color: #ffffff;
 }
 
 .top-navbar .input-group-text {
-    background: rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.35);
     border: none;
     color: #ffffff;
     position: relative;
@@ -227,7 +227,7 @@ body {
 }
 
 .top-navbar .btn-outline-secondary {
-    background: rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.35);
     border: none;
     color: #ffffff;
     position: relative;
@@ -235,7 +235,7 @@ body {
 }
 
 .top-navbar .btn-outline-secondary:hover {
-    background: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.5);
     color: #ffffff;
 }
 
