@@ -49,9 +49,7 @@ $statusHistory = $stmt->fetchAll();
 ?>
 
 <div class="page-header">
-    <h4>
-        <i class="fas fa-file-alt me-2"></i>
-        Request: <?php echo sanitize($request['tracking_number']); ?>
+    <h4>Request: <?php echo sanitize($request['tracking_number']); ?>
         <span class="badge <?php echo getStatusBadgeClass($request['status']); ?> ms-2"><?php echo sanitize($request['status']); ?></span>
     </h4>
     <div class="d-flex gap-2">
