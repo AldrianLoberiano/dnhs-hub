@@ -20,7 +20,9 @@
     if ($flash):
     ?>
     <script>
+    document.addEventListener('DOMContentLoaded', function() {
         showToast('<?php echo $flash["type"]; ?>', '<?php echo addslashes($flash["message"]); ?>');
+    });
     </script>
     <?php endif; ?>
     
