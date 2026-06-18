@@ -5,7 +5,7 @@
  * Form to edit an existing student record
  */
 
-require_once __DIR__ . '/../../includes/header.php';
+require_once __DIR__ . '/../includes/header.php';
 
 $db = getDBConnection();
 $id = intval($_GET['id'] ?? 0);
@@ -30,6 +30,9 @@ $errors = [];
 
 // Process form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $errors[] = 'Invalid security token.';
+    } else {
     $studentNumber = trim($_POST['student_number'] ?? '');
     $lrn = trim($_POST['lrn'] ?? '');
     $firstName = trim($_POST['first_name'] ?? '');
@@ -104,6 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         setFlashMessage('success', 'Student record updated successfully.');
         redirect(APP_URL . "/students/view.php?id=$id");
     }
+    }
     
     // Update student array with POST data for form
     $student = array_merge($student, $_POST);
@@ -135,6 +139,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php endif; ?>
 
 <form method="POST" class="needs-validation" novalidate>
+            <?php generateCSRFToken(); ?>
+            <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
     <!-- Personal Information -->
     <div class="card mb-4">
         <div class="card-header">
@@ -291,4 +297,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </form>
 
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>
