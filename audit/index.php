@@ -6,7 +6,7 @@
  */
 
 $pageTitle = 'Audit Logs - DNHS Hub';
-require_once __DIR__ . '/../../includes/header.php';
+require_once __DIR__ . '/../includes/header.php';
 requireAdmin();
 
 $db = getDBConnection();
@@ -152,4 +152,4 @@ $modules = $stmt->fetchAll(PDO::FETCH_COLUMN);
     </div>
 </div>
 
-<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>
