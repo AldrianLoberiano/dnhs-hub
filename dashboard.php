@@ -94,100 +94,116 @@ $recentRequests = $stmt->fetchAll();
 <!-- Summary Cards -->
 <div class="row g-3 mb-4">
     <div class="col-xl-3 col-md-6">
-        <div class="summary-card">
-            <div class="icon" style="background: #0D6EFD;">
-                <i class="fas fa-user-graduate"></i>
+        <a href="students/index.php" class="text-decoration-none">
+            <div class="summary-card">
+                <div class="icon" style="background: #0D6EFD;">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div class="info">
+                    <h3><?php echo number_format($counts['students']); ?></h3>
+                    <p>Total Students</p>
+                </div>
             </div>
-            <div class="info">
-                <h3><?php echo number_format($counts['students']); ?></h3>
-                <p>Total Students</p>
-            </div>
-        </div>
+        </a>
     </div>
     
     <div class="col-xl-3 col-md-6">
-        <div class="summary-card">
-            <div class="icon" style="background: #6c757d;">
-                <i class="fas fa-file-alt"></i>
+        <a href="requests/index.php" class="text-decoration-none">
+            <div class="summary-card">
+                <div class="icon" style="background: #6c757d;">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="info">
+                    <h3><?php echo number_format($counts['total_requests']); ?></h3>
+                    <p>Total Requests</p>
+                </div>
             </div>
-            <div class="info">
-                <h3><?php echo number_format($counts['total_requests']); ?></h3>
-                <p>Total Requests</p>
-            </div>
-        </div>
+        </a>
     </div>
     
     <div class="col-xl-3 col-md-6">
-        <div class="summary-card">
-            <div class="icon" style="background: #ffc107;">
-                <i class="fas fa-clock"></i>
+        <a href="requests/index.php?status=Pending" class="text-decoration-none">
+            <div class="summary-card">
+                <div class="icon" style="background: #ffc107;">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="info">
+                    <h3><?php echo number_format($counts['pending']); ?></h3>
+                    <p>Pending Requests</p>
+                </div>
             </div>
-            <div class="info">
-                <h3><?php echo number_format($counts['pending']); ?></h3>
-                <p>Pending Requests</p>
-            </div>
-        </div>
+        </a>
     </div>
     
     <div class="col-xl-3 col-md-6">
-        <div class="summary-card">
-            <div class="icon" style="background: #17a2b8;">
-                <i class="fas fa-spinner"></i>
+        <a href="requests/index.php?status=Processing" class="text-decoration-none">
+            <div class="summary-card">
+                <div class="icon" style="background: #17a2b8;">
+                    <i class="fas fa-spinner"></i>
+                </div>
+                <div class="info">
+                    <h3><?php echo number_format($counts['processing']); ?></h3>
+                    <p>Processing</p>
+                </div>
             </div>
-            <div class="info">
-                <h3><?php echo number_format($counts['processing']); ?></h3>
-                <p>Processing</p>
-            </div>
-        </div>
+        </a>
     </div>
     
     <div class="col-xl-3 col-md-6">
-        <div class="summary-card">
-            <div class="icon" style="background: #28a745;">
-                <i class="fas fa-check-circle"></i>
+        <a href="requests/index.php?status=Ready for Release" class="text-decoration-none">
+            <div class="summary-card">
+                <div class="icon" style="background: #28a745;">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="info">
+                    <h3><?php echo number_format($counts['ready']); ?></h3>
+                    <p>Ready for Release</p>
+                </div>
             </div>
-            <div class="info">
-                <h3><?php echo number_format($counts['ready']); ?></h3>
-                <p>Ready for Release</p>
-            </div>
-        </div>
+        </a>
     </div>
     
     <div class="col-xl-3 col-md-6">
-        <div class="summary-card">
-            <div class="icon" style="background: #343a40;">
-                <i class="fas fa-archive"></i>
+        <a href="requests/index.php?status=Released" class="text-decoration-none">
+            <div class="summary-card">
+                <div class="icon" style="background: #343a40;">
+                    <i class="fas fa-archive"></i>
+                </div>
+                <div class="info">
+                    <h3><?php echo number_format($counts['released']); ?></h3>
+                    <p>Released</p>
+                </div>
             </div>
-            <div class="info">
-                <h3><?php echo number_format($counts['released']); ?></h3>
-                <p>Released</p>
-            </div>
-        </div>
+        </a>
     </div>
     
     <div class="col-xl-3 col-md-6">
-        <div class="summary-card">
-            <div class="icon" style="background: #fd7e14;">
-                <i class="fas fa-folder-open"></i>
+        <a href="documents/index.php" class="text-decoration-none">
+            <div class="summary-card">
+                <div class="icon" style="background: #fd7e14;">
+                    <i class="fas fa-folder-open"></i>
+                </div>
+                <div class="info">
+                    <h3><?php echo number_format($counts['documents']); ?></h3>
+                    <p>Uploaded Documents</p>
+                </div>
             </div>
-            <div class="info">
-                <h3><?php echo number_format($counts['documents']); ?></h3>
-                <p>Uploaded Documents</p>
-            </div>
-        </div>
+        </a>
     </div>
     
     <?php if (isAdmin()): ?>
     <div class="col-xl-3 col-md-6">
-        <div class="summary-card">
-            <div class="icon" style="background: #e83e8c;">
-                <i class="fas fa-users-cog"></i>
+        <a href="users/index.php" class="text-decoration-none">
+            <div class="summary-card">
+                <div class="icon" style="background: #e83e8c;">
+                    <i class="fas fa-users-cog"></i>
+                </div>
+                <div class="info">
+                    <h3><?php echo number_format($counts['users']); ?></h3>
+                    <p>Active Users</p>
+                </div>
             </div>
-            <div class="info">
-                <h3><?php echo number_format($counts['users']); ?></h3>
-                <p>Active Users</p>
-            </div>
-        </div>
+        </a>
     </div>
     <?php endif; ?>
 </div>
