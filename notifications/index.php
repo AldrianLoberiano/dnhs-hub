@@ -31,8 +31,8 @@ $stmt->execute([$_SESSION['user_id']]);
 $total = $stmt->fetch()['count'];
 $pagination = getPagination($total, $perPage, $page);
 
-$stmt = $db->prepare("SELECT * FROM notifications WHERE user_id = ? ORDER BY created_at DESC LIMIT ? OFFSET ?");
-$stmt->execute([$_SESSION['user_id'], $perPage, $pagination['offset']]);
+$stmt = $db->prepare("SELECT * FROM notifications WHERE user_id = ? ORDER BY created_at DESC LIMIT " . (int)$perPage . " OFFSET " . (int)$pagination['offset']);
+$stmt->execute([$_SESSION['user_id']]);
 $notifications = $stmt->fetchAll();
 ?>
 
