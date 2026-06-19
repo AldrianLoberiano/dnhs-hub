@@ -97,14 +97,14 @@ $students = $stmt->fetchAll();
                         <td><span class="badge bg-secondary"><?php echo sanitize($student['current_status']); ?></span></td>
                         <td><small><?php echo formatDate($student['updated_at']); ?></small></td>
                         <td>
-                            <div class="btn-group btn-group-sm">
-                                <a href="view.php?id=<?php echo $student['id']; ?>" class="btn btn-outline-primary" title="View">
+                            <div class="d-flex gap-1">
+                                <a href="view.php?id=<?php echo $student['id']; ?>" class="icon-btn text-primary" title="View">
                                     <i class="fas fa-eye"></i>
                                 </a>
                                 <form method="POST" action="restore.php" style="display:inline">
                                     <input type="hidden" name="id" value="<?php echo $student['id']; ?>">
                                     <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
-                                    <button type="submit" class="btn btn-outline-success btn-confirm-restore" title="Restore">
+                                    <button type="submit" class="icon-btn text-success btn-confirm-restore" title="Restore">
                                         <i class="fas fa-undo"></i>
                                     </button>
                                 </form>
