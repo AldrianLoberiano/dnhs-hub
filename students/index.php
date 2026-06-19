@@ -165,9 +165,13 @@ $batches = $stmt->fetchAll(PDO::FETCH_COLUMN);
                                 <a href="edit.php?id=<?php echo $student['id']; ?>" class="btn btn-outline-warning" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <a href="archive.php?id=<?php echo $student['id']; ?>" class="btn btn-outline-danger btn-archive" title="Archive">
-                                    <i class="fas fa-archive"></i>
-                                </a>
+                                <form method="POST" action="archive.php" style="display:inline" onsubmit="return confirm('Are you sure you want to archive this student?')">
+                                    <input type="hidden" name="id" value="<?php echo $student['id']; ?>">
+                                    <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
+                                    <button type="submit" class="btn btn-outline-danger" title="Archive">
+                                        <i class="fas fa-archive"></i>
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>
