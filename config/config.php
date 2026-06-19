@@ -5,10 +5,17 @@
  * Application-wide settings and constants
  */
 
+// Session security settings
+ini_set('session.cookie_httponly', 1);
+ini_set('session.cookie_samesite', 'Lax');
+
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+// Default page title
+$pageTitle = 'DNHS Hub';
 
 // Error reporting
 error_reporting(E_ALL);
@@ -27,7 +34,8 @@ define('PROFILES_PATH', UPLOADS_PATH . '/profiles');
 define('BACKUPS_PATH', APP_ROOT . '/backups');
 
 // Application URLs
-define('APP_URL', 'http://localhost/dnhs-hub');
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+define('APP_URL', $protocol . '://' . $_SERVER['HTTP_HOST'] . '/dnhs-hub');
 define('ASSETS_URL', APP_URL . '/assets');
 
 // File upload settings
