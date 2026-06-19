@@ -12,52 +12,93 @@ if (isLoggedIn()) {
     redirect(APP_URL . '/dashboard.php');
 }
 
+$db = getDBConnection();
 $error = '';
+$locked = false;
+$lockoutTime = 0;
+
+// Rate limiting constants
+define('MAX_ATTEMPTS', 5);
+define('LOCKOUT_MINUTES', 15);
+$ipAddress = $_SERVER['REMOTE_ADDR'];
+
+// Check if IP is locked out
+$stmt = $db->prepare("SELECT COUNT(*) as attempts FROM login_attempts WHERE ip_address = ? AND success = 0 AND attempted_at > DATE_SUB(NOW(), INTERVAL ? MINUTE)");
+$stmt->execute([$ipAddress, LOCKOUT_MINUTES]);
+$failedAttempts = $stmt->fetch()['attempts'];
+
+if ($failedAttempts >= MAX_ATTEMPTS) {
+    $locked = true;
+    $stmt = $db->prepare("SELECT MIN(attempted_at) as first_attempt FROM login_attempts WHERE ip_address = ? AND success = 0 AND attempted_at > DATE_SUB(NOW(), INTERVAL ? MINUTE)");
+    $stmt->execute([$ipAddress, LOCKOUT_MINUTES]);
+    $firstAttempt = $stmt->fetch()['first_attempt'];
+    if ($firstAttempt) {
+        $lockoutTime = strtotime($firstAttempt) + (LOCKOUT_MINUTES * 60) - time();
+    }
+}
 
 // Process login form
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validate CSRF token
     if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
         $error = 'Invalid security token. Please try again.';
+    } elseif ($locked) {
+        $error = 'Too many failed attempts. Please try again in ' . ceil($lockoutTime / 60) . ' minutes.';
     } else {
-    $username = trim($_POST['username'] ?? '');
-    $password = $_POST['password'] ?? '';
-    
-    if (empty($username) || empty($password)) {
-        $error = 'Please enter both username and password.';
-    } else {
-        $db = getDBConnection();
-        $stmt = $db->prepare("SELECT * FROM users WHERE username = ? AND is_active = 1");
-        $stmt->execute([$username]);
-        $user = $stmt->fetch();
+        $username = trim($_POST['username'] ?? '');
+        $password = $_POST['password'] ?? '';
         
-        if ($user && password_verify($password, $user['password'])) {
-            // Set session variables
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['username'] = $user['username'];
-            $_SESSION['full_name'] = getFullName($user);
-            $_SESSION['role'] = $user['role'];
-            $_SESSION['last_activity'] = time();
-            
-            // Update last login
-            $stmt = $db->prepare("UPDATE users SET last_login = NOW() WHERE id = ?");
-            $stmt->execute([$user['id']]);
-            
-            // Log activity
-            logAudit('Login', 'Authentication', 'User logged in successfully');
-            
-            // Create session record
-            $token = bin2hex(random_bytes(32));
-            $stmt = $db->prepare("INSERT INTO user_sessions (user_id, session_token, ip_address, user_agent, last_activity) VALUES (?, ?, ?, ?, NOW())");
-            $stmt->execute([$user['id'], $token, $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_USER_AGENT']]);
-            $_SESSION['session_token'] = $token;
-            
-            redirect(APP_URL . '/dashboard.php');
+        if (empty($username) || empty($password)) {
+            $error = 'Please enter both username and password.';
         } else {
-            $error = 'Invalid username or password.';
-            logAudit('Failed Login', 'Authentication', 'Failed login attempt for username: ' . $username);
+            $stmt = $db->prepare("SELECT * FROM users WHERE username = ? AND is_active = 1");
+            $stmt->execute([$username]);
+            $user = $stmt->fetch();
+            
+            if ($user && password_verify($password, $user['password'])) {
+                // Record successful login
+                $stmt = $db->prepare("INSERT INTO login_attempts (ip_address, username, success) VALUES (?, ?, 1)");
+                $stmt->execute([$ipAddress, $username]);
+                
+                // Clear failed attempts for this IP
+                $stmt = $db->prepare("DELETE FROM login_attempts WHERE ip_address = ? AND success = 0");
+                $stmt->execute([$ipAddress]);
+                
+                // Set session variables
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['full_name'] = getFullName($user);
+                $_SESSION['role'] = $user['role'];
+                $_SESSION['last_activity'] = time();
+                
+                // Update last login
+                $stmt = $db->prepare("UPDATE users SET last_login = NOW() WHERE id = ?");
+                $stmt->execute([$user['id']]);
+                
+                // Log activity
+                logAudit('Login', 'Authentication', 'User logged in successfully');
+                
+                // Create session record
+                $token = bin2hex(random_bytes(32));
+                $stmt = $db->prepare("INSERT INTO user_sessions (user_id, session_token, ip_address, user_agent, last_activity) VALUES (?, ?, ?, ?, NOW())");
+                $stmt->execute([$user['id'], $token, $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_USER_AGENT']]);
+                $_SESSION['session_token'] = $token;
+                
+                redirect(APP_URL . '/dashboard.php');
+            } else {
+                // Record failed attempt
+                $stmt = $db->prepare("INSERT INTO login_attempts (ip_address, username, success) VALUES (?, ?, 0)");
+                $stmt->execute([$ipAddress, $username]);
+                
+                $remaining = MAX_ATTEMPTS - ($failedAttempts + 1);
+                if ($remaining <= 0) {
+                    $error = 'Too many failed attempts. Account locked for ' . LOCKOUT_MINUTES . ' minutes.';
+                } else {
+                    $error = 'Invalid username or password. ' . $remaining . ' attempt(s) remaining before lockout.';
+                }
+                logAudit('Failed Login', 'Authentication', "Failed login attempt for username: $username from IP: $ipAddress");
+            }
         }
-    }
     }
 }
 ?>
