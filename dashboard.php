@@ -47,9 +47,14 @@ $counts['users'] = $stmt->fetch()['count'];
 
 // Percentage changes (current month vs previous month)
 function getPercentageChange($db, $table, $where = '1=1') {
-    $stmt = $db->query("SELECT COUNT(*) as count FROM $table WHERE $where AND MONTH(created_at) = MONTH(CURRENT_DATE()) AND YEAR(created_at) = YEAR(CURRENT_DATE())");
+    $allowedTables = ['students', 'document_requests', 'student_documents', 'users'];
+    $allowedWheres = ['1=1', 'is_archived = 0', 'is_active = 1'];
+    if (!in_array($table, $allowedTables) || !in_array($where, $allowedWheres)) {
+        return 0;
+    }
+    $stmt = $db->query("SELECT COUNT(*) as count FROM `$table` WHERE $where AND MONTH(created_at) = MONTH(CURRENT_DATE()) AND YEAR(created_at) = YEAR(CURRENT_DATE())");
     $current = $stmt->fetch()['count'];
-    $stmt = $db->query("SELECT COUNT(*) as count FROM $table WHERE $where AND MONTH(created_at) = MONTH(CURRENT_DATE() - INTERVAL 1 MONTH) AND YEAR(created_at) = YEAR(CURRENT_DATE() - INTERVAL 1 MONTH)");
+    $stmt = $db->query("SELECT COUNT(*) as count FROM `$table` WHERE $where AND MONTH(created_at) = MONTH(CURRENT_DATE() - INTERVAL 1 MONTH) AND YEAR(created_at) = YEAR(CURRENT_DATE() - INTERVAL 1 MONTH)");
     $previous = $stmt->fetch()['count'];
     if ($previous == 0) return $current > 0 ? 100 : 0;
     return round((($current - $previous) / $previous) * 100);
