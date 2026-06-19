@@ -151,9 +151,13 @@ $docTypes = $stmt->fetchAll();
                                 <a href="preview.php?id=<?php echo $doc['id']; ?>" class="btn btn-outline-info" title="Preview" target="_blank">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a href="delete.php?id=<?php echo $doc['id']; ?>" class="btn btn-outline-danger btn-delete" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </a>
+                                <form method="POST" action="delete.php" style="display:inline" onsubmit="return confirm('Are you sure you want to delete this document? This action cannot be undone.')">
+                                    <input type="hidden" name="id" value="<?php echo $doc['id']; ?>">
+                                    <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
+                                    <button type="submit" class="btn btn-outline-danger" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>
