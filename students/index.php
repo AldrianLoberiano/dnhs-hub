@@ -49,10 +49,8 @@ $stmt = $db->prepare("
     FROM students s 
     $where 
     ORDER BY s.created_at DESC 
-    LIMIT ? OFFSET ?
-");
-$params[] = $perPage;
-$params[] = $pagination['offset'];
+    LIMIT " . (int)$perPage . " OFFSET " . (int)$pagination['offset']
+);
 $stmt->execute($params);
 $students = $stmt->fetchAll();
 
@@ -165,10 +163,10 @@ $batches = $stmt->fetchAll(PDO::FETCH_COLUMN);
                                 <a href="edit.php?id=<?php echo $student['id']; ?>" class="btn btn-outline-warning" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form method="POST" action="archive.php" style="display:inline" onsubmit="return confirm('Are you sure you want to archive this student?')">
+                                <form method="POST" action="archive.php" style="display:inline">
                                     <input type="hidden" name="id" value="<?php echo $student['id']; ?>">
                                     <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
-                                    <button type="submit" class="btn btn-outline-danger" title="Archive">
+                                    <button type="submit" class="btn btn-outline-danger btn-confirm-archive" title="Archive">
                                         <i class="fas fa-archive"></i>
                                     </button>
                                 </form>
