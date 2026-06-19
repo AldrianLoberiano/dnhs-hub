@@ -156,17 +156,17 @@ $batches = $stmt->fetchAll(PDO::FETCH_COLUMN);
                         </td>
                         <td><?php echo sanitize($student['graduation_batch'] ?? 'N/A'); ?></td>
                         <td>
-                            <div class="btn-group btn-group-sm">
-                                <a href="view.php?id=<?php echo $student['id']; ?>" class="btn btn-outline-primary" title="View">
+                            <div class="d-flex gap-1">
+                                <a href="view.php?id=<?php echo $student['id']; ?>" class="icon-btn" title="View">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a href="edit.php?id=<?php echo $student['id']; ?>" class="btn btn-outline-warning" title="Edit">
-                                    <i class="fas fa-edit"></i>
+                                <a href="edit.php?id=<?php echo $student['id']; ?>" class="icon-btn" title="Edit">
+                                    <i class="fas fa-pen"></i>
                                 </a>
                                 <form method="POST" action="archive.php" style="display:inline">
                                     <input type="hidden" name="id" value="<?php echo $student['id']; ?>">
                                     <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
-                                    <button type="submit" class="btn btn-outline-danger btn-confirm-archive" title="Archive">
+                                    <button type="submit" class="icon-btn btn-confirm-archive" title="Archive">
                                         <i class="fas fa-archive"></i>
                                     </button>
                                 </form>
