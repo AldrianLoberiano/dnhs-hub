@@ -9,6 +9,11 @@ $stmt = $db->prepare("SELECT * FROM users WHERE id = ?");
 $stmt->execute([$userId]);
 $user = $stmt->fetch();
 
+if (!$user) {
+    setFlashMessage('error', 'User not found.');
+    redirect(APP_URL . '/login.php');
+}
+
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -112,7 +117,6 @@ require_once __DIR__ . '/includes/header.php';
                 <?php endif; ?>
                 
                 <form method="POST">
-                    <?php generateCSRFToken(); ?>
                     <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
                     <div class="mb-3">
                         <label class="form-label">Current Password</label>
