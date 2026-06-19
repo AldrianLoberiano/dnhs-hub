@@ -76,17 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Get selected student info for auto-fill
-$selectedStudent = null;
-if ($studentId) {
-    foreach ($students as $s) {
-        if ($s['id'] == $studentId) {
-            $selectedStudent = $s;
-            break;
-        }
-    }
-}
-
 $pageTitle = 'New Request - DNHS Hub';
 require_once __DIR__ . '/../includes/header.php';
 ?>
@@ -115,7 +104,6 @@ require_once __DIR__ . '/../includes/header.php';
 <div class="row">
     <div class="col-lg-8">
         <form method="POST">
-                <?php generateCSRFToken(); ?>
                 <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
             <div class="card mb-4">
                 <div class="card-header">
