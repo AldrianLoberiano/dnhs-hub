@@ -133,7 +133,6 @@ require_once __DIR__ . '/../includes/header.php';
 <div class="row">
     <div class="col-lg-8">
         <form method="POST" enctype="multipart/form-data">
-                <?php generateCSRFToken(); ?>
                 <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
             <div class="card mb-4">
                 <div class="card-header">
