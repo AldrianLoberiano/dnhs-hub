@@ -15,7 +15,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Default page title
-$pageTitle = 'DNHS Hub';
+if (!isset($pageTitle)) $pageTitle = 'DNHS Hub';
 
 // Error reporting
 error_reporting(E_ALL);
