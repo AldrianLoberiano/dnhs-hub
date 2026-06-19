@@ -50,6 +50,31 @@
             </div>
         </div>
     </div>
+
+    <!-- Notification View Modal -->
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content notification-modal-content">
+                <div class="modal-header notification-modal-header">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="fas fa-bell"></i>
+                        <h5 class="modal-title mb-0" id="notifModalTitle">Notification</h5>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <p class="text-muted mb-2" id="notifModalDate"></p>
+                    <p class="mb-0" id="notifModalMessage" style="font-size: 15px; line-height: 1.6;"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="#" class="btn btn-primary" id="notifModalLink">
+                        <i class="fas fa-arrow-right me-1"></i>Go to page
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -139,6 +164,61 @@
                 });
             });
         });
+        
+        // Notification modal
+        var notifModal = document.getElementById('notificationModal');
+        if (notifModal) {
+            var bsNotifModal = new bootstrap.Modal(notifModal);
+
+            document.querySelectorAll('.notification-item').forEach(function(item) {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var id = this.dataset.id;
+                    var title = this.dataset.title;
+                    var message = this.dataset.message;
+                    var date = this.dataset.date;
+                    var link = this.dataset.link;
+                    var isRead = this.dataset.read;
+
+                    document.getElementById('notifModalTitle').textContent = title;
+                    document.getElementById('notifModalDate').textContent = date;
+                    document.getElementById('notifModalMessage').textContent = message;
+
+                    var linkBtn = document.getElementById('notifModalLink');
+                    if (link && link !== '#') {
+                        linkBtn.href = link;
+                        linkBtn.style.display = '';
+                    } else {
+                        linkBtn.style.display = 'none';
+                    }
+
+                    bsNotifModal.show();
+
+                    // Mark as read via AJAX
+                    if (isRead === '0') {
+                        fetch('<?php echo APP_URL; ?>/notifications/mark_read.php', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            body: 'id=' + encodeURIComponent(id) + '&csrf_token=' + encodeURIComponent('<?php echo getCSRFToken(); ?>')
+                        }).then(function(r) { return r.json(); }).then(function(data) {
+                            if (data.success) {
+                                this.classList.remove('bg-light');
+                                this.dataset.read = '1';
+                                var badge = document.querySelector('.top-navbar .badge.rounded-pill.bg-danger');
+                                if (badge) {
+                                    var count = parseInt(badge.textContent) || 0;
+                                    if (count > 1) {
+                                        badge.textContent = count - 1;
+                                    } else {
+                                        badge.remove();
+                                    }
+                                }
+                            }
+                        }.bind(this));
+                    }
+                });
+            });
+        }
         
         // Toggle status confirmation
         document.querySelectorAll('.btn-confirm-toggle').forEach(function(btn) {
