@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $middleName = trim($_POST['middle_name'] ?? '');
     $lastName = trim($_POST['last_name'] ?? '');
     $email = trim($_POST['email'] ?? '');
-    $role = $_POST['role'] ?? 'registrar';
+    $role = in_array($_POST['role'] ?? '', ['admin', 'registrar']) ? $_POST['role'] : 'registrar';
     
     // Validation
     if (empty($username)) $errors[] = 'Username is required.';
