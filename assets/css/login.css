@@ -1,6 +1,6 @@
 /* =====================================================
  * DNHS Hub - Login Page Styles
- * Professional School Administration Theme
+ * Split Layout Design
  * ===================================================== */
 
 * {
@@ -11,134 +11,275 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: url('../images/school-building.jpg') no-repeat center top;
-    background-size: cover;
-    background-position-y: 0;
     min-height: 100vh;
+    display: flex;
+    background: #f9fafb;
+}
+
+/* Left Panel - Image */
+.login-left {
+    flex: 1;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
+    padding: 40px;
+    overflow: hidden;
 }
 
-body::before {
+.login-left::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('../images/school-building.jpg') no-repeat center center;
+    background-size: cover;
+    z-index: 0;
+}
+
+.login-left::after {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-}
-
-.login-container {
-    width: 100%;
-    max-width: 420px;
-    padding: 20px;
-    position: relative;
+    background: rgba(255, 255, 255, 0.5);
     z-index: 1;
 }
 
-.login-card {
-    background: rgba(255, 255, 255, 0.95);
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
+.login-left-content {
+    position: relative;
+    z-index: 2;
+    color: #1a1a1a;
+    text-align: center;
+    max-width: 360px;
+}
+
+.login-left-content .school-logo-large {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    padding: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.login-left-content .school-logo-large img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+.login-left-content h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    line-height: 1.2;
+    color: #111827;
+}
+
+.login-left-content p {
+    font-size: 14px;
+    color: #4b5563;
+    line-height: 1.6;
+}
+
+/* Right Panel - Form */
+.login-right {
+    width: 480px;
+    min-width: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 40px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    background: #ffffff;
+}
+
+.login-form-wrapper {
+    width: 100%;
+    max-width: 360px;
 }
 
 .login-header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
 .school-logo {
-    width: 80px;
-    height: 80px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 20px;
+    margin: 0 auto 16px;
     overflow: hidden;
+    background: #f3f4f6;
+    padding: 6px;
 }
 
 .school-logo img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 50%;
 }
 
 .system-name {
-    font-size: 28px;
-    font-weight: 600;
-    color: #212529;
-    margin-bottom: 5px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 4px;
 }
 
 .system-subtitle {
     font-size: 13px;
-    color: #6c757d;
+    color: #6b7280;
 }
 
-.login-form {
-    margin-bottom: 20px;
-}
-
+/* Form Styles */
 .login-form .form-label {
     font-weight: 500;
-    color: #495057;
-    font-size: 14px;
+    color: #374151;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.login-form .input-group {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    transition: all 0.2s ease;
+}
+
+.login-form .input-group:focus-within {
+    border-color: #212529;
+    box-shadow: 0 0 0 3px rgba(33, 37, 41, 0.1);
 }
 
 .login-form .input-group-text {
-    background: #f8f9fa;
-    border-color: #dee2e6;
+    background: #f9fafb;
+    border: none;
+    border-right: 1px solid #e5e7eb;
+    color: #6b7280;
+    padding: 12px 16px;
+    font-size: 14px;
 }
 
 .login-form .form-control {
-    border-color: #dee2e6;
-    padding: 10px 15px;
+    border: none;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #1f2937;
+    background: transparent;
 }
 
 .login-form .form-control:focus {
-    border-color: #198754;
-    box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.15);
+    box-shadow: none;
+    outline: none;
+}
+
+.login-form .form-control::placeholder {
+    color: #9ca3af;
+}
+
+.btn-toggle-password {
+    background: transparent;
+    border: none;
+    border-left: 1px solid #e5e7eb;
+    color: #6b7280;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.btn-toggle-password:hover {
+    color: #212529;
 }
 
 .btn-login {
     width: 100%;
-    padding: 12px;
-    font-weight: 500;
-    background: #198754;
-    border-color: #198754;
+    padding: 14px;
+    font-weight: 600;
+    font-size: 14px;
+    background: #212529;
+    border: none;
+    border-radius: 10px;
+    color: #ffffff;
+    transition: all 0.2s ease;
 }
 
 .btn-login:hover {
-    background: #157347;
-    border-color: #146c43;
+    background: #1a1a1a;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(33, 37, 41, 0.3);
+}
+
+.btn-login:active {
+    transform: translateY(0);
 }
 
 .login-footer {
     text-align: center;
-    padding-top: 20px;
-    border-top: 1px solid #dee2e6;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #f3f4f6;
 }
 
 .login-footer p {
     font-size: 12px;
-    color: #6c757d;
+    color: #9ca3af;
     margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
 }
 
 .alert {
-    font-size: 14px;
-    padding: 12px 15px;
+    border-radius: 10px;
+    font-size: 13px;
+    padding: 12px 16px;
+    border: none;
+    background: #fef2f2;
+    color: #dc2626;
+    margin-bottom: 20px;
 }
 
 .alert i {
-    margin-right: 5px;
+    margin-right: 6px;
+}
+
+/* Responsive */
+@media (max-width: 991.98px) {
+    .login-left {
+        display: none;
+    }
+    
+    .login-right {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    body {
+        background: #ffffff;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .login-right {
+        padding: 24px;
+    }
+    
+    .login-form-wrapper {
+        max-width: 100%;
+    }
 }
