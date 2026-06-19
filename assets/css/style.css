@@ -506,13 +506,7 @@ body {
     display: flex;
     align-items: flex-start;
     gap: 16px;
-    transition: all 0.2s ease;
     height: 100%;
-}
-
-.dash-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transform: translateY(-2px);
 }
 
 .dash-card-icon {
@@ -569,6 +563,35 @@ body {
 .dash-card-change i {
     font-size: 10px;
     margin-right: 2px;
+}
+
+/* =====================================================
+ * Quick Links
+ * ===================================================== */
+
+.quick-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    color: #212529;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.quick-link:hover {
+    background: #212529;
+    color: #ffffff;
+    border-color: #212529;
+}
+
+.quick-link i {
+    font-size: 14px;
 }
 
 /* =====================================================
