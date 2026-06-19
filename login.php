@@ -14,12 +14,13 @@ if (isLoggedIn()) {
 
 $db = getDBConnection();
 $error = '';
+$username = '';
 $locked = false;
 $lockoutTime = 0;
 
 // Rate limiting constants
-define('MAX_ATTEMPTS', 5);
-define('LOCKOUT_MINUTES', 15);
+if (!defined('MAX_ATTEMPTS')) define('MAX_ATTEMPTS', 5);
+if (!defined('LOCKOUT_MINUTES')) define('LOCKOUT_MINUTES', 15);
 $ipAddress = $_SERVER['REMOTE_ADDR'];
 
 // Check if IP is locked out
@@ -138,7 +139,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
             
             <form method="POST" action="" class="login-form">
-                <?php generateCSRFToken(); ?>
                 <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
