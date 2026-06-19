@@ -75,6 +75,60 @@ function removeToast(toast) {
     }, 300);
 }
 
+// ============================================
+// Confirmation Modal System
+// ============================================
+function showConfirmModal(options) {
+    var defaults = {
+        title: 'Confirm Action',
+        message: 'Are you sure?',
+        type: 'warning',
+        icon: 'fas fa-exclamation-triangle',
+        confirmText: 'Confirm',
+        onConfirm: function() {}
+    };
+    var opts = {};
+    for (var key in defaults) {
+        opts[key] = options && options[key] !== undefined ? options[key] : defaults[key];
+    }
+    
+    var modal = document.getElementById('confirmModal');
+    var header = document.getElementById('confirmModalHeader');
+    var title = document.getElementById('confirmModalTitle');
+    var icon = document.getElementById('confirmModalIcon');
+    var msg = document.getElementById('confirmModalMessage');
+    var btn = document.getElementById('confirmModalBtn');
+    
+    title.textContent = opts.title;
+    msg.textContent = opts.message;
+    btn.textContent = opts.confirmText;
+    
+    header.className = 'modal-header';
+    icon.className = 'confirm-icon ' + opts.type;
+    btn.className = 'btn px-3 ' + opts.type;
+    
+    var colorMap = {
+        danger: 'bg-danger',
+        warning: 'bg-warning',
+        success: 'bg-success',
+        info: 'bg-info'
+    };
+    if (colorMap[opts.type]) {
+        header.classList.add(colorMap[opts.type]);
+    }
+    
+    icon.innerHTML = '<i class="' + opts.icon + '"></i>';
+    
+    btn.onclick = function() {
+        var bsModal = bootstrap.Modal.getInstance(modal);
+        if (bsModal) bsModal.hide();
+        opts.onConfirm();
+    };
+    
+    var bsModal = new bootstrap.Modal(modal);
+    bsModal.show();
+}
+
 $(document).ready(function() {
     // Initialize DataTables - only on tables with proper structure
     if ($.fn.DataTable) {
@@ -141,20 +195,6 @@ $(document).ready(function() {
             if (!$(e.target).closest('.sidebar, #sidebarToggle').length) {
                 $('#sidebar').removeClass('show');
             }
-        }
-    });
-    
-    // Confirm delete actions
-    $(document).on('click', '.btn-delete', function(e) {
-        if (!confirm('Are you sure you want to delete this item? This action cannot be undone.')) {
-            e.preventDefault();
-        }
-    });
-    
-    // Confirm archive actions
-    $(document).on('click', '.btn-archive', function(e) {
-        if (!confirm('Are you sure you want to archive this item?')) {
-            e.preventDefault();
         }
     });
     
