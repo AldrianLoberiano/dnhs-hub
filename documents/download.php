@@ -30,7 +30,7 @@ $filePath = APP_ROOT . '/' . $doc['file_path'];
 
 // Fallback: check assets/uploads if file not found
 if (!file_exists($filePath)) {
-    $filePath = APP_ROOT . '/assets/' . $doc['file_path'];
+    $filePath = APP_ROOT . '/' . $doc['file_path'];
 }
 
 if (!file_exists($filePath)) {
