@@ -74,21 +74,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="assets/css/login.css" rel="stylesheet">
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-card">
+    <div class="login-left">
+        <div class="login-left-content">
+            <h2>Dayap National High School</h2>
+            <p>Student Records and Document Request Management System. Streamlining administrative processes for a more efficient school experience.</p>
+        </div>
+    </div>
+    
+    <div class="login-right">
+        <div class="login-form-wrapper">
             <div class="login-header">
                 <div class="school-logo">
                     <img src="assets/images/school-logo.png" alt="School Logo">
                 </div>
                 <h1 class="system-name">DNHS Hub</h1>
-                <p class="system-subtitle">Student Records and Document Request Management System</p>
+                <p class="system-subtitle">Sign in to your account</p>
             </div>
             
             <?php if (!empty($error)): ?>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="fas fa-exclamation-circle me-2"></i>
+                <div class="alert" role="alert">
+                    <i class="fas fa-circle-exclamation"></i>
                     <?php echo sanitize($error); ?>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             <?php endif; ?>
             
@@ -100,6 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                         <input type="text" class="form-control" id="username" name="username" 
+                               placeholder="Enter your username"
                                value="<?php echo sanitize($username ?? ''); ?>" required autofocus>
                     </div>
                 </div>
@@ -108,20 +115,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="password" class="form-label">Password</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                        <input type="password" class="form-control" id="password" name="password" 
+                               placeholder="Enter your password" required>
+                        <button class="btn-toggle-password" type="button" id="togglePassword">
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
                 </div>
                 
-                <button type="submit" class="btn btn-primary btn-login">
-                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                <button type="submit" class="btn btn-login">
+                    <i class="fas fa-arrow-right-to-bracket me-2"></i>Sign In
                 </button>
             </form>
             
             <div class="login-footer">
-                <p><i class="fas fa-shield-alt me-1"></i>Authorized Personnel Only</p>
+                <p><i class="fas fa-shield-halved"></i>Authorized Personnel Only</p>
             </div>
         </div>
     </div>
