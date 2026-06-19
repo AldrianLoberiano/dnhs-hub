@@ -8,8 +8,18 @@
 require_once __DIR__ . '/../config/config.php';
 requireAuth();
 
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    setFlashMessage('error', 'Invalid request method.');
+    redirect(APP_URL . '/students/index.php');
+}
+
+if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+    setFlashMessage('error', 'Invalid security token.');
+    redirect(APP_URL . '/students/index.php');
+}
+
 $db = getDBConnection();
-$id = intval($_GET['id'] ?? 0);
+$id = intval($_POST['id'] ?? 0);
 
 if (!$id) {
     setFlashMessage('error', 'Invalid student ID.');
