@@ -76,8 +76,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="login-left">
         <div class="login-left-content">
+            <div class="school-logo-large">
+                <img src="assets/images/school-logo.png" alt="School Logo">
+            </div>
             <h2>Dayap National High School</h2>
-            <p>Student Records and Document Request Management System. Streamlining administrative processes for a more efficient school experience.</p>
+            <p>Student Records and Document Request Management System</p>
         </div>
     </div>
     
