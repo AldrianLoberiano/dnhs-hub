@@ -72,7 +72,7 @@ require_once __DIR__ . '/includes/header.php';
                     </div>
                     <div class="col-md-6">
                         <strong>Role</strong>
-                        <p><span class="badge bg-<?php echo $user['role'] === 'admin' ? 'danger' : 'primary'; ?>"><?php echo ucfirst($user['role']); ?></span></p>
+                        <p><span class="badge bg-<?php echo $user['role'] === 'admin' ? 'danger' : 'primary'; ?>"><?php echo $user['role'] === 'admin' ? 'Administrator' : ucfirst($user['role']); ?></span></p>
                     </div>
                     <div class="col-md-6">
                         <strong>Full Name</strong>
