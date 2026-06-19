@@ -5,8 +5,7 @@
  * Form to add a new user
  */
 
-$pageTitle = 'Add User - DNHS Hub';
-require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/../config/config.php';
 requireAdmin();
 
 $db = getDBConnection();
@@ -58,6 +57,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     }
 }
+
+$pageTitle = 'Add User - DNHS Hub';
+require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="page-header">
