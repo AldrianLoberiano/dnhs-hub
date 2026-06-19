@@ -133,180 +133,164 @@ $recentRequests = $stmt->fetchAll();
 <!-- Summary Cards -->
 <div class="row g-3 mb-4">
     <div class="col-xl-3 col-md-6">
-        <a href="students/index.php" class="text-decoration-none">
-            <div class="dash-card">
-                <div class="dash-card-icon" style="background: rgba(13,110,253,0.1); color: #0D6EFD;">
-                    <i class="fas fa-user-graduate"></i>
-                </div>
-                <div class="dash-card-body">
-                    <span class="dash-card-label">Total Students</span>
-                    <div class="d-flex align-items-end gap-2">
-                        <h3 class="dash-card-number mb-0"><?php echo number_format($counts['students']); ?></h3>
-                        <?php if ($changes['students'] != 0): ?>
-                        <span class="dash-card-change <?php echo $changes['students'] > 0 ? 'up' : 'down'; ?>">
-                            <i class="fas fa-arrow-<?php echo $changes['students'] > 0 ? 'up' : 'down'; ?>"></i>
-                            <?php echo abs($changes['students']); ?>%
-                        </span>
-                        <?php endif; ?>
-                    </div>
+        <div class="dash-card">
+            <div class="dash-card-icon">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+            <div class="dash-card-body">
+                <span class="dash-card-label">Total Students</span>
+                <div class="d-flex align-items-end gap-2">
+                    <h3 class="dash-card-number mb-0"><?php echo number_format($counts['students']); ?></h3>
+                    <?php if ($changes['students'] != 0): ?>
+                    <span class="dash-card-change <?php echo $changes['students'] > 0 ? 'up' : 'down'; ?>">
+                        <i class="fas fa-arrow-<?php echo $changes['students'] > 0 ? 'up' : 'down'; ?>"></i>
+                        <?php echo abs($changes['students']); ?>%
+                    </span>
+                    <?php endif; ?>
                 </div>
             </div>
-        </a>
+        </div>
     </div>
 
     <div class="col-xl-3 col-md-6">
-        <a href="requests/index.php" class="text-decoration-none">
-            <div class="dash-card">
-                <div class="dash-card-icon" style="background: rgba(108,117,125,0.1); color: #6c757d;">
-                    <i class="fas fa-file-lines"></i>
-                </div>
-                <div class="dash-card-body">
-                    <span class="dash-card-label">Total Requests</span>
-                    <div class="d-flex align-items-end gap-2">
-                        <h3 class="dash-card-number mb-0"><?php echo number_format($counts['total_requests']); ?></h3>
-                        <?php if ($changes['total_requests'] != 0): ?>
-                        <span class="dash-card-change <?php echo $changes['total_requests'] > 0 ? 'up' : 'down'; ?>">
-                            <i class="fas fa-arrow-<?php echo $changes['total_requests'] > 0 ? 'up' : 'down'; ?>"></i>
-                            <?php echo abs($changes['total_requests']); ?>%
-                        </span>
-                        <?php endif; ?>
-                    </div>
+        <div class="dash-card">
+            <div class="dash-card-icon">
+                <i class="fas fa-file-lines"></i>
+            </div>
+            <div class="dash-card-body">
+                <span class="dash-card-label">Total Requests</span>
+                <div class="d-flex align-items-end gap-2">
+                    <h3 class="dash-card-number mb-0"><?php echo number_format($counts['total_requests']); ?></h3>
+                    <?php if ($changes['total_requests'] != 0): ?>
+                    <span class="dash-card-change <?php echo $changes['total_requests'] > 0 ? 'up' : 'down'; ?>">
+                        <i class="fas fa-arrow-<?php echo $changes['total_requests'] > 0 ? 'up' : 'down'; ?>"></i>
+                        <?php echo abs($changes['total_requests']); ?>%
+                    </span>
+                    <?php endif; ?>
                 </div>
             </div>
-        </a>
+        </div>
     </div>
 
     <div class="col-xl-3 col-md-6">
-        <a href="requests/index.php?status=Pending" class="text-decoration-none">
-            <div class="dash-card">
-                <div class="dash-card-icon" style="background: rgba(255,193,7,0.1); color: #ffc107;">
-                    <i class="fas fa-clock"></i>
-                </div>
-                <div class="dash-card-body">
-                    <span class="dash-card-label">Pending</span>
-                    <div class="d-flex align-items-end gap-2">
-                        <h3 class="dash-card-number mb-0"><?php echo number_format($counts['pending']); ?></h3>
-                        <?php if ($changes['pending'] != 0): ?>
-                        <span class="dash-card-change <?php echo $changes['pending'] > 0 ? 'up' : 'down'; ?>">
-                            <i class="fas fa-arrow-<?php echo $changes['pending'] > 0 ? 'up' : 'down'; ?>"></i>
-                            <?php echo abs($changes['pending']); ?>%
-                        </span>
-                        <?php endif; ?>
-                    </div>
+        <div class="dash-card">
+            <div class="dash-card-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="dash-card-body">
+                <span class="dash-card-label">Pending</span>
+                <div class="d-flex align-items-end gap-2">
+                    <h3 class="dash-card-number mb-0"><?php echo number_format($counts['pending']); ?></h3>
+                    <?php if ($changes['pending'] != 0): ?>
+                    <span class="dash-card-change <?php echo $changes['pending'] > 0 ? 'up' : 'down'; ?>">
+                        <i class="fas fa-arrow-<?php echo $changes['pending'] > 0 ? 'up' : 'down'; ?>"></i>
+                        <?php echo abs($changes['pending']); ?>%
+                    </span>
+                    <?php endif; ?>
                 </div>
             </div>
-        </a>
+        </div>
     </div>
 
     <div class="col-xl-3 col-md-6">
-        <a href="requests/index.php?status=Processing" class="text-decoration-none">
-            <div class="dash-card">
-                <div class="dash-card-icon" style="background: rgba(13,202,240,0.1); color: #0dcaf0;">
-                    <i class="fas fa-spinner"></i>
-                </div>
-                <div class="dash-card-body">
-                    <span class="dash-card-label">Processing</span>
-                    <div class="d-flex align-items-end gap-2">
-                        <h3 class="dash-card-number mb-0"><?php echo number_format($counts['processing']); ?></h3>
-                        <?php if ($changes['processing'] != 0): ?>
-                        <span class="dash-card-change <?php echo $changes['processing'] > 0 ? 'up' : 'down'; ?>">
-                            <i class="fas fa-arrow-<?php echo $changes['processing'] > 0 ? 'up' : 'down'; ?>"></i>
-                            <?php echo abs($changes['processing']); ?>%
-                        </span>
-                        <?php endif; ?>
-                    </div>
+        <div class="dash-card">
+            <div class="dash-card-icon">
+                <i class="fas fa-spinner"></i>
+            </div>
+            <div class="dash-card-body">
+                <span class="dash-card-label">Processing</span>
+                <div class="d-flex align-items-end gap-2">
+                    <h3 class="dash-card-number mb-0"><?php echo number_format($counts['processing']); ?></h3>
+                    <?php if ($changes['processing'] != 0): ?>
+                    <span class="dash-card-change <?php echo $changes['processing'] > 0 ? 'up' : 'down'; ?>">
+                        <i class="fas fa-arrow-<?php echo $changes['processing'] > 0 ? 'up' : 'down'; ?>"></i>
+                        <?php echo abs($changes['processing']); ?>%
+                    </span>
+                    <?php endif; ?>
                 </div>
             </div>
-        </a>
+        </div>
     </div>
 
     <div class="col-xl-3 col-md-6">
-        <a href="requests/index.php?status=Ready for Release" class="text-decoration-none">
-            <div class="dash-card">
-                <div class="dash-card-icon" style="background: rgba(25,135,84,0.1); color: #198754;">
-                    <i class="fas fa-check-double"></i>
-                </div>
-                <div class="dash-card-body">
-                    <span class="dash-card-label">Ready for Release</span>
-                    <div class="d-flex align-items-end gap-2">
-                        <h3 class="dash-card-number mb-0"><?php echo number_format($counts['ready']); ?></h3>
-                        <?php if ($changes['ready'] != 0): ?>
-                        <span class="dash-card-change <?php echo $changes['ready'] > 0 ? 'up' : 'down'; ?>">
-                            <i class="fas fa-arrow-<?php echo $changes['ready'] > 0 ? 'up' : 'down'; ?>"></i>
-                            <?php echo abs($changes['ready']); ?>%
-                        </span>
-                        <?php endif; ?>
-                    </div>
+        <div class="dash-card">
+            <div class="dash-card-icon">
+                <i class="fas fa-check-double"></i>
+            </div>
+            <div class="dash-card-body">
+                <span class="dash-card-label">Ready for Release</span>
+                <div class="d-flex align-items-end gap-2">
+                    <h3 class="dash-card-number mb-0"><?php echo number_format($counts['ready']); ?></h3>
+                    <?php if ($changes['ready'] != 0): ?>
+                    <span class="dash-card-change <?php echo $changes['ready'] > 0 ? 'up' : 'down'; ?>">
+                        <i class="fas fa-arrow-<?php echo $changes['ready'] > 0 ? 'up' : 'down'; ?>"></i>
+                        <?php echo abs($changes['ready']); ?>%
+                    </span>
+                    <?php endif; ?>
                 </div>
             </div>
-        </a>
+        </div>
     </div>
 
     <div class="col-xl-3 col-md-6">
-        <a href="requests/index.php?status=Released" class="text-decoration-none">
-            <div class="dash-card">
-                <div class="dash-card-icon" style="background: rgba(33,37,41,0.1); color: #212529;">
-                    <i class="fas fa-box-open"></i>
-                </div>
-                <div class="dash-card-body">
-                    <span class="dash-card-label">Released</span>
-                    <div class="d-flex align-items-end gap-2">
-                        <h3 class="dash-card-number mb-0"><?php echo number_format($counts['released']); ?></h3>
-                        <?php if ($changes['released'] != 0): ?>
-                        <span class="dash-card-change <?php echo $changes['released'] > 0 ? 'up' : 'down'; ?>">
-                            <i class="fas fa-arrow-<?php echo $changes['released'] > 0 ? 'up' : 'down'; ?>"></i>
-                            <?php echo abs($changes['released']); ?>%
-                        </span>
-                        <?php endif; ?>
-                    </div>
+        <div class="dash-card">
+            <div class="dash-card-icon">
+                <i class="fas fa-box-open"></i>
+            </div>
+            <div class="dash-card-body">
+                <span class="dash-card-label">Released</span>
+                <div class="d-flex align-items-end gap-2">
+                    <h3 class="dash-card-number mb-0"><?php echo number_format($counts['released']); ?></h3>
+                    <?php if ($changes['released'] != 0): ?>
+                    <span class="dash-card-change <?php echo $changes['released'] > 0 ? 'up' : 'down'; ?>">
+                        <i class="fas fa-arrow-<?php echo $changes['released'] > 0 ? 'up' : 'down'; ?>"></i>
+                        <?php echo abs($changes['released']); ?>%
+                    </span>
+                    <?php endif; ?>
                 </div>
             </div>
-        </a>
+        </div>
     </div>
 
     <div class="col-xl-3 col-md-6">
-        <a href="documents/index.php" class="text-decoration-none">
-            <div class="dash-card">
-                <div class="dash-card-icon" style="background: rgba(253,126,20,0.1); color: #fd7e14;">
-                    <i class="fas fa-folder-open"></i>
-                </div>
-                <div class="dash-card-body">
-                    <span class="dash-card-label">Uploaded Documents</span>
-                    <div class="d-flex align-items-end gap-2">
-                        <h3 class="dash-card-number mb-0"><?php echo number_format($counts['documents']); ?></h3>
-                        <?php if ($changes['documents'] != 0): ?>
-                        <span class="dash-card-change <?php echo $changes['documents'] > 0 ? 'up' : 'down'; ?>">
-                            <i class="fas fa-arrow-<?php echo $changes['documents'] > 0 ? 'up' : 'down'; ?>"></i>
-                            <?php echo abs($changes['documents']); ?>%
-                        </span>
-                        <?php endif; ?>
-                    </div>
+        <div class="dash-card">
+            <div class="dash-card-icon">
+                <i class="fas fa-folder-open"></i>
+            </div>
+            <div class="dash-card-body">
+                <span class="dash-card-label">Uploaded Documents</span>
+                <div class="d-flex align-items-end gap-2">
+                    <h3 class="dash-card-number mb-0"><?php echo number_format($counts['documents']); ?></h3>
+                    <?php if ($changes['documents'] != 0): ?>
+                    <span class="dash-card-change <?php echo $changes['documents'] > 0 ? 'up' : 'down'; ?>">
+                        <i class="fas fa-arrow-<?php echo $changes['documents'] > 0 ? 'up' : 'down'; ?>"></i>
+                        <?php echo abs($changes['documents']); ?>%
+                    </span>
+                    <?php endif; ?>
                 </div>
             </div>
-        </a>
+        </div>
     </div>
 
     <?php if (isAdmin()): ?>
     <div class="col-xl-3 col-md-6">
-        <a href="users/index.php" class="text-decoration-none">
-            <div class="dash-card">
-                <div class="dash-card-icon" style="background: rgba(232,62,140,0.1); color: #e83e8c;">
-                    <i class="fas fa-users-gear"></i>
-                </div>
-                <div class="dash-card-body">
-                    <span class="dash-card-label">Active Users</span>
-                    <div class="d-flex align-items-end gap-2">
-                        <h3 class="dash-card-number mb-0"><?php echo number_format($counts['users']); ?></h3>
-                        <?php if ($changes['users'] != 0): ?>
-                        <span class="dash-card-change <?php echo $changes['users'] > 0 ? 'up' : 'down'; ?>">
-                            <i class="fas fa-arrow-<?php echo $changes['users'] > 0 ? 'up' : 'down'; ?>"></i>
-                            <?php echo abs($changes['users']); ?>%
-                        </span>
-                        <?php endif; ?>
-                    </div>
+        <div class="dash-card">
+            <div class="dash-card-icon">
+                <i class="fas fa-users-gear"></i>
+            </div>
+            <div class="dash-card-body">
+                <span class="dash-card-label">Active Users</span>
+                <div class="d-flex align-items-end gap-2">
+                    <h3 class="dash-card-number mb-0"><?php echo number_format($counts['users']); ?></h3>
+                    <?php if ($changes['users'] != 0): ?>
+                    <span class="dash-card-change <?php echo $changes['users'] > 0 ? 'up' : 'down'; ?>">
+                        <i class="fas fa-arrow-<?php echo $changes['users'] > 0 ? 'up' : 'down'; ?>"></i>
+                        <?php echo abs($changes['users']); ?>%
+                    </span>
+                    <?php endif; ?>
                 </div>
             </div>
-        </a>
+        </div>
     </div>
     <?php endif; ?>
 </div>
