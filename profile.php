@@ -1,12 +1,6 @@
 <?php
-/**
- * DNHS Hub - Profile
- * 
- * User profile page
- */
-
-$pageTitle = 'Profile - DNHS Hub';
-require_once __DIR__ . '/includes/header.php';
+require_once __DIR__ . '/config/config.php';
+requireAuth();
 
 $db = getDBConnection();
 $userId = $_SESSION['user_id'];
@@ -21,37 +15,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
         $errors[] = 'Invalid security token.';
     } else {
-    $currentPassword = $_POST['current_password'] ?? '';
-    $newPassword = $_POST['new_password'] ?? '';
-    $confirmPassword = $_POST['confirm_password'] ?? '';
-    
-    if (!empty($newPassword)) {
-        if (empty($currentPassword)) {
-            $errors[] = 'Current password is required.';
-        } elseif (!password_verify($currentPassword, $user['password'])) {
-            $errors[] = 'Current password is incorrect.';
+        $currentPassword = $_POST['current_password'] ?? '';
+        $newPassword = $_POST['new_password'] ?? '';
+        $confirmPassword = $_POST['confirm_password'] ?? '';
+
+        if (!empty($newPassword)) {
+            if (empty($currentPassword)) {
+                $errors[] = 'Current password is required.';
+            } elseif (!password_verify($currentPassword, $user['password'])) {
+                $errors[] = 'Current password is incorrect.';
+            }
+
+            if (strlen($newPassword) < 6) {
+                $errors[] = 'New password must be at least 6 characters.';
+            }
+
+            if ($newPassword !== $confirmPassword) {
+                $errors[] = 'New passwords do not match.';
+            }
+
+            if (empty($errors)) {
+                $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+                $stmt = $db->prepare("UPDATE users SET password = ? WHERE id = ?");
+                $stmt->execute([$hashedPassword, $userId]);
+
+                logAudit('Change Password', 'Profile', 'Changed own password');
+                setFlashMessage('success', 'Password changed successfully.');
+                redirect(APP_URL . '/profile.php');
+            }
         }
-        
-        if (strlen($newPassword) < 6) {
-            $errors[] = 'New password must be at least 6 characters.';
-        }
-        
-        if ($newPassword !== $confirmPassword) {
-            $errors[] = 'New passwords do not match.';
-        }
-        
-        if (empty($errors)) {
-            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-            $stmt = $db->prepare("UPDATE users SET password = ? WHERE id = ?");
-            $stmt->execute([$hashedPassword, $userId]);
-            
-            logAudit('Change Password', 'Profile', 'Changed own password');
-            setFlashMessage('success', 'Password changed successfully.');
-            redirect(APP_URL . '/profile.php');
-        }
-    }
     }
 }
+
+$pageTitle = 'Profile - DNHS Hub';
+require_once __DIR__ . '/includes/header.php';
 ?>
 
 <div class="page-header">
