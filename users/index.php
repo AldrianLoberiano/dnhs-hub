@@ -48,7 +48,7 @@ $users = $stmt->fetchAll();
                         <td><code><?php echo sanitize($user['username']); ?></code></td>
                         <td><?php echo sanitize($user['first_name'] . ' ' . $user['last_name']); ?></td>
                         <td><?php echo sanitize($user['email'] ?? 'N/A'); ?></td>
-                        <td><span class="badge bg-<?php echo $user['role'] === 'admin' ? 'danger' : 'primary'; ?>"><?php echo ucfirst($user['role']); ?></span></td>
+                        <td><span class="badge bg-<?php echo $user['role'] === 'admin' ? 'danger' : 'primary'; ?>"><?php echo $user['role'] === 'admin' ? 'Administrator' : ucfirst($user['role']); ?></span></td>
                         <td>
                             <span class="badge bg-<?php echo $user['is_active'] ? 'success' : 'secondary'; ?>">
                                 <?php echo $user['is_active'] ? 'Active' : 'Inactive'; ?>
