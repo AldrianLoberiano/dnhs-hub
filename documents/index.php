@@ -9,63 +9,69 @@ $pageTitle = 'Student Documents - DNHS Hub';
 require_once __DIR__ . '/../includes/header.php';
 
 $db = getDBConnection();
-
-// Get filter parameters
-$search = trim($_GET['search'] ?? '');
-$docType = $_GET['doc_type'] ?? '';
-$studentId = intval($_GET['student_id'] ?? 0);
+$documents = [];
+$docTypes = [];
+$total = 0;
 $page = max(1, intval($_GET['page'] ?? 1));
 $perPage = 15;
+$pagination = getPagination(0, $perPage, $page);
 
-// Build query
-$where = "WHERE 1=1";
-$params = [];
+try {
+    // Get filter parameters
+    $search = trim($_GET['search'] ?? '');
+    $docType = $_GET['doc_type'] ?? '';
+    $studentId = intval($_GET['student_id'] ?? 0);
 
-if (!empty($search)) {
-    $where .= " AND (s.student_number LIKE ? OR s.first_name LIKE ? OR s.last_name LIKE ?)";
-    $searchParam = "%$search%";
-    $params = array_merge($params, [$searchParam, $searchParam, $searchParam]);
+    // Build query
+    $where = "WHERE 1=1";
+    $params = [];
+
+    if (!empty($search)) {
+        $where .= " AND (s.student_number LIKE ? OR s.first_name LIKE ? OR s.last_name LIKE ?)";
+        $searchParam = "%$search%";
+        $params = array_merge($params, [$searchParam, $searchParam, $searchParam]);
+    }
+
+    if (!empty($docType)) {
+        $where .= " AND sd.document_type_id = ?";
+        $params[] = $docType;
+    }
+
+    if ($studentId) {
+        $where .= " AND sd.student_id = ?";
+        $params[] = $studentId;
+    }
+
+    // Get total count
+    $stmt = $db->prepare("
+        SELECT COUNT(*) as count 
+        FROM student_documents sd 
+        JOIN students s ON sd.student_id = s.id 
+        $where
+    ");
+    $stmt->execute($params);
+    $total = $stmt->fetch()['count'];
+    $pagination = getPagination($total, $perPage, $page);
+
+    // Get documents
+    $stmt = $db->prepare("
+        SELECT sd.*, s.student_number, s.first_name, s.last_name, dt.name as doc_type_name 
+        FROM student_documents sd 
+        JOIN students s ON sd.student_id = s.id 
+        LEFT JOIN document_types dt ON sd.document_type_id = dt.id 
+        $where 
+        ORDER BY sd.created_at DESC 
+        LIMIT " . (int)$perPage . " OFFSET " . (int)$pagination['offset']
+    );
+    $stmt->execute($params);
+    $documents = $stmt->fetchAll();
+
+    // Get document types for filter
+    $stmt = $db->query("SELECT * FROM document_types WHERE is_active = 1 ORDER BY name");
+    $docTypes = $stmt->fetchAll();
+} catch (PDOException $e) {
+    error_log("Documents Index Error: " . $e->getMessage());
 }
-
-if (!empty($docType)) {
-    $where .= " AND sd.document_type_id = ?";
-    $params[] = $docType;
-}
-
-if ($studentId) {
-    $where .= " AND sd.student_id = ?";
-    $params[] = $studentId;
-}
-
-// Get total count
-$stmt = $db->prepare("
-    SELECT COUNT(*) as count 
-    FROM student_documents sd 
-    JOIN students s ON sd.student_id = s.id 
-    $where
-");
-$stmt->execute($params);
-$total = $stmt->fetch()['count'];
-$pagination = getPagination($total, $perPage, $page);
-
-// Get documents
-$stmt = $db->prepare("
-    SELECT sd.*, s.student_number, s.first_name, s.last_name, dt.name as doc_type_name 
-    FROM student_documents sd 
-    JOIN students s ON sd.student_id = s.id 
-    JOIN document_types dt ON sd.document_type_id = dt.id 
-    $where 
-    ORDER BY sd.created_at DESC 
-    LIMIT ? OFFSET ?
-");
-$params[] = $perPage;
-$params[] = $pagination['offset'];
-$stmt->execute($params);
-$documents = $stmt->fetchAll();
-
-// Get document types for filter
-$stmt = $db->query("SELECT * FROM document_types WHERE is_active = 1 ORDER BY name");
-$docTypes = $stmt->fetchAll();
 ?>
 
 <div class="page-header">
@@ -151,10 +157,10 @@ $docTypes = $stmt->fetchAll();
                                 <a href="preview.php?id=<?php echo $doc['id']; ?>" class="btn btn-outline-info" title="Preview" target="_blank">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <form method="POST" action="delete.php" style="display:inline" onsubmit="return confirm('Are you sure you want to delete this document? This action cannot be undone.')">
+                                <form method="POST" action="delete.php" style="display:inline">
                                     <input type="hidden" name="id" value="<?php echo $doc['id']; ?>">
                                     <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
-                                    <button type="submit" class="btn btn-outline-danger" title="Delete">
+                                    <button type="submit" class="btn btn-outline-danger btn-confirm-delete" title="Delete">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
