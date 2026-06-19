@@ -5,8 +5,8 @@
  * Form to create a new document request
  */
 
-$pageTitle = 'New Request - DNHS Hub';
-require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/../config/config.php';
+requireAuth();
 
 $db = getDBConnection();
 $studentId = intval($_GET['student_id'] ?? 0);
@@ -86,6 +86,9 @@ if ($studentId) {
         }
     }
 }
+
+$pageTitle = 'New Request - DNHS Hub';
+require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="page-header">
