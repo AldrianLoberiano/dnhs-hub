@@ -150,17 +150,17 @@ try {
                         <td><?php echo formatFileSize($doc['file_size']); ?></td>
                         <td><small><?php echo formatDate($doc['created_at']); ?></small></td>
                         <td>
-                            <div class="btn-group btn-group-sm">
-                                <a href="download.php?id=<?php echo $doc['id']; ?>" class="btn btn-outline-primary" title="Download">
+                            <div class="d-flex gap-1">
+                                <a href="download.php?id=<?php echo $doc['id']; ?>" class="icon-btn text-primary" title="Download">
                                     <i class="fas fa-download"></i>
                                 </a>
-                                <a href="preview.php?id=<?php echo $doc['id']; ?>" class="btn btn-outline-info" title="Preview" target="_blank">
+                                <a href="preview.php?id=<?php echo $doc['id']; ?>" class="icon-btn text-info" title="Preview" target="_blank">
                                     <i class="fas fa-eye"></i>
                                 </a>
                                 <form method="POST" action="delete.php" style="display:inline">
                                     <input type="hidden" name="id" value="<?php echo $doc['id']; ?>">
                                     <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
-                                    <button type="submit" class="btn btn-outline-danger btn-confirm-delete" title="Delete">
+                                    <button type="submit" class="icon-btn text-danger btn-confirm-delete" title="Delete">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
