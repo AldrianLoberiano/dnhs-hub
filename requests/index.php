@@ -155,11 +155,11 @@ $docTypes = $stmt->fetchAll();
                         <td><small><?php echo formatDate($req['date_requested']); ?></small></td>
                         <td><small><?php echo sanitize($req['registrar_name'] ?? 'N/A'); ?></small></td>
                         <td>
-                            <div class="btn-group btn-group-sm">
-                                <a href="view.php?id=<?php echo $req['id']; ?>" class="btn btn-outline-primary" title="View">
+                            <div class="d-flex gap-1">
+                                <a href="view.php?id=<?php echo $req['id']; ?>" class="icon-btn text-primary" title="View">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a href="../claims/stub.php?id=<?php echo $req['id']; ?>" class="btn btn-outline-success" title="Claim Stub" target="_blank">
+                                <a href="../claims/stub.php?id=<?php echo $req['id']; ?>" class="icon-btn text-success" title="Claim Stub" target="_blank">
                                     <i class="fas fa-print"></i>
                                 </a>
                             </div>
