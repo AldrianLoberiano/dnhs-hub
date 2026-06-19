@@ -151,16 +151,16 @@ try {
                         <td><small><?php echo formatDate($doc['created_at']); ?></small></td>
                         <td>
                             <div class="d-flex gap-1">
-                                <a href="download.php?id=<?php echo $doc['id']; ?>" class="icon-btn text-primary" title="Download">
+                                <a href="download.php?id=<?php echo $doc['id']; ?>" class="icon-btn" title="Download">
                                     <i class="fas fa-download"></i>
                                 </a>
-                                <a href="preview.php?id=<?php echo $doc['id']; ?>" class="icon-btn text-info" title="Preview" target="_blank">
+                                <a href="preview.php?id=<?php echo $doc['id']; ?>" class="icon-btn" title="Preview" target="_blank">
                                     <i class="fas fa-eye"></i>
                                 </a>
                                 <form method="POST" action="delete.php" style="display:inline">
                                     <input type="hidden" name="id" value="<?php echo $doc['id']; ?>">
                                     <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
-                                    <button type="submit" class="icon-btn text-danger btn-confirm-delete" title="Delete">
+                                    <button type="submit" class="icon-btn btn-confirm-delete" title="Delete">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
