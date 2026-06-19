@@ -139,7 +139,6 @@ $backups = $stmt->fetchAll();
                 <p class="text-muted">Create a backup of the entire database. The backup file will be saved to the server and can be downloaded.</p>
                 <form method="POST">
                     <input type="hidden" name="action" value="backup">
-                    <?php generateCSRFToken(); ?>
                     <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-database me-1"></i>Create Backup Now
@@ -162,7 +161,6 @@ $backups = $stmt->fetchAll();
                 </div>
                 <form method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="action" value="restore">
-                    <?php generateCSRFToken(); ?>
                     <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
                     <div class="mb-3">
                         <label class="form-label">Select Backup File (.sql)</label>
