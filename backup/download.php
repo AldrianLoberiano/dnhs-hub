@@ -33,7 +33,7 @@ if (!file_exists($filePath)) {
 }
 
 header('Content-Type: application/octet-stream');
-header('Content-Disposition: attachment; filename="' . $backup['filename'] . '"');
+header('Content-Disposition: attachment; filename="' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $backup['filename']) . '"');
 header('Content-Length: ' . filesize($filePath));
 
 readfile($filePath);
