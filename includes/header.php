@@ -39,6 +39,8 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="<?php echo getCSRFToken(); ?>">
+    <link rel="icon" type="image/png" href="<?php echo APP_URL; ?>/assets/images/school-logo.png">
     <title><?php echo $pageTitle ?? 'DNHS Hub'; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -159,7 +161,8 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
                                     <div class="dropdown-item text-muted text-center">No notifications</div>
                                     <?php else: ?>
                                     <?php foreach ($notifications as $notif): ?>
-                                    <a class="dropdown-item notification-item <?php echo !$notif['is_read'] ? 'bg-light' : ''; ?>" href="<?php echo !empty($notif['link']) ? APP_URL . '/' . ltrim($notif['link'], './') : '#'; ?>" data-id="<?php echo $notif['id']; ?>">
+                                    <?php $notifUrl = !empty($notif['link']) && preg_match('#^[a-zA-Z0-9/_-]+$#', $notif['link']) ? APP_URL . '/' . ltrim($notif['link'], './') : '#'; ?>
+                                    <a class="dropdown-item notification-item <?php echo !$notif['is_read'] ? 'bg-light' : ''; ?>" href="<?php echo $notifUrl; ?>" data-id="<?php echo $notif['id']; ?>">
                                         <small class="text-muted"><?php echo formatDate($notif['created_at'], 'M d, h:i A'); ?></small>
                                         <div><?php echo sanitize($notif['message']); ?></div>
                                     </a>
