@@ -120,7 +120,6 @@ require_once __DIR__ . '/../includes/header.php';
 <?php endif; ?>
 
 <form method="POST" class="needs-validation" novalidate>
-            <?php generateCSRFToken(); ?>
             <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
     <!-- Personal Information -->
     <div class="card mb-4">
