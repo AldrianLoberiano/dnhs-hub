@@ -1,11 +1,6 @@
 <?php
-/**
- * DNHS Hub - View Student
- * 
- * Display complete student profile
- */
-
-require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/../config/config.php';
+requireAuth();
 
 $db = getDBConnection();
 $id = intval($_GET['id'] ?? 0);
@@ -15,7 +10,6 @@ if (!$id) {
     redirect(APP_URL . '/students/index.php');
 }
 
-// Get student
 $stmt = $db->prepare("SELECT * FROM students WHERE id = ?");
 $stmt->execute([$id]);
 $student = $stmt->fetch();
@@ -26,6 +20,7 @@ if (!$student) {
 }
 
 $pageTitle = sanitize($student['last_name'] . ', ' . $student['first_name']) . ' - DNHS Hub';
+require_once __DIR__ . '/../includes/header.php';
 
 // Get student documents
 $stmt = $db->prepare("
