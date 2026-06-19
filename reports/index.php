@@ -11,8 +11,8 @@ require_once __DIR__ . '/../includes/header.php';
 $db = getDBConnection();
 
 $reportType = $_GET['type'] ?? 'daily';
-$startDate = $_GET['start_date'] ?? date('Y-m-d');
-$endDate = $_GET['end_date'] ?? date('Y-m-d');
+$startDate = isset($_GET['start_date']) ? date('Y-m-d', strtotime($_GET['start_date'])) : date('Y-m-d');
+$endDate = isset($_GET['end_date']) ? date('Y-m-d', strtotime($_GET['end_date'])) : date('Y-m-d');
 
 $reportData = [];
 $reportTitle = '';
@@ -128,11 +128,11 @@ switch ($reportType) {
             </div>
             <div class="col-md-3">
                 <label class="form-label">Start Date</label>
-                <input type="date" class="form-control" name="start_date" value="<?php echo $startDate; ?>">
+                <input type="date" class="form-control" name="start_date" value="<?php echo htmlspecialchars($startDate); ?>">
             </div>
             <div class="col-md-3">
                 <label class="form-label">End Date</label>
-                <input type="date" class="form-control" name="end_date" value="<?php echo $endDate; ?>">
+                <input type="date" class="form-control" name="end_date" value="<?php echo htmlspecialchars($endDate); ?>">
             </div>
             <div class="col-md-3 d-flex align-items-end">
                 <button type="submit" class="btn btn-primary w-100">
