@@ -49,7 +49,7 @@ function redirect($url) {
  * @return string Sanitized data
  */
 function sanitize($data) {
-    return htmlspecialchars(trim($data), ENT_QUOTES, 'UTF-8');
+    return htmlspecialchars(trim($data ?? ''), ENT_QUOTES, 'UTF-8');
 }
 
 /**
