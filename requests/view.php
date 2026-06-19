@@ -1,11 +1,6 @@
 <?php
-/**
- * DNHS Hub - View Document Request
- * 
- * Display document request details and allow status updates
- */
-
-require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/../config/config.php';
+requireAuth();
 
 $db = getDBConnection();
 $id = intval($_GET['id'] ?? 0);
@@ -15,7 +10,6 @@ if (!$id) {
     redirect(APP_URL . '/requests/index.php');
 }
 
-// Get request
 $stmt = $db->prepare("
     SELECT dr.*, s.first_name, s.last_name, s.student_number, s.lrn, s.contact_number, s.email,
            dt.name as doc_type_name,
@@ -35,6 +29,7 @@ if (!$request) {
 }
 
 $pageTitle = "Request {$request['tracking_number']} - DNHS Hub";
+require_once __DIR__ . '/../includes/header.php';
 
 // Get status history
 $stmt = $db->prepare("
