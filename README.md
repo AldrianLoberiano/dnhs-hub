@@ -15,7 +15,8 @@ This system is strictly for internal use by authorized personnel (Administrators
 ## Features
 
 ### Dashboard
-- Summary cards (Total Students, Requests, Pending, Processing, Ready for Release, Released, Documents, Users)
+- Summary cards with percentage indicators (month-over-month comparison)
+- Quick action links for common tasks
 - Monthly Requests chart
 - Request Status Breakdown chart
 - Most Requested Documents chart
@@ -54,7 +55,7 @@ This system is strictly for internal use by authorized personnel (Administrators
 ### User Management (Admin Only)
 - Create, Edit, Deactivate/Activate users
 - Reset passwords
-- Role assignment (Admin, Registrar)
+- Role assignment (Administrator, Registrar)
 
 ### Backup & Restore (Admin Only)
 - Database backup creation
@@ -63,7 +64,16 @@ This system is strictly for internal use by authorized personnel (Administrators
 
 ### Notifications
 - In-app notification system
+- Popup modal for viewing notification details
 - Mark as read functionality
+
+### Security
+- Rate limiting on login (5 attempts, 15-minute lockout)
+- Password hashing (bcrypt)
+- CSRF token protection
+- XSS prevention
+- SQL injection prevention
+- Session timeout
 
 ---
 
@@ -119,7 +129,7 @@ dnhs-hub/
 │   └── delete.php             # Delete document
 ├── notifications/
 │   ├── index.php              # Notifications list
-│   └── mark_read.php          # Mark notification read
+│   └── mark_read.php          # Mark notification read (AJAX)
 ├── reports/
 │   └── index.php              # Reports page
 ├── requests/
@@ -143,10 +153,12 @@ dnhs-hub/
 │   ├── reset_password.php     # Reset user password
 │   └── toggle_status.php      # Activate/Deactivate user
 ├── index.php                  # Root redirect
-├── login.php                  # Login page
+├── login.php                  # Login page with rate limiting
 ├── logout.php                 # Logout handler
 ├── dashboard.php              # Main dashboard
-└── profile.php                # User profile page
+├── profile.php                # User profile page
+├── README.md                  # Project documentation
+└── USER_MANUAL.md             # User manual
 ```
 
 ---
@@ -274,6 +286,7 @@ DNHS-2026-000001
 
 ## Security Features
 
+- Rate limiting on login (5 attempts, 15-minute lockout)
 - Password hashing (bcrypt)
 - PDO prepared statements (SQL injection prevention)
 - CSRF token protection
@@ -284,6 +297,7 @@ DNHS-2026-000001
 - File type and size restrictions
 - Activity logging
 - Automatic session timeout
+- HTTP-only and SameSite cookies
 
 ---
 
@@ -311,6 +325,12 @@ DNHS-2026-000001
 
 ---
 
+## User Manual
+
+See [USER_MANUAL.md](USER_MANUAL.md) for detailed instructions on using the system.
+
+---
+
 ## Troubleshooting
 
 ### Database connection failed
@@ -332,6 +352,10 @@ DNHS-2026-000001
   error_reporting(E_ALL);
   ```
 
+### Login locked out
+- Wait 15 minutes for the lockout to expire
+- Or contact an administrator to clear the lockout
+
 ---
 
 ## License
@@ -351,3 +375,4 @@ Developed by the Alumni for the Registrar's Office of Dayap National High School
 | Version | Date | Description |
 |---------|------|-------------|
 | 1.0.0 | 2026 | Initial release |
+| 1.1.0 | 2026 | UI improvements, security enhancements, notification modals |
