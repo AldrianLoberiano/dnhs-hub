@@ -42,7 +42,7 @@
     ?>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        showToast('<?php echo $flash["type"]; ?>', '<?php echo addslashes($flash["message"]); ?>');
+        showToast(<?php echo json_encode($flash["type"]); ?>, <?php echo json_encode($flash["message"]); ?>);
     });
     </script>
     <?php endif; ?>
