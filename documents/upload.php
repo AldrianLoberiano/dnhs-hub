@@ -5,8 +5,8 @@
  * Form to upload a student document
  */
 
-$pageTitle = 'Upload Document - DNHS Hub';
-require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/../config/config.php';
+requireAuth();
 
 $db = getDBConnection();
 $studentId = intval($_GET['student_id'] ?? 0);
@@ -104,6 +104,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     }
 }
+
+$pageTitle = 'Upload Document - DNHS Hub';
+require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="page-header">
