@@ -56,17 +56,17 @@ $users = $stmt->fetchAll();
                         </td>
                         <td><small><?php echo $user['last_login'] ? formatDate($user['last_login'], 'M d, Y h:i A') : 'Never'; ?></small></td>
                         <td>
-                            <div class="btn-group btn-group-sm">
-                                <a href="edit.php?id=<?php echo $user['id']; ?>" class="btn btn-outline-warning" title="Edit">
-                                    <i class="fas fa-edit"></i>
+                            <div class="d-flex gap-1">
+                                <a href="edit.php?id=<?php echo $user['id']; ?>" class="icon-btn" title="Edit">
+                                    <i class="fas fa-pen"></i>
                                 </a>
-                                <a href="reset_password.php?id=<?php echo $user['id']; ?>" class="btn btn-outline-info" title="Reset Password">
+                                <a href="reset_password.php?id=<?php echo $user['id']; ?>" class="icon-btn" title="Reset Password">
                                     <i class="fas fa-key"></i>
                                 </a>
                                 <form method="POST" action="toggle_status.php" style="display:inline">
                                     <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
                                     <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
-                                    <button type="submit" class="btn btn-outline-<?php echo $user['is_active'] ? 'danger' : 'success'; ?> btn-confirm-toggle" data-action="<?php echo $user['is_active'] ? 'Deactivate' : 'Activate'; ?>" title="<?php echo $user['is_active'] ? 'Deactivate' : 'Activate'; ?>">
+                                    <button type="submit" class="icon-btn btn-confirm-toggle" data-action="<?php echo $user['is_active'] ? 'Deactivate' : 'Activate'; ?>" title="<?php echo $user['is_active'] ? 'Deactivate' : 'Activate'; ?>">
                                         <i class="fas fa-<?php echo $user['is_active'] ? 'ban' : 'check'; ?>"></i>
                                     </button>
                                 </form>
