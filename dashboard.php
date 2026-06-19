@@ -295,6 +295,49 @@ $recentRequests = $stmt->fetchAll();
     <?php endif; ?>
 </div>
 
+<!-- Quick Links -->
+<div class="row g-3 mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-bolt me-2"></i>Quick Actions
+            </div>
+            <div class="card-body py-3">
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="students/add.php" class="quick-link">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Add Student</span>
+                    </a>
+                    <a href="requests/add.php" class="quick-link">
+                        <i class="fas fa-file-circle-plus"></i>
+                        <span>New Request</span>
+                    </a>
+                    <a href="documents/upload.php" class="quick-link">
+                        <i class="fas fa-cloud-arrow-up"></i>
+                        <span>Upload Document</span>
+                    </a>
+                    <a href="students/index.php" class="quick-link">
+                        <i class="fas fa-users"></i>
+                        <span>View Students</span>
+                    </a>
+                    <a href="requests/index.php" class="quick-link">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>View Requests</span>
+                    </a>
+                    <a href="documents/index.php" class="quick-link">
+                        <i class="fas fa-folder-open"></i>
+                        <span>View Documents</span>
+                    </a>
+                    <a href="reports/index.php" class="quick-link">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Reports</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Charts Row -->
 <div class="row g-3 mb-4">
     <div class="col-xl-8">
