@@ -30,13 +30,32 @@ function showToast(type, message, duration) {
     
     var toast = document.createElement('div');
     toast.className = 'toast-alert ' + type;
-    toast.innerHTML = 
-        '<i class="' + icons[type] + ' toast-icon"></i>' +
-        '<div class="toast-body">' +
-            '<div class="toast-title">' + titles[type] + '</div>' +
-            '<p class="toast-message">' + message + '</p>' +
-        '</div>' +
-        '<button class="toast-close" onclick="removeToast(this.parentElement)">&times;</button>';
+    
+    var iconEl = document.createElement('i');
+    iconEl.className = (icons[type] || 'fas fa-info-circle') + ' toast-icon';
+    
+    var bodyEl = document.createElement('div');
+    bodyEl.className = 'toast-body';
+    
+    var titleEl = document.createElement('div');
+    titleEl.className = 'toast-title';
+    titleEl.textContent = titles[type] || 'Notice';
+    
+    var msgEl = document.createElement('p');
+    msgEl.className = 'toast-message';
+    msgEl.textContent = message;
+    
+    bodyEl.appendChild(titleEl);
+    bodyEl.appendChild(msgEl);
+    
+    var closeBtn = document.createElement('button');
+    closeBtn.className = 'toast-close';
+    closeBtn.innerHTML = '&times;';
+    closeBtn.setAttribute('onclick', 'removeToast(this.parentElement)');
+    
+    toast.appendChild(iconEl);
+    toast.appendChild(bodyEl);
+    toast.appendChild(closeBtn);
     
     container.appendChild(toast);
     
@@ -193,11 +212,13 @@ $(document).ready(function() {
         var select = $(this);
         var requestId = select.data('request-id');
         var newStatus = select.val();
+        var csrfToken = $('meta[name="csrf-token"]').attr('content') || '';
         
         if (confirm('Update status to "' + newStatus + '"?')) {
             $.post(APP_URL + '/requests/update_status.php', {
                 request_id: requestId,
-                status: newStatus
+                status: newStatus,
+                csrf_token: csrfToken
             }, function(response) {
                 if (response.success) {
                     location.reload();
