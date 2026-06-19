@@ -156,10 +156,10 @@ $docTypes = $stmt->fetchAll();
                         <td><small><?php echo sanitize($req['registrar_name'] ?? 'N/A'); ?></small></td>
                         <td>
                             <div class="d-flex gap-1">
-                                <a href="view.php?id=<?php echo $req['id']; ?>" class="icon-btn text-primary" title="View">
+                                <a href="view.php?id=<?php echo $req['id']; ?>" class="icon-btn" title="View">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a href="../claims/stub.php?id=<?php echo $req['id']; ?>" class="icon-btn text-success" title="Claim Stub" target="_blank">
+                                <a href="../claims/stub.php?id=<?php echo $req['id']; ?>" class="icon-btn" title="Claim Stub" target="_blank">
                                     <i class="fas fa-print"></i>
                                 </a>
                             </div>
