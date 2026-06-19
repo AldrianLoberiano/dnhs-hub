@@ -6,16 +6,17 @@
  */
 
 $pageTitle = 'Audit Logs - DNHS Hub';
-require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/../config/config.php';
 requireAdmin();
+require_once __DIR__ . '/../includes/header.php';
 
 $db = getDBConnection();
 
 // Get filter parameters
 $action = $_GET['action'] ?? '';
 $module = $_GET['module'] ?? '';
-$startDate = $_GET['start_date'] ?? '';
-$endDate = $_GET['end_date'] ?? '';
+$startDate = isset($_GET['start_date']) ? date('Y-m-d', strtotime($_GET['start_date'])) : '';
+$endDate = isset($_GET['end_date']) ? date('Y-m-d', strtotime($_GET['end_date'])) : '';
 $page = max(1, intval($_GET['page'] ?? 1));
 $perPage = 20;
 
@@ -89,10 +90,10 @@ $modules = $stmt->fetchAll(PDO::FETCH_COLUMN);
                 </select>
             </div>
             <div class="col-md-2">
-                <input type="date" class="form-control" name="start_date" value="<?php echo $startDate; ?>" placeholder="Start Date">
+                <input type="date" class="form-control" name="start_date" value="<?php echo htmlspecialchars($startDate); ?>" placeholder="Start Date">
             </div>
             <div class="col-md-2">
-                <input type="date" class="form-control" name="end_date" value="<?php echo $endDate; ?>" placeholder="End Date">
+                <input type="date" class="form-control" name="end_date" value="<?php echo htmlspecialchars($endDate); ?>" placeholder="End Date">
             </div>
             <div class="col-md-2">
                 <button type="submit" class="btn btn-primary w-100">
@@ -146,8 +147,8 @@ $modules = $stmt->fetchAll(PDO::FETCH_COLUMN);
         $baseUrl = 'index.php?';
         if (!empty($action)) $baseUrl .= "action=" . urlencode($action) . "&";
         if (!empty($module)) $baseUrl .= "module=" . urlencode($module) . "&";
-        if (!empty($startDate)) $baseUrl .= "start_date=$startDate&";
-        if (!empty($endDate)) $baseUrl .= "end_date=$endDate&";
+        if (!empty($startDate)) $baseUrl .= "start_date=" . urlencode($startDate) . "&";
+        if (!empty($endDate)) $baseUrl .= "end_date=" . urlencode($endDate) . "&";
         echo renderPagination($pagination, $baseUrl);
         ?>
     </div>
