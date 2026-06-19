@@ -42,8 +42,9 @@ if (!file_exists($filePath)) {
 logAudit('Download Document', 'Student Documents', "Downloaded document: {$doc['original_name']}");
 
 // Send file
+$safeFilename = preg_replace('/[^a-zA-Z0-9._-]/', '_', $doc['original_name']);
 header('Content-Type: application/octet-stream');
-header('Content-Disposition: attachment; filename="' . $doc['original_name'] . '"');
+header('Content-Disposition: attachment; filename="' . $safeFilename . '"');
 header('Content-Length: ' . filesize($filePath));
 header('Cache-Control: no-cache, must-revalidate');
 
