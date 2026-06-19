@@ -6,14 +6,15 @@
  */
 
 $pageTitle = 'Backup & Restore - DNHS Hub';
-require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/../config/config.php';
 requireAdmin();
+require_once __DIR__ . '/../includes/header.php';
 
 $db = getDBConnection();
 
 // Create backups directory if not exists
 if (!is_dir(BACKUPS_PATH)) {
-    mkdir(BACKUPS_PATH, 0755, true);
+    mkdir(BACKUPS_PATH, 0750, true);
 }
 
 // Handle backup creation
@@ -39,17 +40,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         
         foreach ($tables as $table) {
             // Get CREATE TABLE statement
-            $result = $db->query("SHOW CREATE TABLE $table");
+            $result = $db->query("SHOW CREATE TABLE `$table`");
             $row = $result->fetch(PDO::FETCH_NUM);
             $sql .= "DROP TABLE IF EXISTS `$table`;\n{$row[1]};\n\n";
             
             // Get data
-            $result = $db->query("SELECT * FROM $table");
-            $rowCount = $result->rowCount();
+            $result = $db->query("SELECT * FROM `$table`");
+            $rows = $result->fetchAll(PDO::FETCH_NUM);
             
-            if ($rowCount > 0) {
+            if (!empty($rows)) {
                 $sql .= "LOCK TABLES `$table` WRITE;\n";
-                while ($row = $result->fetch(PDO::FETCH_NUM)) {
+                foreach ($rows as $row) {
                     $values = array_map(function($val) use ($db) {
                         return $val === null ? 'NULL' : $db->quote($val);
                     }, $row);
@@ -92,7 +93,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         
         // Execute SQL
         try {
-            $db->exec($content);
+            $statements = array_filter(array_map('trim', explode(';', $content)));
+            foreach ($statements as $statement) {
+                if (!empty($statement)) {
+                    $db->exec($statement);
+                }
+            }
             logAudit('Restore Database', 'Backup', 'Database restored from backup');
             setFlashMessage('success', 'Database restored successfully.');
         } catch (PDOException $e) {
