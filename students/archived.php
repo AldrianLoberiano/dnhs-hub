@@ -29,9 +29,7 @@ $stmt->execute($params);
 $total = $stmt->fetch()['count'];
 $pagination = getPagination($total, $perPage, $page);
 
-$stmt = $db->prepare("SELECT s.* FROM students s $where ORDER BY s.updated_at DESC LIMIT ? OFFSET ?");
-$params[] = $perPage;
-$params[] = $pagination['offset'];
+$stmt = $db->prepare("SELECT s.* FROM students s $where ORDER BY s.updated_at DESC LIMIT " . (int)$perPage . " OFFSET " . (int)$pagination['offset']);
 $stmt->execute($params);
 $students = $stmt->fetchAll();
 ?>
@@ -103,10 +101,10 @@ $students = $stmt->fetchAll();
                                 <a href="view.php?id=<?php echo $student['id']; ?>" class="btn btn-outline-primary" title="View">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <form method="POST" action="restore.php" style="display:inline" onsubmit="return confirm('Are you sure you want to restore this student?')">
+                                <form method="POST" action="restore.php" style="display:inline">
                                     <input type="hidden" name="id" value="<?php echo $student['id']; ?>">
                                     <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
-                                    <button type="submit" class="btn btn-outline-success" title="Restore">
+                                    <button type="submit" class="btn btn-outline-success btn-confirm-restore" title="Restore">
                                         <i class="fas fa-undo"></i>
                                     </button>
                                 </form>
