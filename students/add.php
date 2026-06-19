@@ -5,12 +5,11 @@
  * Form to add a new student record
  */
 
-$pageTitle = 'Add Student - DNHS Hub';
-require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/../config/config.php';
+requireAuth();
 
 $db = getDBConnection();
 $errors = [];
-$success = '';
 
 // Process form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -93,6 +92,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     }
 }
+
+$pageTitle = 'Add Student - DNHS Hub';
+require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="page-header">
