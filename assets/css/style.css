@@ -748,29 +748,15 @@ body {
     border: none !important;
     padding: 6px 8px !important;
     font-size: 16px;
-    color: #6c757d;
+    color: #212529;
     border-radius: 4px;
     transition: all 0.2s ease;
 }
 
 .icon-btn:hover {
     background: rgba(0, 0, 0, 0.05) !important;
+    color: #000 !important;
 }
-
-.icon-btn.text-warning { color: #ffc107 !important; }
-.icon-btn.text-warning:hover { color: #e0a800 !important; }
-
-.icon-btn.text-info { color: #0dcaf0 !important; }
-.icon-btn.text-info:hover { color: #0aa2c0 !important; }
-
-.icon-btn.text-danger { color: #dc3545 !important; }
-.icon-btn.text-danger:hover { color: #bb2d3b !important; }
-
-.icon-btn.text-success { color: #198754 !important; }
-.icon-btn.text-success:hover { color: #157347 !important; }
-
-.icon-btn.text-primary { color: #0d6efd !important; }
-.icon-btn.text-primary:hover { color: #0a58ca !important; }
 
 /* =====================================================
  * Responsive Styles
