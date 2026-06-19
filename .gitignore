@@ -1,1 +1,5 @@
 database/schema.sql
+backups/
+assets/uploads/documents/
+assets/uploads/profiles/
+*.log
