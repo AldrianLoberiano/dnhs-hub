@@ -76,8 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="login-left">
         <div class="login-left-content">
-            <h2>Dayap National High School</h2>
-            <p>Student Records and Document Request Management System</p>
         </div>
     </div>
     
