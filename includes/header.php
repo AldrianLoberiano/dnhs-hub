@@ -186,7 +186,6 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
                             <button class="btn btn-link dropdown-toggle" data-bs-toggle="dropdown">
                                 <i class="fas fa-user-circle me-1"></i>
                                 <?php echo sanitize($_SESSION['full_name']); ?>
-                                <span class="badge bg-primary ms-1"><?php echo ucfirst($_SESSION['role']); ?></span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li><a class="dropdown-item" href="<?php echo APP_URL; ?>/profile.php"><i class="fas fa-user me-2"></i>Profile</a></li>
