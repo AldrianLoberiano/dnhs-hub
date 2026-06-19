@@ -9,14 +9,16 @@ require_once __DIR__ . '/../config/config.php';
 
 $trackingNumber = trim($_GET['tracking'] ?? '');
 
-if (empty($trackingNumber)) {
+if (empty($trackingNumber) || !preg_match('/^[A-Za-z0-9-]+$/', $trackingNumber)) {
     die("Invalid tracking number.");
 }
 
 $db = getDBConnection();
 
 $stmt = $db->prepare("
-    SELECT dr.*, s.first_name, s.last_name, s.student_number, s.lrn,
+    SELECT dr.tracking_number, dr.status, dr.document_type_id, dr.date_requested,
+           dr.expected_release_date, dr.actual_release_date, dr.released_to, dr.purpose,
+           s.first_name, s.last_name, s.student_number,
            dt.name as doc_type_name,
            CONCAT(u.first_name, ' ', u.last_name) as registrar_name
     FROM document_requests dr 
@@ -33,6 +35,7 @@ $request = $stmt->fetch();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="<?php echo APP_URL; ?>/assets/images/school-logo.png">
     <title>Verify Request - DNHS Hub</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -69,10 +72,6 @@ $request = $stmt->fetch();
                     <div class="col-md-6">
                         <strong>Student Number</strong>
                         <p class="mb-0"><?php echo sanitize($request['student_number']); ?></p>
-                    </div>
-                    <div class="col-md-6">
-                        <strong>LRN</strong>
-                        <p class="mb-0"><?php echo sanitize($request['lrn'] ?? 'N/A'); ?></p>
                     </div>
                     <div class="col-md-6">
                         <strong>Document Type</strong>
