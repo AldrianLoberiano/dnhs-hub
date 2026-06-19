@@ -162,7 +162,14 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
                                     <?php else: ?>
                                     <?php foreach ($notifications as $notif): ?>
                                     <?php $notifUrl = !empty($notif['link']) && preg_match('#^[a-zA-Z0-9/_-]+$#', $notif['link']) ? APP_URL . '/' . ltrim($notif['link'], './') : '#'; ?>
-                                    <a class="dropdown-item notification-item <?php echo !$notif['is_read'] ? 'bg-light' : ''; ?>" href="<?php echo $notifUrl; ?>" data-id="<?php echo $notif['id']; ?>">
+                                    <a class="dropdown-item notification-item <?php echo !$notif['is_read'] ? 'bg-light' : ''; ?>"
+                                       href="#"
+                                       data-id="<?php echo $notif['id']; ?>"
+                                       data-title="<?php echo htmlspecialchars($notif['title']); ?>"
+                                       data-message="<?php echo htmlspecialchars($notif['message']); ?>"
+                                       data-date="<?php echo formatDate($notif['created_at'], 'M d, h:i A'); ?>"
+                                       data-link="<?php echo $notifUrl; ?>"
+                                       data-read="<?php echo $notif['is_read'] ? '1' : '0'; ?>">
                                         <small class="text-muted"><?php echo formatDate($notif['created_at'], 'M d, h:i A'); ?></small>
                                         <div><?php echo sanitize($notif['message']); ?></div>
                                     </a>
