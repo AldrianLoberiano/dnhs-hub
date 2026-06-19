@@ -56,10 +56,8 @@ $stmt = $db->prepare("
     LEFT JOIN users u ON al.user_id = u.id 
     $where 
     ORDER BY al.created_at DESC 
-    LIMIT ? OFFSET ?
-");
-$params[] = $perPage;
-$params[] = $pagination['offset'];
+    LIMIT " . (int)$perPage . " OFFSET " . (int)$pagination['offset']
+);
 $stmt->execute($params);
 $logs = $stmt->fetchAll();
 
