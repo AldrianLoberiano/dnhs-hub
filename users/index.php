@@ -63,9 +63,13 @@ $users = $stmt->fetchAll();
                                 <a href="reset_password.php?id=<?php echo $user['id']; ?>" class="btn btn-outline-info" title="Reset Password">
                                     <i class="fas fa-key"></i>
                                 </a>
-                                <a href="toggle_status.php?id=<?php echo $user['id']; ?>" class="btn btn-outline-<?php echo $user['is_active'] ? 'danger' : 'success'; ?>" title="<?php echo $user['is_active'] ? 'Deactivate' : 'Activate'; ?>">
-                                    <i class="fas fa-<?php echo $user['is_active'] ? 'ban' : 'check'; ?>"></i>
-                                </a>
+                                <form method="POST" action="toggle_status.php" style="display:inline" onsubmit="return confirm('Are you sure you want to <?php echo $user['is_active'] ? 'deactivate' : 'activate'; ?> this user?')">
+                                    <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
+                                    <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
+                                    <button type="submit" class="btn btn-outline-<?php echo $user['is_active'] ? 'danger' : 'success'; ?>" title="<?php echo $user['is_active'] ? 'Deactivate' : 'Activate'; ?>">
+                                        <i class="fas fa-<?php echo $user['is_active'] ? 'ban' : 'check'; ?>"></i>
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>
