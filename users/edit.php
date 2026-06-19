@@ -40,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if (empty($firstName)) $errors[] = 'First name is required.';
     if (empty($lastName)) $errors[] = 'Last name is required.';
+    if (!in_array($role, ['admin', 'registrar'])) $errors[] = 'Invalid role.';
     
     if (empty($errors)) {
         $stmt = $db->prepare("UPDATE users SET first_name = ?, middle_name = ?, last_name = ?, email = ?, role = ? WHERE id = ?");
@@ -51,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     }
     
-    $user = array_merge($user, $_POST);
+    $user = array_merge($user, array_diff_key($_POST, ['csrf_token' => 1]));
 }
 
 require_once __DIR__ . '/../includes/header.php';
@@ -80,7 +81,6 @@ require_once __DIR__ . '/../includes/header.php';
 <div class="row">
     <div class="col-lg-8">
         <form method="POST">
-                <?php generateCSRFToken(); ?>
                 <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
             <div class="card mb-4">
                 <div class="card-header">
