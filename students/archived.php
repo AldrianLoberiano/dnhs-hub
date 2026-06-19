@@ -103,9 +103,13 @@ $students = $stmt->fetchAll();
                                 <a href="view.php?id=<?php echo $student['id']; ?>" class="btn btn-outline-primary" title="View">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a href="restore.php?id=<?php echo $student['id']; ?>" class="btn btn-outline-success" title="Restore">
-                                    <i class="fas fa-undo"></i>
-                                </a>
+                                <form method="POST" action="restore.php" style="display:inline" onsubmit="return confirm('Are you sure you want to restore this student?')">
+                                    <input type="hidden" name="id" value="<?php echo $student['id']; ?>">
+                                    <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
+                                    <button type="submit" class="btn btn-outline-success" title="Restore">
+                                        <i class="fas fa-undo"></i>
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>
