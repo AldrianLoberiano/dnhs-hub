@@ -13,9 +13,11 @@ if (!function_exists('requireAuth')) {
 // Check session timeout
 if (isLoggedIn()) {
     if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > SESSION_TIMEOUT) {
+        $expiredMsg = 'Session expired. Please login again.';
         session_unset();
         session_destroy();
-        setFlashMessage('warning', 'Session expired. Please login again.');
+        session_start();
+        setFlashMessage('warning', $expiredMsg);
         redirect(APP_URL . '/login.php');
     }
     $_SESSION['last_activity'] = time();
@@ -161,7 +163,7 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
                                     <div class="dropdown-item text-muted text-center">No notifications</div>
                                     <?php else: ?>
                                     <?php foreach ($notifications as $notif): ?>
-                                    <?php $notifUrl = !empty($notif['link']) && preg_match('#^[a-zA-Z0-9/_-]+$#', $notif['link']) ? APP_URL . '/' . ltrim($notif['link'], './') : '#'; ?>
+                                    <?php $notifUrl = !empty($notif['link']) && preg_match('#^[a-zA-Z0-9/_.?=&-]+$#', $notif['link']) ? APP_URL . '/' . ltrim($notif['link'], './') : '#'; ?>
                                     <a class="dropdown-item notification-item <?php echo !$notif['is_read'] ? 'bg-light' : ''; ?>"
                                        href="#"
                                        data-id="<?php echo $notif['id']; ?>"
