@@ -1,11 +1,5 @@
 <?php
-/**
- * DNHS Hub - Reset Password
- * 
- * Reset user password
- */
-
-require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/../config/config.php';
 requireAdmin();
 
 $db = getDBConnection();
@@ -25,31 +19,33 @@ if (!$user) {
     redirect(APP_URL . '/users/index.php');
 }
 
-$pageTitle = 'Reset Password - DNHS Hub';
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
         $errors[] = 'Invalid security token.';
     } else {
-    $password = $_POST['password'] ?? '';
-    $confirmPassword = $_POST['confirm_password'] ?? '';
-    
-    if (empty($password)) $errors[] = 'Password is required.';
-    if (strlen($password) < 6) $errors[] = 'Password must be at least 6 characters.';
-    if ($password !== $confirmPassword) $errors[] = 'Passwords do not match.';
-    
-    if (empty($errors)) {
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $db->prepare("UPDATE users SET password = ? WHERE id = ?");
-        $stmt->execute([$hashedPassword, $id]);
-        
-        logAudit('Reset Password', 'User Management', "Reset password for user: {$user['username']}");
-        setFlashMessage('success', 'Password reset successfully.');
-        redirect(APP_URL . '/users/index.php');
-    }
+        $password = $_POST['password'] ?? '';
+        $confirmPassword = $_POST['confirm_password'] ?? '';
+
+        if (empty($password)) $errors[] = 'Password is required.';
+        if (strlen($password) < 6) $errors[] = 'Password must be at least 6 characters.';
+        if ($password !== $confirmPassword) $errors[] = 'Passwords do not match.';
+
+        if (empty($errors)) {
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $stmt = $db->prepare("UPDATE users SET password = ? WHERE id = ?");
+            $stmt->execute([$hashedPassword, $id]);
+
+            logAudit('Reset Password', 'User Management', "Reset password for user: {$user['username']}");
+            setFlashMessage('success', 'Password reset successfully.');
+            redirect(APP_URL . '/users/index.php');
+        }
     }
 }
+
+$pageTitle = 'Reset Password - DNHS Hub';
+require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="page-header">
@@ -78,9 +74,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </ul>
                 </div>
                 <?php endif; ?>
-                
+
                 <form method="POST">
-                    <?php generateCSRFToken(); ?>
                     <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
                     <div class="mb-3">
                         <label class="form-label">New Password *</label>
