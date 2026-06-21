@@ -96,69 +96,71 @@ This system is strictly for internal use by authorized personnel (Administrators
 dnhs-hub/
 ├── assets/
 │   ├── css/
-│   │   ├── login.css          # Login page styles
-│   │   └── style.css          # Main application styles
+│   │   ├── login.css              # Login page styles
+│   │   └── style.css              # Main application styles
 │   ├── js/
-│   │   └── app.js             # JavaScript functions
-│   ├── images/                # Image assets
+│   │   └── app.js                 # JavaScript functions
+│   ├── images/
+│   │   ├── school-logo.png        # School logo
+│   │   └── school-building.jpg    # School building photo
 │   └── uploads/
-│       ├── documents/         # Uploaded student documents
-│       └── profiles/          # Profile images
+│       └── documents/             # Uploaded student documents (versioned)
 ├── config/
-│   ├── config.php             # Application configuration
-│   └── database.php           # Database connection
+│   ├── config.php                 # Application configuration
+│   └── database.php               # Database connection
 ├── database/
-│   └── schema.sql             # MySQL database schema
+│   └── schema.sql                 # MySQL database schema
 ├── helpers/
-│   └── functions.php          # Utility functions
+│   └── functions.php              # Utility functions
 ├── includes/
-│   ├── header.php             # Page header & navigation
-│   └── footer.php             # Page footer & scripts
+│   ├── header.php                 # Page header & navigation
+│   └── footer.php                 # Page footer & scripts
 ├── audit/
-│   └── index.php              # Audit logs viewer
+│   └── index.php                  # Audit logs viewer
 ├── backup/
-│   ├── index.php              # Backup & restore page
-│   └── download.php           # Download backup file
+│   ├── index.php                  # Backup & restore page
+│   └── download.php               # Download backup file
 ├── claims/
-│   └── stub.php               # Claim stub generator
+│   └── stub.php                   # Claim stub generator
 ├── documents/
-│   ├── index.php              # Documents list
-│   ├── upload.php             # Upload document form
-│   ├── download.php           # Download document
-│   ├── preview.php            # Preview document
-│   └── delete.php             # Delete document
+│   ├── index.php                  # Documents list
+│   ├── upload.php                 # Upload document form
+│   ├── download.php               # Download document
+│   ├── preview.php                # Preview document
+│   └── delete.php                 # Delete document
 ├── notifications/
-│   ├── index.php              # Notifications list
-│   └── mark_read.php          # Mark notification read (AJAX)
+│   ├── index.php                  # Notifications list
+│   └── mark_read.php              # Mark notification read (AJAX)
 ├── reports/
-│   └── index.php              # Reports page
+│   └── index.php                  # Reports page
 ├── requests/
-│   ├── index.php              # Requests list
-│   ├── add.php                # Create new request
-│   ├── view.php               # View request details
-│   ├── update_status.php      # Update request status
-│   └── verify.php             # QR code verification
+│   ├── index.php                  # Requests list
+│   ├── add.php                    # Create new request
+│   ├── view.php                   # View request details
+│   ├── update_status.php          # Update request status
+│   └── verify.php                 # QR code verification
 ├── students/
-│   ├── index.php              # Students list
-│   ├── add.php                # Add new student
-│   ├── edit.php               # Edit student
-│   ├── view.php               # View student profile
-│   ├── archive.php            # Archive student
-│   ├── restore.php            # Restore archived student
-│   └── archived.php           # Archived students list
+│   ├── index.php                  # Students list
+│   ├── add.php                    # Add new student
+│   ├── edit.php                   # Edit student
+│   ├── view.php                   # View student profile
+│   ├── archive.php                # Archive student
+│   ├── restore.php                # Restore archived student
+│   └── archived.php               # Archived students list
 ├── users/
-│   ├── index.php              # Users list
-│   ├── add.php                # Add new user
-│   ├── edit.php               # Edit user
-│   ├── reset_password.php     # Reset user password
-│   └── toggle_status.php      # Activate/Deactivate user
-├── index.php                  # Root redirect
-├── login.php                  # Login page with rate limiting
-├── logout.php                 # Logout handler
-├── dashboard.php              # Main dashboard
-├── profile.php                # User profile page
-├── README.md                  # Project documentation
-└── USER_MANUAL.md             # User manual
+│   ├── index.php                  # Users list
+│   ├── add.php                    # Add new user
+│   ├── edit.php                   # Edit user
+│   ├── reset_password.php         # Reset user password
+│   └── toggle_status.php          # Activate/Deactivate user
+├── .gitignore                     # Git ignore rules
+├── index.php                      # Root redirect
+├── login.php                      # Login page with rate limiting
+├── logout.php                     # Logout handler
+├── dashboard.php                  # Main dashboard
+├── profile.php                    # User profile page
+├── README.md                      # Project documentation
+└── USER_MANUAL.md                 # User manual
 ```
 
 ---
