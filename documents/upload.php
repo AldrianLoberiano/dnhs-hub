@@ -12,17 +12,6 @@ $db = getDBConnection();
 $studentId = intval($_GET['student_id'] ?? 0);
 $errors = [];
 
-// Get students for dropdown (limited for performance)
-$studentSearch = trim($_GET['student_search'] ?? '');
-if (!empty($studentSearch)) {
-    $stmt = $db->prepare("SELECT id, student_number, first_name, last_name FROM students WHERE is_archived = 0 AND (student_number LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR CONCAT(first_name, ' ', last_name) LIKE ?) ORDER BY last_name, first_name LIMIT 50");
-    $like = "%$studentSearch%";
-    $stmt->execute([$like, $like, $like, $like]);
-} else {
-    $stmt = $db->query("SELECT id, student_number, first_name, last_name FROM students WHERE is_archived = 0 ORDER BY last_name, first_name LIMIT 50");
-}
-$students = $stmt->fetchAll();
-
 // Get document types
 $stmt = $db->query("SELECT * FROM document_types WHERE is_active = 1 ORDER BY name");
 $docTypes = $stmt->fetchAll();
@@ -173,15 +162,12 @@ require_once __DIR__ . '/../includes/header.php';
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label">Student *</label>
-                            <input type="text" class="form-control form-control-sm mb-1" id="studentSearch" placeholder="Search by name or number..." value="<?php echo sanitize($studentSearch); ?>">
-                            <select class="form-select" name="student_id" required>
-                                <option value="">Select Student</option>
-                                <?php foreach ($students as $s): ?>
-                                <option value="<?php echo $s['id']; ?>" <?php echo $studentId == $s['id'] ? 'selected' : ''; ?>>
-                                    <?php echo sanitize($s['last_name'] . ', ' . $s['first_name'] . ' (' . $s['student_number'] . ')'); ?>
-                                </option>
-                                <?php endforeach; ?>
-                            </select>
+                            <input type="hidden" name="student_id" id="studentIdHidden" value="<?php echo $studentId ?: ''; ?>">
+                            <div class="position-relative">
+                                <input type="text" class="form-control" id="studentSearch" placeholder="Type to search students..." autocomplete="off" required>
+                                <div id="studentResults" class="list-group position-absolute w-100" style="z-index:1000;display:none;max-height:250px;overflow-y:auto;"></div>
+                            </div>
+                            <small class="text-muted" id="studentSelected"></small>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Document Type *</label>
@@ -235,18 +221,60 @@ require_once __DIR__ . '/../includes/header.php';
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var searchInput = document.getElementById('studentSearch');
+    var resultsDiv = document.getElementById('studentResults');
+    var hiddenInput = document.getElementById('studentIdHidden');
+    var selectedLabel = document.getElementById('studentSelected');
     var debounceTimer;
+
     searchInput.addEventListener('input', function() {
         clearTimeout(debounceTimer);
+        var q = searchInput.value.trim();
+        if (q.length < 2) { resultsDiv.style.display = 'none'; return; }
         debounceTimer = setTimeout(function() {
-            var url = new URL(window.location.href);
-            url.searchParams.set('student_search', searchInput.value);
-            window.location.href = url.toString();
-        }, 500);
+            fetch('<?php echo APP_URL; ?>/documents/search_students.php?q=' + encodeURIComponent(q))
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    resultsDiv.innerHTML = '';
+                    if (data.length === 0) {
+                        resultsDiv.innerHTML = '<div class="list-group-item text-muted">No students found</div>';
+                        resultsDiv.style.display = 'block';
+                        return;
+                    }
+                    data.forEach(function(s) {
+                        var a = document.createElement('button');
+                        a.type = 'button';
+                        a.className = 'list-group-item list-group-item-action';
+                        a.textContent = s.last_name + ', ' + s.first_name + ' (' + s.student_number + ')';
+                        a.dataset.id = s.id;
+                        a.dataset.label = s.last_name + ', ' + s.first_name + ' (' + s.student_number + ')';
+                        a.addEventListener('click', function() {
+                            hiddenInput.value = this.dataset.id;
+                            searchInput.value = this.dataset.label;
+                            selectedLabel.textContent = 'Selected: ' + this.dataset.label;
+                            resultsDiv.style.display = 'none';
+                        });
+                        resultsDiv.appendChild(a);
+                    });
+                    resultsDiv.style.display = 'block';
+                });
+        }, 300);
     });
-    if (searchInput.value) {
-        searchInput.focus();
-        searchInput.setSelectionRange(searchInput.value.length, searchInput.value.length);
+
+    document.addEventListener('click', function(e) {
+        if (!searchInput.contains(e.target) && !resultsDiv.contains(e.target)) {
+            resultsDiv.style.display = 'none';
+        }
+    });
+
+    if (hiddenInput.value) {
+        fetch('<?php echo APP_URL; ?>/documents/search_students.php?id=' + hiddenInput.value)
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.length) {
+                    searchInput.value = data[0].last_name + ', ' + data[0].first_name + ' (' + data[0].student_number + ')';
+                    selectedLabel.textContent = 'Selected: ' + searchInput.value;
+                }
+            });
     }
 });
 </script>
