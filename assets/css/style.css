@@ -1082,3 +1082,30 @@ body {
         box-shadow: none !important;
     }
 }
+
+/* Delete Confirmation Modal */
+#deleteConfirmModal .modal-content {
+    border-radius: 16px;
+    border: none;
+}
+#deleteConfirmModal .fa-exclamation-triangle {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+#deleteConfirmModal .btn-danger {
+    background: #dc3545;
+    border: none;
+    padding: 8px 20px;
+    font-weight: 600;
+    border-radius: 8px;
+}
+#deleteConfirmModal .btn-danger:hover {
+    background: #c82333;
+}
+#deleteConfirmModal .btn-secondary {
+    border-radius: 8px;
+    padding: 8px 20px;
+}
