@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 logAudit('Change Password', 'Profile', 'Changed own password');
                 setFlashMessage('success', 'Password changed successfully.');
-                redirect(APP_URL . '/profile.php');
+                redirect(APP_URL . '/modules/auth/profile.php');
             }
         }
     }
