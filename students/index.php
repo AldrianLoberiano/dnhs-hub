@@ -73,12 +73,12 @@ $batches = $stmt->fetchAll(PDO::FETCH_COLUMN);
 <!-- Filters -->
 <div class="card mb-4">
     <div class="card-body">
-        <form method="GET" class="row g-3">
+        <form method="GET" id="filterForm" class="row g-3">
             <div class="col-md-4">
-                <input type="text" class="form-control" name="search" placeholder="Search by name, student #, LRN..." value="<?php echo sanitize($search); ?>">
+                <input type="text" class="form-control" name="search" id="filterSearch" placeholder="Search by name, student #, LRN..." value="<?php echo sanitize($search); ?>">
             </div>
             <div class="col-md-2">
-                <select class="form-select" name="status">
+                <select class="form-select" name="status" id="filterStatus">
                     <option value="">All Status</option>
                     <option value="Enrolled" <?php echo $status === 'Enrolled' ? 'selected' : ''; ?>>Enrolled</option>
                     <option value="Graduated" <?php echo $status === 'Graduated' ? 'selected' : ''; ?>>Graduated</option>
@@ -87,17 +87,12 @@ $batches = $stmt->fetchAll(PDO::FETCH_COLUMN);
                 </select>
             </div>
             <div class="col-md-2">
-                <select class="form-select" name="batch">
+                <select class="form-select" name="batch" id="filterBatch">
                     <option value="">All Batches</option>
                     <?php foreach ($batches as $b): ?>
                     <option value="<?php echo sanitize($b); ?>" <?php echo $batch === $b ? 'selected' : ''; ?>><?php echo sanitize($b); ?></option>
                     <?php endforeach; ?>
                 </select>
-            </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-primary w-100">
-                    <i class="fas fa-filter me-1"></i>Filter
-                </button>
             </div>
             <div class="col-md-2">
                 <a href="index.php" class="btn btn-outline-secondary w-100">
@@ -107,6 +102,23 @@ $batches = $stmt->fetchAll(PDO::FETCH_COLUMN);
         </form>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var debounceTimer;
+    var form = document.getElementById('filterForm');
+    
+    // Auto-submit on select change
+    document.getElementById('filterStatus').addEventListener('change', function() { form.submit(); });
+    document.getElementById('filterBatch').addEventListener('change', function() { form.submit(); });
+    
+    // Auto-submit on search with debounce
+    document.getElementById('filterSearch').addEventListener('input', function() {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(function() { form.submit(); }, 500);
+    });
+});
+</script>
 
 <!-- Students Table -->
 <div class="card">
@@ -179,16 +191,18 @@ $batches = $stmt->fetchAll(PDO::FETCH_COLUMN);
                 </tbody>
             </table>
         </div>
-        
-        <!-- Pagination -->
-        <?php
-        $baseUrl = 'index.php?';
-        if (!empty($search)) $baseUrl .= "search=" . urlencode($search) . "&";
-        if (!empty($status)) $baseUrl .= "status=" . urlencode($status) . "&";
-        if (!empty($batch)) $baseUrl .= "batch=" . urlencode($batch) . "&";
-        echo renderPagination($pagination, $baseUrl);
-        ?>
     </div>
+</div>
+
+<!-- Pagination -->
+<div class="d-flex justify-content-end mt-3">
+    <?php
+    $baseUrl = 'index.php?';
+    if (!empty($search)) $baseUrl .= "search=" . urlencode($search) . "&";
+    if (!empty($status)) $baseUrl .= "status=" . urlencode($status) . "&";
+    if (!empty($batch)) $baseUrl .= "batch=" . urlencode($batch) . "&";
+    echo renderPagination($pagination, $baseUrl);
+    ?>
 </div>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
