@@ -8,7 +8,7 @@
 require_once __DIR__ . '/config/config.php';
 
 if (isLoggedIn()) {
-    redirect(APP_URL . '/dashboard.php');
+    redirect(APP_URL . '/modules/dashboard/index.php');
 } else {
-    redirect(APP_URL . '/login.php');
+    redirect(APP_URL . '/modules/auth/login.php');
 }
