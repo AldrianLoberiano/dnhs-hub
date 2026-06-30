@@ -27,6 +27,7 @@ switch ($reportType) {
             JOIN document_types dt ON dr.document_type_id = dt.id 
             WHERE dr.date_requested = ?
             ORDER BY dr.created_at DESC
+            LIMIT 200
         ");
         $stmt->execute([$startDate]);
         $reportData = $stmt->fetchAll();
@@ -41,6 +42,7 @@ switch ($reportType) {
             JOIN document_types dt ON dr.document_type_id = dt.id 
             WHERE dr.date_requested BETWEEN ? AND ?
             ORDER BY dr.date_requested DESC
+            LIMIT 200
         ");
         $stmt->execute([$startDate, $endDate]);
         $reportData = $stmt->fetchAll();
@@ -55,6 +57,7 @@ switch ($reportType) {
             JOIN document_types dt ON dr.document_type_id = dt.id 
             WHERE dr.date_requested BETWEEN ? AND ?
             ORDER BY dr.date_requested DESC
+            LIMIT 200
         ");
         $stmt->execute([$startDate, $endDate]);
         $reportData = $stmt->fetchAll();
@@ -93,6 +96,7 @@ switch ($reportType) {
             JOIN users u ON dr.requested_by = u.id 
             GROUP BY u.id 
             ORDER BY request_count DESC
+            LIMIT 20
         ");
         $reportData = $stmt->fetchAll();
         break;
