@@ -84,6 +84,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             redirect(APP_URL . '/backup/index.php');
         }
         
+        // Check file size (50MB max for backup)
+        if ($file['size'] > 50 * 1024 * 1024) {
+            setFlashMessage('error', 'Backup file is too large. Maximum size is 50MB.');
+            redirect(APP_URL . '/backup/index.php');
+        }
+        
         $content = file_get_contents($file['tmp_name']);
         
         if (empty($content)) {
@@ -91,18 +97,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             redirect(APP_URL . '/backup/index.php');
         }
         
-        // Execute SQL
+        // Execute SQL with validation
         try {
+            $forbidden = ['DROP DATABASE', 'CREATE USER', 'GRANT ', 'REVOKE ', 'INTO OUTFILE', 'LOAD_FILE', 'INTO DUMPFILE', 'ALTER USER'];
             $statements = array_filter(array_map('trim', explode(';', $content)));
             foreach ($statements as $statement) {
                 if (!empty($statement)) {
+                    $upper = strtoupper(ltrim($statement));
+                    foreach ($forbidden as $bad) {
+                        if (strpos($upper, $bad) !== false) {
+                            throw new \RuntimeException('Forbidden SQL operation detected in backup file.');
+                        }
+                    }
                     $db->exec($statement);
                 }
             }
             logAudit('Restore Database', 'Backup', 'Database restored from backup');
             setFlashMessage('success', 'Database restored successfully.');
         } catch (PDOException $e) {
-            setFlashMessage('error', 'Error restoring database: ' . $e->getMessage());
+            error_log("Backup restore error: " . $e->getMessage());
+            setFlashMessage('error', 'Error restoring database. Please check the backup file.');
+        } catch (\RuntimeException $e) {
+            setFlashMessage('error', 'Backup file contains forbidden SQL operations.');
         }
         
         redirect(APP_URL . '/backup/index.php');
