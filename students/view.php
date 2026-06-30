@@ -230,9 +230,14 @@ $requests = $stmt->fetchAll();
                             <?php echo sanitize($doc['doc_type_name']); ?>
                             <br><span class="text-muted">v<?php echo $doc['version']; ?> - <?php echo formatDate($doc['created_at']); ?></span>
                         </small>
-                        <a href="../documents/download.php?id=<?php echo $doc['id']; ?>" class="btn btn-sm btn-outline-primary">
-                            <i class="fas fa-download"></i>
-                        </a>
+                        <div class="d-flex gap-1">
+                            <a href="../documents/download.php?id=<?php echo $doc['id']; ?>" class="btn btn-sm btn-outline-primary" title="Download">
+                                <i class="fas fa-download"></i>
+                            </a>
+                            <button type="button" class="btn btn-sm btn-outline-danger btn-delete-doc" data-id="<?php echo $doc['id']; ?>" data-name="<?php echo sanitize($doc['doc_type_name']); ?>" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                     </li>
                     <?php endforeach; ?>
                 </ul>
@@ -295,5 +300,29 @@ $requests = $stmt->fetchAll();
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.btn-delete-doc').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var docId = this.dataset.id;
+            var docName = this.dataset.name;
+            if (confirm('Delete "' + docName + '"? This cannot be undone.')) {
+                fetch('<?php echo APP_URL; ?>/documents/delete.php?id=' + docId, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'csrf_token=<?php echo getCSRFToken(); ?>'
+                }).then(function(r) { return r.json(); }).then(function(data) {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert(data.message || 'Failed to delete document.');
+                    }
+                });
+            }
+        });
+    });
+});
+</script>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
