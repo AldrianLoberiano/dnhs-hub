@@ -47,6 +47,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors[] = 'Invalid file type. Allowed: PDF, JPG, JPEG, PNG';
         }
         
+        // Validate MIME type
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mimeType = finfo_file($finfo, $file['tmp_name']);
+        finfo_close($finfo);
+        $allowedMimes = [
+            'pdf' => 'application/pdf',
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'png' => 'image/png'
+        ];
+        if (!isset($allowedMimes[$fileExt]) || $mimeType !== $allowedMimes[$fileExt]) {
+            $errors[] = 'File content does not match the selected file type.';
+        }
+        
         // Check file size (10MB max)
         if ($fileSize > MAX_UPLOAD_SIZE) {
             $errors[] = 'File size exceeds maximum limit of 10MB.';
