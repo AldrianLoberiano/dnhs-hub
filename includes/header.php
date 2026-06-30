@@ -165,7 +165,7 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
                                     <div class="dropdown-item text-muted text-center">No notifications</div>
                                     <?php else: ?>
                                     <?php foreach ($notifications as $notif): ?>
-                                    <?php $notifUrl = !empty($notif['link']) && preg_match('#^[a-zA-Z0-9/_.?=&-]+$#', $notif['link']) ? htmlspecialchars(APP_URL . '/' . ltrim($notif['link'], './'), ENT_QUOTES, 'UTF-8') : '#'; ?>
+                                    <?php $notifUrl = !empty($notif['link']) ? htmlspecialchars($notif['link'], ENT_QUOTES, 'UTF-8') : '#'; ?>
                                     <a class="dropdown-item notification-item <?php echo !$notif['is_read'] ? 'bg-light' : ''; ?>"
                                        href="#"
                                        data-id="<?php echo $notif['id']; ?>"
