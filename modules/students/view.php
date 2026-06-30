@@ -7,7 +7,7 @@ $id = intval($_GET['id'] ?? 0);
 
 if (!$id) {
     setFlashMessage('error', 'Invalid student ID.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/students/index.php');
 }
 
 $stmt = $db->prepare("SELECT * FROM students WHERE id = ?");
@@ -16,7 +16,7 @@ $student = $stmt->fetch();
 
 if (!$student) {
     setFlashMessage('error', 'Student not found.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/students/index.php');
 }
 
 $pageTitle = sanitize($student['last_name'] . ', ' . $student['first_name']) . ' - DNHS Hub';
