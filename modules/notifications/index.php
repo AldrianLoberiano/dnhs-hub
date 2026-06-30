@@ -14,12 +14,12 @@ $db = getDBConnection();
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['mark_all_read'])) {
     if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
         setFlashMessage('error', 'Invalid security token.');
-        redirect(APP_URL . '/modules/index.php');
+        redirect(APP_URL . '/modules/notifications/index.php');
     }
     $stmt = $db->prepare("UPDATE notifications SET is_read = 1 WHERE user_id = ? AND is_read = 0");
     $stmt->execute([$_SESSION['user_id']]);
     setFlashMessage('success', 'All notifications marked as read.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/notifications/index.php');
 }
 
 // Get notifications
