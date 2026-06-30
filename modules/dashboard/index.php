@@ -6,7 +6,7 @@
  */
 
 $pageTitle = 'Dashboard - DNHS Hub';
-require_once __DIR__ . '/includes/header.php';
+require_once __DIR__ . '/../../includes/header.php';
 
 $db = getDBConnection();
 
@@ -519,4 +519,4 @@ var topChart = new Chart(topCtx, {
 });
 </script>
 
-<?php require_once __DIR__ . '/includes/footer.php'; ?>
+<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
