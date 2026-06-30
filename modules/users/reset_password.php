@@ -7,7 +7,7 @@ $id = intval($_GET['id'] ?? 0);
 
 if (!$id) {
     setFlashMessage('error', 'Invalid user ID.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/users/index.php');
 }
 
 $stmt = $db->prepare("SELECT * FROM users WHERE id = ?");
@@ -16,7 +16,7 @@ $user = $stmt->fetch();
 
 if (!$user) {
     setFlashMessage('error', 'User not found.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/users/index.php');
 }
 
 $errors = [];
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             logAudit('Reset Password', 'User Management', "Reset password for user: {$user['username']}");
             setFlashMessage('success', 'Password reset successfully.');
-            redirect(APP_URL . '/modules/index.php');
+            redirect(APP_URL . '/modules/users/index.php');
         }
     }
 }
