@@ -409,7 +409,7 @@ function getStatusBadgeClass($status) {
 function requireAuth() {
     if (!isLoggedIn()) {
         setFlashMessage('error', 'Please login to access this page.');
-        redirect(APP_URL . '/login.php');
+        redirect(APP_URL . '/modules/auth/login.php');
     }
 }
 
@@ -420,7 +420,7 @@ function requireAdmin() {
     requireAuth();
     if (!isAdmin()) {
         setFlashMessage('error', 'You do not have permission to access this page.');
-        redirect(APP_URL . '/dashboard.php');
+        redirect(APP_URL . '/modules/dashboard/index.php');
     }
 }
 
