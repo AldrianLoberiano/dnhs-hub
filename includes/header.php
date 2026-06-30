@@ -66,7 +66,7 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
             <nav class="sidebar-nav">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link <?php echo $currentPage === 'dashboard' ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/dashboard.php">
+                        <a class="nav-link <?php echo $currentPage === 'dashboard' ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/modules/dashboard/index.php">
                             <i class="fas fa-grip"></i>
                             <span>Dashboard</span>
                         </a>
@@ -74,7 +74,7 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
                     
                     <?php if (isAdmin()): ?>
                     <li class="nav-item">
-                        <a class="nav-link <?php echo $currentPage === 'users' ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/users/index.php">
+                        <a class="nav-link <?php echo $currentPage === 'users' ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/modules/users/index.php">
                             <i class="fas fa-users-cog"></i>
                             <span>User Management</span>
                         </a>
@@ -82,35 +82,35 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
                     <?php endif; ?>
                     
                     <li class="nav-item">
-                        <a class="nav-link <?php echo $currentPage === 'students' ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/students/index.php">
+                        <a class="nav-link <?php echo $currentPage === 'students' ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/modules/students/index.php">
                             <i class="fas fa-user-graduate"></i>
                             <span>Student Records</span>
                         </a>
                     </li>
                     
                     <li class="nav-item">
-                        <a class="nav-link <?php echo $currentPage === 'archived' ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/students/archived.php">
+                        <a class="nav-link <?php echo $currentPage === 'archived' ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/modules/students/archived.php">
                             <i class="fas fa-archive"></i>
                             <span>Archived Students</span>
                         </a>
                     </li>
                     
                     <li class="nav-item">
-                        <a class="nav-link <?php echo $currentPage === 'documents' ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/documents/index.php">
+                        <a class="nav-link <?php echo $currentPage === 'documents' ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/modules/documents/index.php">
                             <i class="fas fa-folder-open"></i>
                             <span>Student Documents</span>
                         </a>
                     </li>
                     
                     <li class="nav-item">
-                        <a class="nav-link <?php echo $currentPage === 'requests' ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/requests/index.php">
+                        <a class="nav-link <?php echo $currentPage === 'requests' ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/modules/requests/index.php">
                             <i class="fas fa-file-alt"></i>
                             <span>Document Requests</span>
                         </a>
                     </li>
                     
                     <li class="nav-item">
-                        <a class="nav-link <?php echo $currentPage === 'reports' ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/reports/index.php">
+                        <a class="nav-link <?php echo $currentPage === 'reports' ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/modules/reports/index.php">
                             <i class="fas fa-chart-bar"></i>
                             <span>Reports</span>
                         </a>
@@ -131,7 +131,7 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
                     <div class="d-flex align-items-center ms-auto">
                         <?php if (!isAdmin() && !isRegistrar()): ?>
                         <!-- Search -->
-                        <form class="d-none d-md-flex me-3" action="<?php echo APP_URL; ?>/students/index.php" method="GET">
+                        <form class="d-none d-md-flex me-3" action="<?php echo APP_URL; ?>/modules/students/index.php" method="GET">
                             <div class="input-group">
                                 <input type="text" class="form-control" name="search" placeholder="Search students, requests...">
                                 <button class="btn btn-outline-secondary" type="submit">
@@ -181,7 +181,7 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
                                     <?php endif; ?>
                                 </div>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-center" href="<?php echo APP_URL; ?>/notifications/index.php">View All</a>
+                                <a class="dropdown-item text-center" href="<?php echo APP_URL; ?>/modules/notifications/index.php">View All</a>
                             </div>
                         </div>
                         
@@ -192,13 +192,13 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
                                 <?php echo sanitize($_SESSION['full_name']); ?>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="<?php echo APP_URL; ?>/profile.php"><i class="fas fa-user me-2"></i>Profile</a></li>
+                                <li><a class="dropdown-item" href="<?php echo APP_URL; ?>/modules/auth/profile.php"><i class="fas fa-user me-2"></i>Profile</a></li>
                                 <?php if (isAdmin()): ?>
-                                <li><a class="dropdown-item" href="<?php echo APP_URL; ?>/audit/index.php"><i class="fas fa-history me-2"></i>Audit Logs</a></li>
-                                <li><a class="dropdown-item" href="<?php echo APP_URL; ?>/backup/index.php"><i class="fas fa-database me-2"></i>Backup & Restore</a></li>
+                                <li><a class="dropdown-item" href="<?php echo APP_URL; ?>/modules/audit/index.php"><i class="fas fa-history me-2"></i>Audit Logs</a></li>
+                                <li><a class="dropdown-item" href="<?php echo APP_URL; ?>/modules/backup/index.php"><i class="fas fa-database me-2"></i>Backup & Restore</a></li>
                                 <?php endif; ?>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="<?php echo APP_URL; ?>/profile.php"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                                <li><a class="dropdown-item" href="<?php echo APP_URL; ?>/modules/auth/profile.php"><i class="fas fa-cog me-2"></i>Settings</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item text-danger" href="#" id="btnLogout"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                             </ul>
