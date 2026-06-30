@@ -12,8 +12,15 @@ $db = getDBConnection();
 $studentId = intval($_GET['student_id'] ?? 0);
 $errors = [];
 
-// Get students for dropdown
-$stmt = $db->query("SELECT id, student_number, first_name, last_name, lrn FROM students WHERE is_archived = 0 ORDER BY last_name, first_name");
+// Get students for dropdown (limited for performance)
+$studentSearch = trim($_GET['student_search'] ?? '');
+if (!empty($studentSearch)) {
+    $stmt = $db->prepare("SELECT id, student_number, first_name, last_name, lrn FROM students WHERE is_archived = 0 AND (student_number LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR lrn LIKE ? OR CONCAT(first_name, ' ', last_name) LIKE ?) ORDER BY last_name, first_name LIMIT 50");
+    $like = "%$studentSearch%";
+    $stmt->execute([$like, $like, $like, $like, $like]);
+} else {
+    $stmt = $db->query("SELECT id, student_number, first_name, last_name, lrn FROM students WHERE is_archived = 0 ORDER BY last_name, first_name LIMIT 50");
+}
 $students = $stmt->fetchAll();
 
 // Get document types
@@ -62,12 +69,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         logAudit('Create Request', 'Document Requests', "Created request $trackingNumber for {$student['first_name']} {$student['last_name']}");
         
-        // Create notification for admin
+        // Create notifications for admin (batch insert)
         $stmt = $db->prepare("SELECT id FROM users WHERE role = 'admin' AND is_active = 1");
         $stmt->execute();
         $admins = $stmt->fetchAll();
-        foreach ($admins as $admin) {
-            createNotification($admin['id'], 'New Request', "New document request created: $trackingNumber for {$student['first_name']} {$student['last_name']}", 'info', "../requests/view.php?id=$requestId");
+        if (!empty($admins)) {
+            $placeholders = [];
+            $values = [];
+            foreach ($admins as $admin) {
+                $placeholders[] = '(?, ?, ?, ?, ?)';
+                $values[] = $admin['id'];
+                $values[] = 'New Request';
+                $values[] = "New document request created: $trackingNumber for {$student['first_name']} {$student['last_name']}";
+                $values[] = 'info';
+                $values[] = "../requests/view.php?id=$requestId";
+            }
+            $db->prepare('INSERT INTO notifications (user_id, title, message, type, link) VALUES ' . implode(',', $placeholders))->execute($values);
         }
         
         setFlashMessage('success', "Request created successfully. Tracking Number: $trackingNumber");
@@ -113,7 +130,8 @@ require_once __DIR__ . '/../includes/header.php';
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label">Student *</label>
-                            <select class="form-select" name="student_id" id="studentSelect" required>
+                            <input type="text" class="form-control form-control-sm mb-1" id="studentSearch" placeholder="Search by name, #, or LRN..." value="<?php echo sanitize($studentSearch); ?>">
+                            <select class="form-select" name="student_id" id="studentSelect" required size="1">
                                 <option value="">Select Student</option>
                                 <?php foreach ($students as $s): ?>
                                 <option value="<?php echo $s['id']; ?>" <?php echo $studentId == $s['id'] ? 'selected' : ''; ?> 
@@ -177,5 +195,21 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var searchInput = document.getElementById('studentSearch');
+    var form = searchInput.closest('form');
+    var debounceTimer;
+    searchInput.addEventListener('input', function() {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(function() {
+            var url = new URL(window.location.href);
+            url.searchParams.set('student_search', searchInput.value);
+            window.location.href = url.toString();
+        }, 500);
+    });
+});
+</script>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
