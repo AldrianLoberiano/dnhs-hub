@@ -37,8 +37,10 @@ if (!$doc) {
 }
 
 // Delete file from server
-$filePath = APP_ROOT . '/' . $doc['file_path'];
-if (file_exists($filePath)) {
+$filePath = realpath(APP_ROOT . '/' . $doc['file_path']);
+$allowedDir = realpath(DOCUMENTS_PATH);
+
+if ($filePath !== false && $allowedDir !== false && strpos($filePath, $allowedDir) === 0 && file_exists($filePath)) {
     unlink($filePath);
 }
 
