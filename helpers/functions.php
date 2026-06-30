@@ -56,6 +56,15 @@ function sanitize($data) {
  * Generate CSRF token
  */
 function generateCSRFToken() {
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+}
+
+/**
+ * Regenerate CSRF token (call after successful form submission)
+ */
+function regenerateCSRFToken() {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
@@ -76,7 +85,11 @@ function getCSRFToken() {
  * @return bool
  */
 function validateCSRFToken($token) {
-    return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
+    $valid = isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
+    if ($valid) {
+        regenerateCSRFToken();
+    }
+    return $valid;
 }
 
 /**
