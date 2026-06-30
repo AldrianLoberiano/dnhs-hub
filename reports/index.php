@@ -109,6 +109,24 @@ switch ($reportType) {
         <small style="color: rgba(255,255,255,0.8);">Generate and view system reports</small>
     </div>
     <div class="d-flex gap-2">
+        <?php if (!empty($reportData)): ?>
+        <div class="dropdown">
+            <button class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown">
+                <i class="fas fa-download me-1"></i>Download
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="export.php?type=<?php echo $reportType; ?>&start_date=<?php echo $startDate; ?>&end_date=<?php echo $endDate; ?>&format=csv">
+                    <i class="fas fa-file-csv me-2 text-success"></i>CSV File
+                </a></li>
+                <li><a class="dropdown-item" href="export.php?type=<?php echo $reportType; ?>&start_date=<?php echo $startDate; ?>&end_date=<?php echo $endDate; ?>&format=excel">
+                    <i class="fas fa-file-excel me-2 text-success"></i>Excel File
+                </a></li>
+                <li><a class="dropdown-item" href="export.php?type=<?php echo $reportType; ?>&start_date=<?php echo $startDate; ?>&end_date=<?php echo $endDate; ?>&format=word">
+                    <i class="fas fa-file-word me-2 text-primary"></i>Word File
+                </a></li>
+            </ul>
+        </div>
+        <?php endif; ?>
         <button onclick="window.print()" class="btn btn-outline-primary no-print">
             <i class="fas fa-print me-1"></i>Print
         </button>
