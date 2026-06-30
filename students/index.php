@@ -107,16 +107,23 @@ $batches = $stmt->fetchAll(PDO::FETCH_COLUMN);
 document.addEventListener('DOMContentLoaded', function() {
     var debounceTimer;
     var form = document.getElementById('filterForm');
+    var searchInput = document.getElementById('filterSearch');
     
     // Auto-submit on select change
     document.getElementById('filterStatus').addEventListener('change', function() { form.submit(); });
     document.getElementById('filterBatch').addEventListener('change', function() { form.submit(); });
     
     // Auto-submit on search with debounce
-    document.getElementById('filterSearch').addEventListener('input', function() {
+    searchInput.addEventListener('input', function() {
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(function() { form.submit(); }, 500);
     });
+    
+    // Restore focus and cursor position after page reload
+    if (searchInput.value) {
+        searchInput.focus();
+        searchInput.setSelectionRange(searchInput.value.length, searchInput.value.length);
+    }
 });
 </script>
 
