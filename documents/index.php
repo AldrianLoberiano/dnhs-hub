@@ -87,12 +87,12 @@ try {
 <!-- Filters -->
 <div class="card mb-4">
     <div class="card-body">
-        <form method="GET" class="row g-3">
+        <form method="GET" id="filterForm" class="row g-3">
             <div class="col-md-4">
-                <input type="text" class="form-control" name="search" placeholder="Search by student name or number..." value="<?php echo sanitize($search); ?>">
+                <input type="text" class="form-control" name="search" id="filterSearch" placeholder="Search by student name or number..." value="<?php echo sanitize($search); ?>">
             </div>
             <div class="col-md-3">
-                <select class="form-select" name="doc_type">
+                <select class="form-select" name="doc_type" id="filterDocType">
                     <option value="">All Document Types</option>
                     <?php foreach ($docTypes as $dt): ?>
                     <option value="<?php echo $dt['id']; ?>" <?php echo $docType == $dt['id'] ? 'selected' : ''; ?>><?php echo sanitize($dt['name']); ?></option>
@@ -100,16 +100,23 @@ try {
                 </select>
             </div>
             <div class="col-md-2">
-                <button type="submit" class="btn btn-primary w-100">
-                    <i class="fas fa-filter me-1"></i>Filter
-                </button>
-            </div>
-            <div class="col-md-2">
                 <a href="index.php" class="btn btn-outline-secondary w-100">Clear</a>
             </div>
         </form>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var debounceTimer;
+    var form = document.getElementById('filterForm');
+    document.getElementById('filterDocType').addEventListener('change', function() { form.submit(); });
+    document.getElementById('filterSearch').addEventListener('input', function() {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(function() { form.submit(); }, 500);
+    });
+});
+</script>
 
 <!-- Documents Table -->
 <div class="card">
@@ -172,15 +179,18 @@ try {
                 </tbody>
             </table>
         </div>
-        
-        <?php
-        $baseUrl = 'index.php?';
-        if (!empty($search)) $baseUrl .= "search=" . urlencode($search) . "&";
-        if (!empty($docType)) $baseUrl .= "doc_type=" . urlencode($docType) . "&";
-        if ($studentId) $baseUrl .= "student_id=$studentId&";
-        echo renderPagination($pagination, $baseUrl);
-        ?>
     </div>
+</div>
+
+<!-- Pagination -->
+<div class="d-flex justify-content-end mt-3">
+    <?php
+    $baseUrl = 'index.php?';
+    if (!empty($search)) $baseUrl .= "search=" . urlencode($search) . "&";
+    if (!empty($docType)) $baseUrl .= "doc_type=" . urlencode($docType) . "&";
+    if ($studentId) $baseUrl .= "student_id=$studentId&";
+    echo renderPagination($pagination, $baseUrl);
+    ?>
 </div>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
