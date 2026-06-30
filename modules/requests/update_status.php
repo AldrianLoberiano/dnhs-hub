@@ -3,12 +3,12 @@ require_once __DIR__ . '/../../config/config.php';
 requireAuth();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/requests/index.php');
 }
 
 if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
     setFlashMessage('error', 'Invalid security token.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/requests/index.php');
 }
 
 $db = getDBConnection();
@@ -19,7 +19,7 @@ $releasedTo = trim($_POST['released_to'] ?? '');
 
 if (!$requestId || empty($newStatus)) {
     setFlashMessage('error', 'Invalid request data.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/requests/index.php');
 }
 
 $validTransitions = [
@@ -35,13 +35,13 @@ $request = $stmt->fetch();
 
 if (!$request) {
     setFlashMessage('error', 'Request not found.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/requests/index.php');
 }
 
 $currentStatus = $request['status'];
 if (!isset($validTransitions[$currentStatus]) || !in_array($newStatus, $validTransitions[$currentStatus])) {
     setFlashMessage('error', 'Invalid status transition.');
-    redirect(APP_URL . "/requests/view.php?id=$requestId");
+    redirect(APP_URL . "/modules/requests/view.php?id=$requestId");
 }
 
 $updateFields = ['status = ?'];
@@ -71,4 +71,4 @@ if ($request['requested_by']) {
 }
 
 setFlashMessage('success', "Request status updated to $newStatus.");
-redirect(APP_URL . "/requests/view.php?id=$requestId");
+redirect(APP_URL . "/modules/requests/view.php?id=$requestId");
