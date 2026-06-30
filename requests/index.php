@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </td>
                         <td><?php echo sanitize($req['doc_type_name']); ?></td>
                         <td><small><?php echo sanitize($req['purpose'] ?? 'N/A'); ?></small></td>
-                        <td><span class="badge <?php echo getStatusBadgeClass($req['status']); ?>"><?php echo sanitize($req['status']); ?></span></td>
+                        <td class="text-start"><span class="badge <?php echo getStatusBadgeClass($req['status']); ?>"><?php echo sanitize($req['status']); ?></span></td>
                         <td><small><?php echo formatDate($req['date_requested']); ?></small></td>
                         <td><small><?php echo sanitize($req['registrar_name'] ?? 'N/A'); ?></small></td>
                         <td>
