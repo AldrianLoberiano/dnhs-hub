@@ -13,7 +13,7 @@ $id = intval($_GET['id'] ?? 0);
 
 if (!$id) {
     setFlashMessage('error', 'Invalid student ID.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/students/index.php');
 }
 
 // Get student
@@ -23,7 +23,7 @@ $student = $stmt->fetch();
 
 if (!$student) {
     setFlashMessage('error', 'Student not found.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/students/index.php');
 }
 
 $pageTitle = 'Edit Student - DNHS Hub';
@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         logAudit('Update Student', 'Student Records', "Updated student: $firstName $lastName ($studentNumber)");
         setFlashMessage('success', 'Student record updated successfully.');
-        redirect(APP_URL . "/students/view.php?id=$id");
+        redirect(APP_URL . "/modules/students/view.php?id=$id");
     }
     }
     
