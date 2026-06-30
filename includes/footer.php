@@ -135,7 +135,7 @@
                     onConfirm: function() {
                         var form = document.createElement('form');
                         form.method = 'POST';
-                        form.action = '<?php echo APP_URL; ?>/logout.php';
+                        form.action = '<?php echo APP_URL; ?>/modules/auth/logout.php';
                         var input = document.createElement('input');
                         input.type = 'hidden';
                         input.name = 'csrf_token';
@@ -227,7 +227,7 @@
 
                     // Mark as read via AJAX
                     if (isRead === '0') {
-                        fetch('<?php echo APP_URL; ?>/notifications/mark_read.php', {
+                        fetch('<?php echo APP_URL; ?>/modules/notifications/mark_read.php', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                             body: 'id=' + encodeURIComponent(id) + '&csrf_token=' + encodeURIComponent('<?php echo getCSRFToken(); ?>')
