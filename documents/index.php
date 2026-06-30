@@ -110,11 +110,16 @@ try {
 document.addEventListener('DOMContentLoaded', function() {
     var debounceTimer;
     var form = document.getElementById('filterForm');
+    var searchInput = document.getElementById('filterSearch');
     document.getElementById('filterDocType').addEventListener('change', function() { form.submit(); });
-    document.getElementById('filterSearch').addEventListener('input', function() {
+    searchInput.addEventListener('input', function() {
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(function() { form.submit(); }, 500);
     });
+    if (searchInput.value) {
+        searchInput.focus();
+        searchInput.setSelectionRange(searchInput.value.length, searchInput.value.length);
+    }
 });
 </script>
 
