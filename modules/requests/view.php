@@ -7,7 +7,7 @@ $id = intval($_GET['id'] ?? 0);
 
 if (!$id) {
     setFlashMessage('error', 'Invalid request ID.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/requests/index.php');
 }
 
 $stmt = $db->prepare("
@@ -25,7 +25,7 @@ $request = $stmt->fetch();
 
 if (!$request) {
     setFlashMessage('error', 'Request not found.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/requests/index.php');
 }
 
 $pageTitle = "Request {$request['tracking_number']} - DNHS Hub";
@@ -220,7 +220,7 @@ $statusHistory = $stmt->fetchAll();
                 <i class="fas fa-qrcode me-2"></i>QR Code
             </div>
             <div class="card-body text-center">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo APP_URL . '/requests/verify.php?tracking=' . urlencode($request['tracking_number']); ?>" 
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo APP_URL . '/modules/requests/verify.php?tracking=' . urlencode($request['tracking_number']); ?>" 
                      alt="QR Code" class="img-fluid mb-2">
                 <p class="text-muted small mb-0">Scan to verify request</p>
             </div>
