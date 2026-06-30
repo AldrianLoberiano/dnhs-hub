@@ -116,6 +116,7 @@ $docTypes = $stmt->fetchAll();
 document.addEventListener('DOMContentLoaded', function() {
     var debounceTimer;
     var form = document.getElementById('filterForm');
+    var searchInput = document.getElementById('filterSearch');
     document.getElementById('filterStatus').addEventListener('change', function() { form.submit(); });
     document.getElementById('filterDocType').addEventListener('change', function() { form.submit(); });
     document.getElementById('filterSearch').addEventListener('input', function() {
