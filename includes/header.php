@@ -26,7 +26,7 @@ if (isLoggedIn()) {
 requireAuth();
 
 // Detect current module from URL path
-$scriptPath = $_SERVER['PHP_SELF'];
+$scriptPath = $_SERVER['SCRIPT_NAME'];
 $currentPage = basename($scriptPath, '.php');
 $currentDir = basename(dirname($scriptPath));
 // Use folder name for sub-pages so all pages in a module highlight correctly
@@ -43,7 +43,7 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="<?php echo getCSRFToken(); ?>">
     <link rel="icon" type="image/png" href="<?php echo APP_URL; ?>/assets/images/school-logo.png">
-    <title><?php echo $pageTitle ?? 'DNHS Hub'; ?></title>
+    <title><?php echo sanitize($pageTitle ?? 'DNHS Hub'); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
@@ -165,7 +165,7 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
                                     <div class="dropdown-item text-muted text-center">No notifications</div>
                                     <?php else: ?>
                                     <?php foreach ($notifications as $notif): ?>
-                                    <?php $notifUrl = !empty($notif['link']) && preg_match('#^[a-zA-Z0-9/_.?=&-]+$#', $notif['link']) ? APP_URL . '/' . ltrim($notif['link'], './') : '#'; ?>
+                                    <?php $notifUrl = !empty($notif['link']) && preg_match('#^[a-zA-Z0-9/_.?=&-]+$#', $notif['link']) ? htmlspecialchars(APP_URL . '/' . ltrim($notif['link'], './'), ENT_QUOTES, 'UTF-8') : '#'; ?>
                                     <a class="dropdown-item notification-item <?php echo !$notif['is_read'] ? 'bg-light' : ''; ?>"
                                        href="#"
                                        data-id="<?php echo $notif['id']; ?>"
@@ -200,7 +200,14 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="<?php echo APP_URL; ?>/profile.php"><i class="fas fa-cog me-2"></i>Settings</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-danger" href="<?php echo APP_URL; ?>/logout.php" id="btnLogout"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                                <li>
+                                    <form method="POST" action="<?php echo APP_URL; ?>/logout.php" style="display:inline">
+                                        <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
+                                        <button type="submit" class="dropdown-item text-danger" style="border:none;background:none;width:100%;text-align:left">
+                                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                        </button>
+                                    </form>
+                                </li>
                             </ul>
                         </div>
                     </div>
