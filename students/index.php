@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="card">
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-hover" id="studentsTable">
+            <table class="table table-hover students-table" id="studentsTable">
                 <thead>
                     <tr>
                         <th>Student #</th>
