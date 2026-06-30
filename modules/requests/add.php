@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         
         setFlashMessage('success', "Request created successfully. Tracking Number: $trackingNumber");
-        redirect(APP_URL . "/requests/view.php?id=$requestId");
+        redirect(APP_URL . "/modules/requests/view.php?id=$requestId");
     }
     }
 }
