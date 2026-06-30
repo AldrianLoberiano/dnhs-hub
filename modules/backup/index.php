@@ -21,7 +21,7 @@ if (!is_dir(BACKUPS_PATH)) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
         setFlashMessage('error', 'Invalid security token.');
-        redirect(APP_URL . '/modules/index.php');
+        redirect(APP_URL . '/modules/backup/index.php');
     }
     if ($_POST['action'] === 'backup') {
         $filename = 'dnhs_hub_backup_' . date('Y-m-d_His') . '.sql';
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             setFlashMessage('error', 'Failed to create backup file.');
         }
         
-        redirect(APP_URL . '/modules/index.php');
+        redirect(APP_URL . '/modules/backup/index.php');
     }
     
     if ($_POST['action'] === 'restore' && isset($_FILES['backup_file'])) {
@@ -81,20 +81,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         
         if ($file['error'] !== UPLOAD_ERR_OK) {
             setFlashMessage('error', 'Error uploading backup file.');
-            redirect(APP_URL . '/modules/index.php');
+            redirect(APP_URL . '/modules/backup/index.php');
         }
         
         // Check file size (50MB max for backup)
         if ($file['size'] > 50 * 1024 * 1024) {
             setFlashMessage('error', 'Backup file is too large. Maximum size is 50MB.');
-            redirect(APP_URL . '/modules/index.php');
+            redirect(APP_URL . '/modules/backup/index.php');
         }
         
         $content = file_get_contents($file['tmp_name']);
         
         if (empty($content)) {
             setFlashMessage('error', 'Backup file is empty.');
-            redirect(APP_URL . '/modules/index.php');
+            redirect(APP_URL . '/modules/backup/index.php');
         }
         
         // Execute SQL with validation
@@ -121,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             setFlashMessage('error', 'Backup file contains forbidden SQL operations.');
         }
         
-        redirect(APP_URL . '/modules/index.php');
+        redirect(APP_URL . '/modules/backup/index.php');
     }
 }
 
