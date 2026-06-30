@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="card">
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-hover" id="requestsTable">
+            <table class="table table-hover requests-table" id="requestsTable">
                 <thead>
                     <tr>
                         <th>Tracking #</th>
