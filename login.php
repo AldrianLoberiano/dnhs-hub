@@ -72,6 +72,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['role'] = $user['role'];
                 $_SESSION['last_activity'] = time();
                 
+                // Regenerate session ID to prevent session fixation
+                session_regenerate_id(true);
+                
                 // Update last login
                 $stmt = $db->prepare("UPDATE users SET last_login = NOW() WHERE id = ?");
                 $stmt->execute([$user['id']]);
@@ -95,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($remaining <= 0) {
                     $error = 'Too many failed attempts. Account locked for ' . LOCKOUT_MINUTES . ' minutes.';
                 } else {
-                    $error = 'Invalid username or password. ' . $remaining . ' attempt(s) remaining before lockout.';
+                    $error = 'Invalid username or password.';
                 }
                 logAudit('Failed Login', 'Authentication', "Failed login attempt for username: $username from IP: $ipAddress");
             }
