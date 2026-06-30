@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $studentId = $db->lastInsertId();
         logAudit('Create Student', 'Student Records', "Created student: $firstName $lastName ($studentNumber)");
         setFlashMessage('success', 'Student record created successfully.');
-        redirect(APP_URL . "/students/view.php?id=$studentId");
+        redirect(APP_URL . "/modules/students/view.php?id=$studentId");
     }
     }
 }
