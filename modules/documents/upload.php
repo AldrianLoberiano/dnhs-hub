@@ -117,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             
             setFlashMessage('success', 'Document uploaded successfully.');
-            redirect(APP_URL . "/documents/index.php?student_id=$studentId");
+            redirect(APP_URL . "/modules/documents/index.php?student_id=$studentId");
         } else {
             $errors[] = 'Failed to upload file. Please try again.';
         }
