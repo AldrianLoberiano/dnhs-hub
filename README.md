@@ -146,63 +146,67 @@ dnhs-hub/
 │   └── database.php               # Database connection
 ├── database/
 │   └── schema.sql                 # MySQL database schema
-├── helpers/
-│   └── functions.php              # Utility functions
 ├── includes/
 │   ├── header.php                 # Page header & navigation
-│   └── footer.php                 # Page footer, scripts & modals
-├── audit/
-│   └── index.php                  # Audit logs viewer
-├── backup/
-│   ├── index.php                  # Backup & restore page
-│   └── download.php               # Download backup file
-├── claims/
-│   └── stub.php                   # Claim stub generator
-├── documents/
-│   ├── index.php                  # Documents list (AJAX search)
-│   ├── ajax_search.php            # AJAX search endpoint
-│   ├── search_students.php        # AJAX student autocomplete
-│   ├── upload.php                 # Upload document form
-│   ├── download.php               # Download document
-│   ├── preview.php                # Preview document
-│   └── delete.php                 # Delete document (AJAX + form)
-├── notifications/
-│   ├── index.php                  # Notifications list
-│   └── mark_read.php              # Mark notification read (AJAX)
-├── reports/
-│   ├── index.php                  # Reports page
-│   └── export.php                 # Export reports (CSV, Excel, Word)
-├── requests/
-│   ├── index.php                  # Requests list (AJAX search)
-│   ├── ajax_search.php            # AJAX search endpoint
-│   ├── search_students.php        # AJAX student autocomplete
-│   ├── add.php                    # Create new request
-│   ├── view.php                   # View request details
-│   ├── update_status.php          # Update request status
-│   └── verify.php                 # QR code verification
-├── settings/
-│   └── index.php                  # Unified settings page (Profile, Audit, Backup)
-├── students/
-│   ├── index.php                  # Students list (AJAX search)
-│   ├── ajax_search.php            # AJAX search endpoint
-│   ├── add.php                    # Add new student (FAB buttons)
-│   ├── edit.php                   # Edit student (FAB buttons)
-│   ├── view.php                   # View student profile
-│   ├── archive.php                # Archive student
-│   ├── restore.php                # Restore archived student
-│   └── archived.php               # Archived students list
-├── users/
-│   ├── index.php                  # Users list
-│   ├── add.php                    # Add new user
-│   ├── edit.php                   # Edit user
-│   ├── reset_password.php         # Reset user password
-│   └── toggle_status.php          # Activate/Deactivate user
+│   ├── footer.php                 # Page footer, scripts & modals
+│   └── functions.php              # Utility functions
+├── modules/
+│   ├── auth/
+│   │   ├── login.php              # Login page
+│   │   ├── logout.php             # Logout handler
+│   │   └── profile.php            # User profile
+│   ├── dashboard/
+│   │   └── index.php              # Main dashboard
+│   ├── students/
+│   │   ├── index.php              # Students list (AJAX search)
+│   │   ├── ajax_search.php        # AJAX search endpoint
+│   │   ├── add.php                # Add new student
+│   │   ├── edit.php               # Edit student
+│   │   ├── view.php               # View student profile
+│   │   ├── archive.php            # Archive student
+│   │   ├── restore.php            # Restore archived student
+│   │   └── archived.php           # Archived students list
+│   ├── documents/
+│   │   ├── index.php              # Documents list (AJAX search)
+│   │   ├── ajax_search.php        # AJAX search endpoint
+│   │   ├── search_students.php    # AJAX student autocomplete
+│   │   ├── upload.php             # Upload document form
+│   │   ├── download.php           # Download document
+│   │   ├── preview.php            # Preview document
+│   │   └── delete.php             # Delete document (AJAX + form)
+│   ├── requests/
+│   │   ├── index.php              # Requests list (AJAX search)
+│   │   ├── ajax_search.php        # AJAX search endpoint
+│   │   ├── search_students.php    # AJAX student autocomplete
+│   │   ├── add.php                # Create new request
+│   │   ├── view.php               # View request details
+│   │   ├── update_status.php      # Update request status
+│   │   └── verify.php             # QR code verification
+│   ├── reports/
+│   │   ├── index.php              # Reports page
+│   │   └── export.php             # Export reports (CSV, Excel, Word)
+│   ├── users/
+│   │   ├── index.php              # Users list
+│   │   ├── add.php                # Add new user
+│   │   ├── edit.php               # Edit user
+│   │   ├── reset_password.php     # Reset user password
+│   │   └── toggle_status.php      # Activate/Deactivate user
+│   ├── audit/
+│   │   └── index.php              # Audit logs viewer
+│   ├── backup/
+│   │   ├── index.php              # Backup & restore page
+│   │   └── download.php           # Download backup file
+│   ├── notifications/
+│   │   ├── index.php              # Notifications list
+│   │   └── mark_read.php          # Mark notification read (AJAX)
+│   ├── settings/
+│   │   └── index.php              # Unified settings page
+│   └── claims/
+│       └── stub.php               # Claim stub generator
+├── storage/
+│   └── backups/                   # Database backup files
 ├── .gitignore                     # Git ignore rules
 ├── index.php                      # Root redirect
-├── login.php                      # Login page with rate limiting
-├── logout.php                     # Logout handler
-├── dashboard.php                  # Main dashboard
-├── profile.php                    # User profile page
 ├── README.md                      # Project documentation
 └── USER_MANUAL.md                 # User manual
 ```
