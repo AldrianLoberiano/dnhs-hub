@@ -1,10 +1,38 @@
 /**
  * DNHS Hub - Main JavaScript
- * 
- * Application-wide JavaScript functions
  */
 
 var APP_URL = window.location.origin + '/dnhs-hub';
+
+// ============================================
+// Delete Confirmation Modal
+// ============================================
+var deleteConfirmCallback = null;
+
+function confirmDelete(message, callback) {
+    var modal = document.getElementById('deleteConfirmModal');
+    var msgEl = document.getElementById('deleteConfirmMessage');
+    var btnEl = document.getElementById('deleteConfirmBtn');
+    if (!modal) return callback();
+    
+    msgEl.textContent = message || 'Are you sure you want to delete this?';
+    deleteConfirmCallback = callback;
+    
+    var bsModal = new bootstrap.Modal(modal);
+    bsModal.show();
+    
+    btnEl.onclick = function() {
+        bsModal.hide();
+        if (typeof deleteConfirmCallback === 'function') {
+            deleteConfirmCallback();
+            deleteConfirmCallback = null;
+        }
+    };
+    
+    modal.addEventListener('hidden.bs.modal', function() {
+        deleteConfirmCallback = null;
+    }, { once: true });
+}
 
 // ============================================
 // Toast Alert System
