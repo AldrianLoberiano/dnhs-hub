@@ -70,10 +70,19 @@ This system is strictly for internal use by authorized personnel (Administrators
 ### Security
 - Rate limiting on login (5 attempts, 15-minute lockout)
 - Password hashing (bcrypt)
-- CSRF token protection
-- XSS prevention
-- SQL injection prevention
-- Session timeout
+- CSRF token protection (regenerated after each use)
+- XSS prevention (htmlspecialchars on all output)
+- SQL injection prevention (PDO prepared statements)
+- Session timeout (30 minutes)
+- Session fixation protection (regenerate ID after login)
+- Path traversal protection (realpath validation on file operations)
+- File upload MIME type validation
+- PHP execution blocked in uploads directory (.htaccess)
+- Backup restore SQL statement validation
+- Security headers (X-Content-Type-Options, X-Frame-Options, X-XSS-Protection, Referrer-Policy)
+- Session cookie security (HttpOnly, SameSite, Strict Mode, Secure when HTTPS)
+- Strong password policy (8+ chars, uppercase, lowercase, number)
+- POST-based logout with CSRF protection
 
 ---
 
@@ -291,15 +300,20 @@ DNHS-2026-000001
 - Rate limiting on login (5 attempts, 15-minute lockout)
 - Password hashing (bcrypt)
 - PDO prepared statements (SQL injection prevention)
-- CSRF token protection
-- XSS protection (htmlspecialchars)
-- Session validation
+- CSRF token protection (regenerated after successful validation)
+- XSS protection (htmlspecialchars via `sanitize()` on all output)
+- Session validation and timeout (30 minutes)
+- Session fixation protection (`session_regenerate_id` after login)
 - Role-based access control
-- Secure file upload validation
-- File type and size restrictions
-- Activity logging
-- Automatic session timeout
-- HTTP-only and SameSite cookies
+- Path traversal protection (`realpath()` validation on file operations)
+- Secure file upload validation (extension + MIME type via `finfo_file()`)
+- File type and size restrictions (PDF, JPG, JPEG, PNG - 10MB max)
+- PHP execution blocked in uploads directory (`.htaccess`)
+- Backup restore SQL validation (blocks DROP DATABASE, GRANT, INTO OUTFILE, etc.)
+- Backup file size limit (50MB max)
+- Security headers (X-Content-Type-Options, X-Frame-Options, X-XSS-Protection, Referrer-Policy)
+- Session cookie security (HttpOnly, SameSite=Lax, Strict Mode, Secure when HTTPS)
+- Activity logging (audit trail)
 
 ---
 
@@ -378,3 +392,113 @@ Developed by the Alumni for the Registrar's Office of Dayap National High School
 |---------|------|-------------|
 | 1.0.0 | 2026 | Initial release |
 | 1.1.0 | 2026 | UI improvements, security enhancements, notification modals |
+| 1.2.0 | 2026 | Security hardening: path traversal fixes, upload validation, session protection, security headers, backup validation, password policy enforcement |
+
+---
+
+## System Checklist
+
+### Authentication & Authorization
+- [x] Login with rate limiting (5 attempts / 15 min lockout)
+- [x] Password hashing with bcrypt
+- [x] Session fixation protection (regenerate ID after login)
+- [x] Session timeout (30 minutes inactivity)
+- [x] Session strict mode enabled
+- [x] Session cookies: HttpOnly, SameSite=Lax, Secure (when HTTPS)
+- [x] POST-based logout with CSRF token
+- [x] Role-based access control (Admin, Registrar)
+- [x] Password policy enforcement (8+ chars, uppercase, lowercase, number)
+
+### Dashboard
+- [x] Summary cards with month-over-month percentage change
+- [x] Monthly Requests chart
+- [x] Request Status Breakdown chart
+- [x] Most Requested Documents chart
+- [x] Recent Requests list
+- [x] Quick action links
+
+### Student Records
+- [x] Add new student
+- [x] Edit student information
+- [x] View student profile
+- [x] Archive student record
+- [x] Restore archived student
+- [x] List archived students
+- [x] Search and filter (name, LRN, status, batch)
+- [x] Print student profile
+
+### Student Documents
+- [x] Upload documents (PDF, JPG, JPEG, PNG - 10MB max)
+- [x] MIME type validation (finfo_file)
+- [x] PHP execution blocked in uploads directory
+- [x] Version tracking for uploaded files
+- [x] Download documents
+- [x] Preview documents
+- [x] Delete documents
+- [x] Path traversal protection (realpath validation)
+- [x] Filter by student and document type
+
+### Document Requests
+- [x] Create new request
+- [x] Auto-generated tracking numbers (DNHS-YYYY-NNNNNN)
+- [x] Status workflow: Pending → Approved → Processing → Ready for Release → Released
+- [x] Status can be Rejected or Cancelled
+- [x] QR code verification (public page)
+- [x] Claim stub generation and printing
+- [x] Status history tracking
+
+### Reports
+- [x] Daily, Weekly, Monthly, Yearly requests
+- [x] Request Status Breakdown
+- [x] Most Requested Documents
+- [x] Registrar Activity Report
+
+### Audit Trail
+- [x] Tracks all system activities
+- [x] Filterable by action, module, and date range
+- [x] IP address logging
+
+### User Management (Admin Only)
+- [x] Create new user
+- [x] Edit user information
+- [x] Activate/Deactivate users
+- [x] Reset passwords
+- [x] Role assignment (Administrator, Registrar)
+- [x] Strong password policy enforcement
+
+### Backup & Restore (Admin Only)
+- [x] Database backup creation
+- [x] Database restore from backup file
+- [x] SQL statement validation (blocks destructive operations)
+- [x] Backup file size limit (50MB)
+- [x] Backup history with download capability
+
+### Notifications
+- [x] In-app notification system
+- [x] Popup modal for viewing notification details
+- [x] Mark as read functionality
+- [x] Unread count badge
+
+### Security
+- [x] SQL injection prevention (PDO prepared statements)
+- [x] XSS prevention (htmlspecialchars on all output)
+- [x] CSRF token protection (regenerated after use)
+- [x] Path traversal protection (realpath validation)
+- [x] File upload validation (extension + MIME type)
+- [x] PHP execution blocked in uploads (.htaccess)
+- [x] Backup restore SQL validation
+- [x] Security headers (X-Content-Type-Options, X-Frame-Options, X-XSS-Protection, Referrer-Policy)
+- [x] Session cookie security (HttpOnly, SameSite, Strict Mode)
+- [x] Content-Disposition header escaping
+- [x] $pageTitle escaping in HTML output
+- [x] Notification URL escaping
+- [x] Login error message anonymization (anti-enumeration)
+
+### UI/UX
+- [x] Responsive design (Bootstrap 5)
+- [x] Sidebar navigation with role-based visibility
+- [x] Top navigation bar with search, notifications, user menu
+- [x] Toast notifications for flash messages
+- [x] Confirmation modals for destructive actions
+- [x] DataTables for sortable/searchable tables
+- [x] Print-friendly student profiles
