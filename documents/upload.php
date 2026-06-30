@@ -244,6 +244,10 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = url.toString();
         }, 500);
     });
+    if (searchInput.value) {
+        searchInput.focus();
+        searchInput.setSelectionRange(searchInput.value.length, searchInput.value.length);
+    }
 });
 </script>
 
