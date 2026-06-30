@@ -115,18 +115,46 @@ $docTypes = $stmt->fetchAll();
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var debounceTimer;
-    var form = document.getElementById('filterForm');
     var searchInput = document.getElementById('filterSearch');
-    document.getElementById('filterStatus').addEventListener('change', function() { form.submit(); });
-    document.getElementById('filterDocType').addEventListener('change', function() { form.submit(); });
+    var statusSelect = document.getElementById('filterStatus');
+    var docTypeSelect = document.getElementById('filterDocType');
+    var tableBody = document.querySelector('#requestsTable tbody');
+    var paginationNav = document.getElementById('paginationArea');
+
+    function loadRequests() {
+        var params = new URLSearchParams();
+        if (searchInput.value) params.set('search', searchInput.value);
+        if (statusSelect.value) params.set('status', statusSelect.value);
+        if (docTypeSelect.value) params.set('doc_type', docTypeSelect.value);
+        fetch('<?php echo APP_URL; ?>/requests/ajax_search.php?' + params.toString())
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                tableBody.innerHTML = data.table;
+                paginationNav.innerHTML = data.pagination;
+            });
+    }
+
     searchInput.addEventListener('input', function() {
         clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(function() { form.submit(); }, 500);
+        debounceTimer = setTimeout(loadRequests, 400);
     });
-    if (searchInput.value) {
-        searchInput.focus();
-        searchInput.setSelectionRange(searchInput.value.length, searchInput.value.length);
-    }
+    statusSelect.addEventListener('change', loadRequests);
+    docTypeSelect.addEventListener('change', loadRequests);
+
+    paginationNav.addEventListener('click', function(e) {
+        var link = e.target.closest('a.page-link');
+        if (!link) return;
+        e.preventDefault();
+        var url = new URL(link.href, window.location.origin);
+        var params = new URLSearchParams();
+        if (searchInput.value) params.set('search', searchInput.value);
+        if (statusSelect.value) params.set('status', statusSelect.value);
+        if (docTypeSelect.value) params.set('doc_type', docTypeSelect.value);
+        params.set('page', url.searchParams.get('page') || '1');
+        fetch('<?php echo APP_URL; ?>/requests/ajax_search.php?' + params.toString())
+            .then(function(r) { return r.json(); })
+            .then(function(d) { tableBody.innerHTML = d.table; paginationNav.innerHTML = d.pagination; });
+    });
 });
 </script>
 
@@ -134,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="card">
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="table table-hover" id="requestsTable">
                 <thead>
                     <tr>
                         <th>Tracking #</th>
@@ -187,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 <!-- Pagination -->
-<div class="d-flex justify-content-end mt-3">
+<div class="d-flex justify-content-end mt-3" id="paginationArea">
     <?php
     $baseUrl = 'index.php?';
     if (!empty($search)) $baseUrl .= "search=" . urlencode($search) . "&";
