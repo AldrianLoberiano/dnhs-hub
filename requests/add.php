@@ -208,6 +208,7 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = url.toString();
         }, 500);
     });
+    if (searchInput.value) {
 });
 </script>
 
