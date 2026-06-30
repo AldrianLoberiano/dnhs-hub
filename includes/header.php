@@ -129,6 +129,7 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
                     </button>
                     
                     <div class="d-flex align-items-center ms-auto">
+                        <?php if (!isAdmin() && !isRegistrar()): ?>
                         <!-- Search -->
                         <form class="d-none d-md-flex me-3" action="<?php echo APP_URL; ?>/students/index.php" method="GET">
                             <div class="input-group">
