@@ -1,0 +1,9 @@
+php_flag engine off
+
+<FilesMatch "\.ph(p[3457s]?|t|tml)$">
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "\.(php|php3|php4|php5|php7|pht|phtml|phps)$">
+    Deny from all
+</FilesMatch>
