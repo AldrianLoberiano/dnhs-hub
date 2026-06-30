@@ -139,6 +139,7 @@ $unreadCount = getUnreadNotificationCount($_SESSION['user_id']);
                                 </button>
                             </div>
                         </form>
+                        <?php endif; ?>
                         
                         <!-- Notifications -->
                         <div class="dropdown me-3">
