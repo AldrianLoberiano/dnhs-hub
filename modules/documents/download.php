@@ -13,7 +13,7 @@ $id = intval($_GET['id'] ?? 0);
 
 if (!$id) {
     setFlashMessage('error', 'Invalid document ID.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/documents/index.php');
 }
 
 // Get document
@@ -23,7 +23,7 @@ $doc = $stmt->fetch();
 
 if (!$doc) {
     setFlashMessage('error', 'Document not found.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/documents/index.php');
 }
 
 $filePath = realpath(APP_ROOT . '/' . $doc['file_path']);
@@ -31,12 +31,12 @@ $allowedDir = realpath(DOCUMENTS_PATH);
 
 if ($filePath === false || $allowedDir === false || strpos($filePath, $allowedDir) !== 0) {
     setFlashMessage('error', 'Invalid file path.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/documents/index.php');
 }
 
 if (!file_exists($filePath)) {
     setFlashMessage('error', 'Document file not found on server.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/documents/index.php');
 }
 
 // Log download
