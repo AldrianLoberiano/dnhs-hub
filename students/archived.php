@@ -68,7 +68,7 @@ $students = $stmt->fetchAll();
 <div class="card">
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-hover data-table">
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>Student #</th>
