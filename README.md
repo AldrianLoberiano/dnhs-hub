@@ -18,22 +18,27 @@ This system is strictly for internal use by authorized personnel (Administrators
 - Summary cards with percentage indicators (month-over-month comparison)
 - Quick action links for common tasks
 - Monthly Requests chart
-- Request Status Breakdown chart
+- Request Status Breakdown chart with count labels
 - Most Requested Documents chart
 - Recent Requests list
+- Consolidated COUNT queries for faster load times
 
 ### Student Records
 - Complete student profiles (Personal, Guardian, Academic information)
 - Add, Edit, View, Archive, Restore students
-- Search and filter by name, LRN, status, batch
+- Instant AJAX search (no page reload)
+- Filter by status and batch with instant results
 - Print student profile
 - Digital student folder with documents and request history
+- Floating action buttons (FAB) for Save/Cancel on add/edit pages
 
 ### Student Documents
 - Upload documents (PDF, JPG, JPEG, PNG - Max 10MB)
 - Version tracking for uploaded files
 - Download, Preview, Delete documents
-- Filter by student and document type
+- AJAX student autocomplete (typeahead search for 5000+ records)
+- Instant filter by document type
+- Custom styled delete confirmation modal
 
 ### Document Requests
 - Auto-generated tracking numbers (DNHS-YYYY-NNNNNN)
@@ -41,31 +46,45 @@ This system is strictly for internal use by authorized personnel (Administrators
 - QR code verification
 - Claim stub generation and printing
 - Status history tracking
+- AJAX student autocomplete (typeahead search)
+- Instant filter by status and document type
+- Custom styled delete confirmation modal
 
 ### Reports
 - Daily, Weekly, Monthly, Yearly requests
 - Request Status Breakdown
 - Most Requested Documents
 - Registrar Activity Report
+- Export to CSV, Excel (.xls), and Word (.doc)
 
 ### Audit Trail
 - Tracks all system activities (Login, CRUD operations, Document uploads, etc.)
 - Filterable by action, module, and date range
+- Optimized date range queries
 
 ### User Management (Admin Only)
 - Create, Edit, Deactivate/Activate users
 - Reset passwords
 - Role assignment (Administrator, Registrar)
+- Uniform badge alignment for role/status
 
 ### Backup & Restore (Admin Only)
 - Database backup creation
 - Database restore from backup file
 - Backup history with download capability
+- Custom styled confirmation for restore operations
 
 ### Notifications
 - In-app notification system
 - Popup modal for viewing notification details
 - Mark as read functionality
+- Unread count badge
+- Direct links to related records
+
+### Settings Page
+- Unified settings page with tabs (Profile, Audit Logs, Backup & Restore)
+- Profile editing and password change
+- Styled banner and stat cards
 
 ### Security
 - Rate limiting on login (5 attempts, 15-minute lockout)
@@ -83,6 +102,14 @@ This system is strictly for internal use by authorized personnel (Administrators
 - Session cookie security (HttpOnly, SameSite, Strict Mode, Secure when HTTPS)
 - Strong password policy (8+ chars, uppercase, lowercase, number)
 - POST-based logout with CSRF protection
+
+### Performance
+- 18 database indexes for optimized queries at scale (5000+ records)
+- Consolidated dashboard COUNT queries (8 queries → 1)
+- Smart windowed pagination (ellipsis for large page counts)
+- Limited dropdown queries to prevent memory exhaustion
+- Batch notification inserts
+- Date range predicates replacing MONTH/YEAR() functions
 
 ---
 
@@ -108,7 +135,7 @@ dnhs-hub/
 │   │   ├── login.css              # Login page styles
 │   │   └── style.css              # Main application styles
 │   ├── js/
-│   │   └── app.js                 # JavaScript functions
+│   │   └── app.js                 # JavaScript functions (toast, confirmDelete, etc.)
 │   ├── images/
 │   │   ├── school-logo.png        # School logo
 │   │   └── school-building.jpg    # School building photo
@@ -123,7 +150,7 @@ dnhs-hub/
 │   └── functions.php              # Utility functions
 ├── includes/
 │   ├── header.php                 # Page header & navigation
-│   └── footer.php                 # Page footer & scripts
+│   └── footer.php                 # Page footer, scripts & modals
 ├── audit/
 │   └── index.php                  # Audit logs viewer
 ├── backup/
@@ -132,26 +159,34 @@ dnhs-hub/
 ├── claims/
 │   └── stub.php                   # Claim stub generator
 ├── documents/
-│   ├── index.php                  # Documents list
+│   ├── index.php                  # Documents list (AJAX search)
+│   ├── ajax_search.php            # AJAX search endpoint
+│   ├── search_students.php        # AJAX student autocomplete
 │   ├── upload.php                 # Upload document form
 │   ├── download.php               # Download document
 │   ├── preview.php                # Preview document
-│   └── delete.php                 # Delete document
+│   └── delete.php                 # Delete document (AJAX + form)
 ├── notifications/
 │   ├── index.php                  # Notifications list
 │   └── mark_read.php              # Mark notification read (AJAX)
 ├── reports/
-│   └── index.php                  # Reports page
+│   ├── index.php                  # Reports page
+│   └── export.php                 # Export reports (CSV, Excel, Word)
 ├── requests/
-│   ├── index.php                  # Requests list
+│   ├── index.php                  # Requests list (AJAX search)
+│   ├── ajax_search.php            # AJAX search endpoint
+│   ├── search_students.php        # AJAX student autocomplete
 │   ├── add.php                    # Create new request
 │   ├── view.php                   # View request details
 │   ├── update_status.php          # Update request status
 │   └── verify.php                 # QR code verification
+├── settings/
+│   └── index.php                  # Unified settings page (Profile, Audit, Backup)
 ├── students/
-│   ├── index.php                  # Students list
-│   ├── add.php                    # Add new student
-│   ├── edit.php                   # Edit student
+│   ├── index.php                  # Students list (AJAX search)
+│   ├── ajax_search.php            # AJAX search endpoint
+│   ├── add.php                    # Add new student (FAB buttons)
+│   ├── edit.php                   # Edit student (FAB buttons)
 │   ├── view.php                   # View student profile
 │   ├── archive.php                # Archive student
 │   ├── restore.php                # Restore archived student
@@ -393,6 +428,7 @@ Developed by the Alumni for the Registrar's Office of Dayap National High School
 | 1.0.0 | 2026 | Initial release |
 | 1.1.0 | 2026 | UI improvements, security enhancements, notification modals |
 | 1.2.0 | 2026 | Security hardening: path traversal fixes, upload validation, session protection, security headers, backup validation, password policy enforcement |
+| 1.3.0 | 2026 | Performance optimizations, AJAX search, student autocomplete, custom delete modals, report exports, smart pagination, 18 database indexes |
 
 ---
 
@@ -499,6 +535,22 @@ Developed by the Alumni for the Registrar's Office of Dayap National High School
 - [x] Sidebar navigation with role-based visibility
 - [x] Top navigation bar with search, notifications, user menu
 - [x] Toast notifications for flash messages
-- [x] Confirmation modals for destructive actions
-- [x] DataTables for sortable/searchable tables
-- [x] Print-friendly student profiles
+- [x] Custom styled delete confirmation modals
+- [x] Smart windowed pagination with ellipsis
+- [x] Floating action buttons (FAB) for Save/Cancel
+- [x] Uniform badge alignment across tables
+
+### Performance
+- [x] 18 database indexes for optimized queries
+- [x] Consolidated dashboard COUNT queries
+- [x] AJAX instant search (no page reload)
+- [x] AJAX student autocomplete for 5000+ records
+- [x] Auto-filtering dropdowns
+- [x] Limited dropdown queries to prevent memory exhaustion
+- [x] Batch notification inserts
+- [x] Date range predicates replacing MONTH/YEAR()
+
+### Reports & Export
+- [x] CSV export
+- [x] Excel (.xls) export
+- [x] Word (.doc) export
