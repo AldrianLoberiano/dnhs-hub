@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         logAudit('Create User', 'User Management', "Created user: $username");
         setFlashMessage('success', 'User created successfully.');
-        redirect(APP_URL . '/modules/index.php');
+        redirect(APP_URL . '/modules/users/index.php');
     }
     }
 }
