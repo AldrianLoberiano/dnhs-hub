@@ -313,22 +313,51 @@ function getPagination($total, $perPage = 10, $currentPage = 1) {
 function renderPagination($pagination, $baseUrl = '?') {
     if ($pagination['total_pages'] <= 1) return '';
     
+    $totalPages = $pagination['total_pages'];
+    $currentPage = $pagination['current_page'];
+    
     $html = '<nav><ul class="pagination justify-content-center">';
     
     // Previous
-    if ($pagination['current_page'] > 1) {
-        $html .= '<li class="page-item"><a class="page-link" href="' . $baseUrl . 'page=' . ($pagination['current_page'] - 1) . '">&laquo;</a></li>';
+    if ($currentPage > 1) {
+        $html .= '<li class="page-item"><a class="page-link" href="' . $baseUrl . 'page=' . ($currentPage - 1) . '">&laquo;</a></li>';
     }
     
-    // Page numbers
-    for ($i = 1; $i <= $pagination['total_pages']; $i++) {
-        $active = $i === $pagination['current_page'] ? ' active' : '';
+    // Smart page window
+    $range = 2;
+    $pages = [];
+    
+    // Always include first page
+    $pages[] = 1;
+    
+    // Pages around current
+    for ($i = max(2, $currentPage - $range); $i <= min($totalPages - 1, $currentPage + $range); $i++) {
+        $pages[] = $i;
+    }
+    
+    // Always include last page
+    if ($totalPages > 1) {
+        $pages[] = $totalPages;
+    }
+    
+    // Remove duplicates and sort
+    $pages = array_unique($pages);
+    sort($pages);
+    
+    $prevPage = 0;
+    foreach ($pages as $i) {
+        // Add ellipsis if there's a gap
+        if ($i - $prevPage > 1) {
+            $html .= '<li class="page-item disabled"><span class="page-link">...</span></li>';
+        }
+        $active = $i === $currentPage ? ' active' : '';
         $html .= '<li class="page-item' . $active . '"><a class="page-link" href="' . $baseUrl . 'page=' . $i . '">' . $i . '</a></li>';
+        $prevPage = $i;
     }
     
     // Next
-    if ($pagination['current_page'] < $pagination['total_pages']) {
-        $html .= '<li class="page-item"><a class="page-link" href="' . $baseUrl . 'page=' . ($pagination['current_page'] + 1) . '">&raquo;</a></li>';
+    if ($currentPage < $totalPages) {
+        $html .= '<li class="page-item"><a class="page-link" href="' . $baseUrl . 'page=' . ($currentPage + 1) . '">&raquo;</a></li>';
     }
     
     $html .= '</ul></nav>';
