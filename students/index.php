@@ -106,24 +106,73 @@ $batches = $stmt->fetchAll(PDO::FETCH_COLUMN);
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var debounceTimer;
-    var form = document.getElementById('filterForm');
     var searchInput = document.getElementById('filterSearch');
-    
-    // Auto-submit on select change
-    document.getElementById('filterStatus').addEventListener('change', function() { form.submit(); });
-    document.getElementById('filterBatch').addEventListener('change', function() { form.submit(); });
-    
-    // Auto-submit on search with debounce
+    var statusSelect = document.getElementById('filterStatus');
+    var batchSelect = document.getElementById('filterBatch');
+    var tableBody = document.querySelector('#studentsTable tbody');
+    var paginationNav = document.getElementById('paginationArea');
+
+    function loadStudents() {
+        var params = new URLSearchParams();
+        if (searchInput.value) params.set('search', searchInput.value);
+        if (statusSelect.value) params.set('status', statusSelect.value);
+        if (batchSelect.value) params.set('batch', batchSelect.value);
+
+        fetch('<?php echo APP_URL; ?>/students/ajax_search.php?' + params.toString())
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                tableBody.innerHTML = data.table;
+                paginationNav.innerHTML = data.pagination;
+                // Rebind pagination links
+                paginationNav.querySelectorAll('a.page-link').forEach(function(link) {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        var url = new URL(this.href);
+                        var page = url.searchParams.get('page');
+                        params.set('page', page || '1');
+                        fetch('<?php echo APP_URL; ?>/students/ajax_search.php?' + params.toString())
+                            .then(function(r) { return r.json(); })
+                            .then(function(d) {
+                                tableBody.innerHTML = d.table;
+                                paginationNav.innerHTML = d.pagination;
+                                // Rebind again
+                                paginationNav.querySelectorAll('a.page-link').forEach(function(l2) {
+                                    l2.addEventListener('click', arguments.callee);
+                                });
+                            });
+                    });
+                });
+            });
+    }
+
     searchInput.addEventListener('input', function() {
         clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(function() { form.submit(); }, 500);
+        debounceTimer = setTimeout(loadStudents, 400);
     });
-    
-    // Restore focus and cursor position after page reload
-    if (searchInput.value) {
-        searchInput.focus();
-        searchInput.setSelectionRange(searchInput.value.length, searchInput.value.length);
-    }
+    statusSelect.addEventListener('change', loadStudents);
+    batchSelect.addEventListener('change', loadStudents);
+
+    // Handle pagination clicks via event delegation
+    paginationNav.addEventListener('click', function(e) {
+        if (e.target.classList.contains('page-link')) {
+            e.preventDefault();
+            var href = e.target.getAttribute('href') || e.target.closest('a').getAttribute('href');
+            if (!href) return;
+            var url = new URL(href, window.location.origin);
+            var page = url.searchParams.get('page');
+            var params = new URLSearchParams();
+            if (searchInput.value) params.set('search', searchInput.value);
+            if (statusSelect.value) params.set('status', statusSelect.value);
+            if (batchSelect.value) params.set('batch', batchSelect.value);
+            params.set('page', page || '1');
+            fetch('<?php echo APP_URL; ?>/students/ajax_search.php?' + params.toString())
+                .then(function(r) { return r.json(); })
+                .then(function(d) {
+                    tableBody.innerHTML = d.table;
+                    paginationNav.innerHTML = d.pagination;
+                });
+        }
+    });
 });
 </script>
 
@@ -131,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="card">
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="table table-hover" id="studentsTable">
                 <thead>
                     <tr>
                         <th>Student #</th>
@@ -202,7 +251,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 <!-- Pagination -->
-<div class="d-flex justify-content-end mt-3">
+<div class="d-flex justify-content-end mt-3" id="paginationArea">
     <?php
     $baseUrl = 'index.php?';
     if (!empty($search)) $baseUrl .= "search=" . urlencode($search) . "&";
