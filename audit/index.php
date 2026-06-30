@@ -35,13 +35,13 @@ if (!empty($module)) {
 }
 
 if (!empty($startDate)) {
-    $where .= " AND DATE(al.created_at) >= ?";
-    $params[] = $startDate;
+    $where .= " AND al.created_at >= ?";
+    $params[] = $startDate . ' 00:00:00';
 }
 
 if (!empty($endDate)) {
-    $where .= " AND DATE(al.created_at) <= ?";
-    $params[] = $endDate;
+    $where .= " AND al.created_at <= ?";
+    $params[] = $endDate . ' 23:59:59';
 }
 
 // Get total count
