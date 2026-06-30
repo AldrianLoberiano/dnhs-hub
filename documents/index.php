@@ -154,16 +154,20 @@ document.addEventListener('DOMContentLoaded', function() {
         var btn = e.target.closest('.btn-delete-doc');
         if (!btn) return;
         var docId = btn.dataset.id;
-        if (confirm('Delete this document?')) {
+        confirmDelete('Delete this document? This cannot be undone.', function() {
             fetch('<?php echo APP_URL; ?>/documents/delete.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: 'id=' + docId + '&csrf_token=<?php echo getCSRFToken(); ?>'
             }).then(function(r) { return r.json(); }).then(function(data) {
-                if (data.success) loadDocuments();
-                else alert(data.message || 'Failed to delete.');
+                if (data.success) {
+                    showToast('success', 'Document deleted successfully.');
+                    loadDocuments();
+                } else {
+                    showToast('error', data.message || 'Failed to delete.');
+                }
             });
-        }
+        });
     });
 });
 </script>
