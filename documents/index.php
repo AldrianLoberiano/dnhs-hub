@@ -109,17 +109,62 @@ try {
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var debounceTimer;
-    var form = document.getElementById('filterForm');
     var searchInput = document.getElementById('filterSearch');
-    document.getElementById('filterDocType').addEventListener('change', function() { form.submit(); });
+    var docTypeSelect = document.getElementById('filterDocType');
+    var tableBody = document.querySelector('#documentsTable tbody');
+    var paginationNav = document.getElementById('paginationArea');
+    var studentId = '<?php echo $studentId ?? 0; ?>';
+
+    function loadDocuments() {
+        var params = new URLSearchParams();
+        if (searchInput.value) params.set('search', searchInput.value);
+        if (docTypeSelect.value) params.set('doc_type', docTypeSelect.value);
+        if (studentId) params.set('student_id', studentId);
+        fetch('<?php echo APP_URL; ?>/documents/ajax_search.php?' + params.toString())
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                tableBody.innerHTML = data.table;
+                paginationNav.innerHTML = data.pagination;
+            });
+    }
+
     searchInput.addEventListener('input', function() {
         clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(function() { form.submit(); }, 500);
+        debounceTimer = setTimeout(loadDocuments, 400);
     });
-    if (searchInput.value) {
-        searchInput.focus();
-        searchInput.setSelectionRange(searchInput.value.length, searchInput.value.length);
-    }
+    docTypeSelect.addEventListener('change', loadDocuments);
+
+    paginationNav.addEventListener('click', function(e) {
+        var link = e.target.closest('a.page-link');
+        if (!link) return;
+        e.preventDefault();
+        var url = new URL(link.href, window.location.origin);
+        var params = new URLSearchParams();
+        if (searchInput.value) params.set('search', searchInput.value);
+        if (docTypeSelect.value) params.set('doc_type', docTypeSelect.value);
+        if (studentId) params.set('student_id', studentId);
+        params.set('page', url.searchParams.get('page') || '1');
+        fetch('<?php echo APP_URL; ?>/documents/ajax_search.php?' + params.toString())
+            .then(function(r) { return r.json(); })
+            .then(function(d) { tableBody.innerHTML = d.table; paginationNav.innerHTML = d.pagination; });
+    });
+
+    // Delete document
+    document.addEventListener('click', function(e) {
+        var btn = e.target.closest('.btn-delete-doc');
+        if (!btn) return;
+        var docId = btn.dataset.id;
+        if (confirm('Delete this document?')) {
+            fetch('<?php echo APP_URL; ?>/documents/delete.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'id=' + docId + '&csrf_token=<?php echo getCSRFToken(); ?>'
+            }).then(function(r) { return r.json(); }).then(function(data) {
+                if (data.success) loadDocuments();
+                else alert(data.message || 'Failed to delete.');
+            });
+        }
+    });
 });
 </script>
 
@@ -127,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="card">
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="table table-hover" id="documentsTable">
                 <thead>
                     <tr>
                         <th>Student</th>
@@ -188,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 <!-- Pagination -->
-<div class="d-flex justify-content-end mt-3">
+<div class="d-flex justify-content-end mt-3" id="paginationArea">
     <?php
     $baseUrl = 'index.php?';
     if (!empty($search)) $baseUrl .= "search=" . urlencode($search) . "&";
