@@ -123,6 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(function() { form.submit(); }, 500);
     });
+    if (searchInput.value) {
 });
 </script>
 
