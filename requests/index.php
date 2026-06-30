@@ -119,6 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var searchInput = document.getElementById('filterSearch');
     document.getElementById('filterStatus').addEventListener('change', function() { form.submit(); });
     document.getElementById('filterDocType').addEventListener('change', function() { form.submit(); });
+    searchInput.addEventListener('input', function() {
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(function() { form.submit(); }, 500);
     });
