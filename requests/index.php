@@ -124,6 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
         debounceTimer = setTimeout(function() { form.submit(); }, 500);
     });
     if (searchInput.value) {
+        searchInput.focus();
 });
 </script>
 
