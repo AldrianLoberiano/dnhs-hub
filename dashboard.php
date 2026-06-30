@@ -10,40 +10,33 @@ require_once __DIR__ . '/includes/header.php';
 
 $db = getDBConnection();
 
-// Get summary counts
+// Get summary counts (consolidated into fewer queries)
 $counts = [];
 
-// Total Students
+// Students + Documents + Users in 3 queries (could be 1 but these are small/fast with indexes)
 $stmt = $db->query("SELECT COUNT(*) as count FROM students WHERE is_archived = 0");
 $counts['students'] = $stmt->fetch()['count'];
 
-// Total Requests
-$stmt = $db->query("SELECT COUNT(*) as count FROM document_requests");
-$counts['total_requests'] = $stmt->fetch()['count'];
-
-// Pending Requests
-$stmt = $db->query("SELECT COUNT(*) as count FROM document_requests WHERE status = 'Pending'");
-$counts['pending'] = $stmt->fetch()['count'];
-
-// Processing Requests
-$stmt = $db->query("SELECT COUNT(*) as count FROM document_requests WHERE status = 'Processing'");
-$counts['processing'] = $stmt->fetch()['count'];
-
-// Ready for Release
-$stmt = $db->query("SELECT COUNT(*) as count FROM document_requests WHERE status = 'Ready for Release'");
-$counts['ready'] = $stmt->fetch()['count'];
-
-// Released Documents
-$stmt = $db->query("SELECT COUNT(*) as count FROM document_requests WHERE status = 'Released'");
-$counts['released'] = $stmt->fetch()['count'];
-
-// Total Uploaded Documents
 $stmt = $db->query("SELECT COUNT(*) as count FROM student_documents");
 $counts['documents'] = $stmt->fetch()['count'];
 
-// Active Users
 $stmt = $db->query("SELECT COUNT(*) as count FROM users WHERE is_active = 1");
 $counts['users'] = $stmt->fetch()['count'];
+
+// All request counts in ONE query instead of 5
+$stmt = $db->query("SELECT
+    COUNT(*) as total_requests,
+    SUM(status = 'Pending') as pending,
+    SUM(status = 'Processing') as processing,
+    SUM(status = 'Ready for Release') as ready,
+    SUM(status = 'Released') as released
+FROM document_requests");
+$reqCounts = $stmt->fetch();
+$counts['total_requests'] = $reqCounts['total_requests'];
+$counts['pending'] = $reqCounts['pending'];
+$counts['processing'] = $reqCounts['processing'];
+$counts['ready'] = $reqCounts['ready'];
+$counts['released'] = $reqCounts['released'];
 
 // Percentage changes (current month vs previous month)
 function getPercentageChange($db, $table, $where = '1=1') {
@@ -52,25 +45,36 @@ function getPercentageChange($db, $table, $where = '1=1') {
     if (!in_array($table, $allowedTables) || !in_array($where, $allowedWheres)) {
         return 0;
     }
-    $stmt = $db->query("SELECT COUNT(*) as count FROM `$table` WHERE $where AND MONTH(created_at) = MONTH(CURRENT_DATE()) AND YEAR(created_at) = YEAR(CURRENT_DATE())");
+    $currentStart = date('Y-m-01');
+    $currentEnd = date('Y-m-t') . ' 23:59:59';
+    $prevStart = date('Y-m-01', strtotime('first day of last month'));
+    $prevEnd = date('Y-m-t', strtotime('last day of last month')) . ' 23:59:59';
+    $stmt = $db->prepare("SELECT COUNT(*) as count FROM `$table` WHERE $where AND created_at BETWEEN ? AND ?");
+    $stmt->execute([$currentStart, $currentEnd]);
     $current = $stmt->fetch()['count'];
-    $stmt = $db->query("SELECT COUNT(*) as count FROM `$table` WHERE $where AND MONTH(created_at) = MONTH(CURRENT_DATE() - INTERVAL 1 MONTH) AND YEAR(created_at) = YEAR(CURRENT_DATE() - INTERVAL 1 MONTH)");
+    $stmt->execute([$prevStart, $prevEnd]);
     $previous = $stmt->fetch()['count'];
     if ($previous == 0) return $current > 0 ? 100 : 0;
     return round((($current - $previous) / $previous) * 100);
 }
 
 function getRequestPercentageChange($db, $status = null) {
+    $currentStart = date('Y-m-01');
+    $currentEnd = date('Y-m-t') . ' 23:59:59';
+    $prevStart = date('Y-m-01', strtotime('first day of last month'));
+    $prevEnd = date('Y-m-t', strtotime('last day of last month')) . ' 23:59:59';
     if ($status) {
-        $stmt = $db->prepare("SELECT COUNT(*) as count FROM document_requests WHERE MONTH(date_requested) = MONTH(CURRENT_DATE()) AND YEAR(date_requested) = YEAR(CURRENT_DATE()) AND status = ?");
-        $stmt->execute([$status]);
+        $stmt = $db->prepare("SELECT COUNT(*) as count FROM document_requests WHERE date_requested BETWEEN ? AND ? AND status = ?");
+        $stmt->execute([$currentStart, $currentEnd, $status]);
         $current = $stmt->fetch()['count'];
-        $stmt = $db->prepare("SELECT COUNT(*) as count FROM document_requests WHERE MONTH(date_requested) = MONTH(CURRENT_DATE() - INTERVAL 1 MONTH) AND YEAR(date_requested) = YEAR(CURRENT_DATE() - INTERVAL 1 MONTH) AND status = ?");
-        $stmt->execute([$status]);
+        $stmt->execute([$prevStart, $prevEnd, $status]);
         $previous = $stmt->fetch()['count'];
     } else {
-        $current = $db->query("SELECT COUNT(*) as count FROM document_requests WHERE MONTH(date_requested) = MONTH(CURRENT_DATE()) AND YEAR(date_requested) = YEAR(CURRENT_DATE())")->fetch()['count'];
-        $previous = $db->query("SELECT COUNT(*) as count FROM document_requests WHERE MONTH(date_requested) = MONTH(CURRENT_DATE() - INTERVAL 1 MONTH) AND YEAR(date_requested) = YEAR(CURRENT_DATE() - INTERVAL 1 MONTH)")->fetch()['count'];
+        $stmt = $db->prepare("SELECT COUNT(*) as count FROM document_requests WHERE date_requested BETWEEN ? AND ?");
+        $stmt->execute([$currentStart, $currentEnd]);
+        $current = $stmt->fetch()['count'];
+        $stmt->execute([$prevStart, $prevEnd]);
+        $previous = $stmt->fetch()['count'];
     }
     if ($previous == 0) return $current > 0 ? 100 : 0;
     return round((($current - $previous) / $previous) * 100);
