@@ -36,7 +36,7 @@ define('ASSETS_PATH', APP_ROOT . '/assets');
 define('UPLOADS_PATH', ASSETS_PATH . '/uploads');
 define('DOCUMENTS_PATH', UPLOADS_PATH . '/documents');
 define('PROFILES_PATH', UPLOADS_PATH . '/profiles');
-define('BACKUPS_PATH', APP_ROOT . '/backups');
+define('BACKUPS_PATH', APP_ROOT . '/storage/backups');
 
 // Application URLs
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
@@ -54,7 +54,7 @@ define('SESSION_TIMEOUT', 1800); // 30 minutes
 require_once __DIR__ . '/database.php';
 
 // Include helper functions
-require_once __DIR__ . '/../helpers/functions.php';
+require_once __DIR__ . '/../includes/functions.php';
 
 // Security headers
 header('X-Content-Type-Options: nosniff');
