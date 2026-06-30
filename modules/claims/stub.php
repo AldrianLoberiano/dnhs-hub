@@ -13,7 +13,7 @@ $id = intval($_GET['id'] ?? 0);
 
 if (!$id) {
     setFlashMessage('error', 'Invalid request ID.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/requests/index.php');
 }
 
 // Get request details
@@ -32,10 +32,10 @@ $request = $stmt->fetch();
 
 if (!$request) {
     setFlashMessage('error', 'Request not found.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/requests/index.php');
 }
 
-$qrUrl = APP_URL . "/requests/verify.php?tracking=" . urlencode($request['tracking_number']);
+$qrUrl = APP_URL . "/modules/requests/verify.php?tracking=" . urlencode($request['tracking_number']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
