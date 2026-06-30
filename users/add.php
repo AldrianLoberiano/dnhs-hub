@@ -27,7 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validation
     if (empty($username)) $errors[] = 'Username is required.';
     if (empty($password)) $errors[] = 'Password is required.';
-    if (strlen($password) < 6) $errors[] = 'Password must be at least 6 characters.';
+    if (strlen($password) < 8) $errors[] = 'Password must be at least 8 characters.';
+    if (!preg_match('/[A-Z]/', $password)) $errors[] = 'Password must contain at least one uppercase letter.';
+    if (!preg_match('/[a-z]/', $password)) $errors[] = 'Password must contain at least one lowercase letter.';
+    if (!preg_match('/[0-9]/', $password)) $errors[] = 'Password must contain at least one number.';
     if ($password !== $confirmPassword) $errors[] = 'Passwords do not match.';
     if (empty($firstName)) $errors[] = 'First name is required.';
     if (empty($lastName)) $errors[] = 'Last name is required.';
