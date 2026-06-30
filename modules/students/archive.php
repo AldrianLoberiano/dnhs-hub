@@ -10,12 +10,12 @@ requireAuth();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     setFlashMessage('error', 'Invalid request method.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/students/index.php');
 }
 
 if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
     setFlashMessage('error', 'Invalid security token.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/students/index.php');
 }
 
 $db = getDBConnection();
@@ -23,7 +23,7 @@ $id = intval($_POST['id'] ?? 0);
 
 if (!$id) {
     setFlashMessage('error', 'Invalid student ID.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/students/index.php');
 }
 
 // Get student
@@ -33,7 +33,7 @@ $student = $stmt->fetch();
 
 if (!$student) {
     setFlashMessage('error', 'Student not found.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/students/index.php');
 }
 
 // Archive student
@@ -42,4 +42,4 @@ $stmt->execute([$id]);
 
 logAudit('Archive Student', 'Student Records', "Archived student: {$student['first_name']} {$student['last_name']} ({$student['student_number']})");
 setFlashMessage('success', 'Student record archived successfully.');
-redirect(APP_URL . '/modules/index.php');
+redirect(APP_URL . '/modules/students/index.php');
