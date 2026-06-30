@@ -13,7 +13,7 @@ $id = intval($_GET['id'] ?? 0);
 
 if (!$id) {
     setFlashMessage('error', 'Invalid user ID.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/users/index.php');
 }
 
 $stmt = $db->prepare("SELECT * FROM users WHERE id = ?");
@@ -22,7 +22,7 @@ $user = $stmt->fetch();
 
 if (!$user) {
     setFlashMessage('error', 'User not found.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/users/index.php');
 }
 
 $pageTitle = 'Edit User - DNHS Hub';
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         logAudit('Update User', 'User Management', "Updated user: {$user['username']}");
         setFlashMessage('success', 'User updated successfully.');
-        redirect(APP_URL . '/modules/index.php');
+        redirect(APP_URL . '/modules/users/index.php');
     }
     }
     
