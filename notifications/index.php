@@ -57,7 +57,7 @@ $notifications = $stmt->fetchAll();
         <?php else: ?>
         <div class="list-group">
             <?php foreach ($notifications as $notif): ?>
-            <?php $notifUrl = !empty($notif['link']) && preg_match('#^[a-zA-Z0-9/_-]+$#', $notif['link']) ? $notif['link'] : '#'; ?>
+            <?php $notifUrl = !empty($notif['link']) && preg_match('#^[a-zA-Z0-9/_-]+$#', $notif['link']) ? htmlspecialchars($notif['link'], ENT_QUOTES, 'UTF-8') : '#'; ?>
             <a href="<?php echo $notifUrl; ?>" class="list-group-item list-group-item-action <?php echo !$notif['is_read'] ? 'bg-light' : ''; ?>">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
