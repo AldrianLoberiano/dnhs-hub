@@ -209,6 +209,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 500);
     });
     if (searchInput.value) {
+        searchInput.focus();
 });
 </script>
 
