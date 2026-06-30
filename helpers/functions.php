@@ -144,8 +144,8 @@ function generateTrackingNumber() {
     $year = date('Y');
     $db = getDBConnection();
     
-    $stmt = $db->prepare("SELECT COUNT(*) as count FROM document_requests WHERE YEAR(date_requested) = ?");
-    $stmt->execute([$year]);
+    $stmt = $db->prepare("SELECT COUNT(*) as count FROM document_requests WHERE date_requested >= ? AND date_requested < ?");
+    $stmt->execute([$year . '-01-01', ($year + 1) . '-01-01']);
     $result = $stmt->fetch();
     $count = $result['count'] + 1;
     
@@ -161,8 +161,8 @@ function generateStudentNumber() {
     $year = date('Y');
     $db = getDBConnection();
     
-    $stmt = $db->prepare("SELECT COUNT(*) as count FROM students WHERE YEAR(created_at) = ?");
-    $stmt->execute([$year]);
+    $stmt = $db->prepare("SELECT COUNT(*) as count FROM students WHERE created_at >= ? AND created_at < ?");
+    $stmt->execute([$year . '-01-01', ($year + 1) . '-01-01']);
     $result = $stmt->fetch();
     $count = $result['count'] + 1;
     
