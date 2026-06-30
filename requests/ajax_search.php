@@ -58,7 +58,7 @@ if (empty($requests)): ?>
         </td>
         <td><?php echo sanitize($req['doc_type_name']); ?></td>
         <td><?php echo sanitize($req['purpose'] ?? 'N/A'); ?></td>
-        <td><span class="badge <?php echo getStatusBadgeClass($req['status']); ?>"><?php echo sanitize($req['status']); ?></span></td>
+        <td class="text-start"><span class="badge <?php echo getStatusBadgeClass($req['status']); ?>"><?php echo sanitize($req['status']); ?></span></td>
         <td><?php echo formatDate($req['date_requested']); ?></td>
         <td><?php echo sanitize($req['registrar_name'] ?? 'N/A'); ?></td>
         <td>
