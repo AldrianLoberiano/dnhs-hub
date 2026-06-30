@@ -105,14 +105,24 @@
         if (logoutBtn) {
             logoutBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                var href = this.getAttribute('href');
                 showConfirmModal({
                     title: 'Confirm Logout',
                     message: 'Are you sure you want to logout from your account?',
                     type: 'danger',
                     icon: 'fas fa-sign-out-alt',
                     confirmText: 'Logout',
-                    onConfirm: function() { window.location.href = href; }
+                    onConfirm: function() {
+                        var form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = '<?php echo APP_URL; ?>/logout.php';
+                        var input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'csrf_token';
+                        input.value = '<?php echo getCSRFToken(); ?>';
+                        form.appendChild(input);
+                        document.body.appendChild(form);
+                        form.submit();
+                    }
                 });
             });
         }
