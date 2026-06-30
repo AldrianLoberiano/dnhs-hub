@@ -31,8 +31,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors[] = 'Current password is incorrect.';
             }
 
-            if (strlen($newPassword) < 6) {
-                $errors[] = 'New password must be at least 6 characters.';
+            if (strlen($newPassword) < 8) {
+                $errors[] = 'New password must be at least 8 characters.';
+            }
+            if (!preg_match('/[A-Z]/', $newPassword)) {
+                $errors[] = 'New password must contain at least one uppercase letter.';
+            }
+            if (!preg_match('/[a-z]/', $newPassword)) {
+                $errors[] = 'New password must contain at least one lowercase letter.';
+            }
+            if (!preg_match('/[0-9]/', $newPassword)) {
+                $errors[] = 'New password must contain at least one number.';
             }
 
             if ($newPassword !== $confirmPassword) {
