@@ -8,6 +8,11 @@
 // Session security settings
 ini_set('session.cookie_httponly', 1);
 ini_set('session.cookie_samesite', 'Lax');
+ini_set('session.use_strict_mode', 1);
+ini_set('session.use_only_cookies', 1);
+if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+    ini_set('session.cookie_secure', 1);
+}
 
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
@@ -50,3 +55,9 @@ require_once __DIR__ . '/database.php';
 
 // Include helper functions
 require_once __DIR__ . '/../helpers/functions.php';
+
+// Security headers
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: DENY');
+header('X-XSS-Protection: 1; mode=block');
+header('Referrer-Policy: strict-origin-when-cross-origin');
