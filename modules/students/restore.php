@@ -42,4 +42,4 @@ $stmt->execute([$id]);
 
 logAudit('Restore Student', 'Student Records', "Restored student: {$student['first_name']} {$student['last_name']} ({$student['student_number']})");
 setFlashMessage('success', 'Student record restored successfully.');
-redirect(APP_URL . '/modules/index.php');
+redirect(APP_URL . '/modules/students/archived.php');
