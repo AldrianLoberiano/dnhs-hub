@@ -424,6 +424,7 @@ $recentRequests = $stmt->fetchAll();
 
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 <script>
 // Monthly Requests Chart
 var monthlyCtx = document.getElementById('monthlyRequestsChart').getContext('2d');
@@ -467,9 +468,25 @@ var statusChart = new Chart(statusCtx, {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-            legend: { position: 'bottom' }
+            legend: { position: 'bottom' },
+            datalabels: {
+                color: '#fff',
+                font: { weight: 'bold', size: 13 },
+                formatter: function(value, context) {
+                    var total = context.chart.data.datasets[0].data.reduce(function(a, b) { return a + b; }, 0);
+                    var pct = Math.round(value / total * 100);
+                    if (pct < 5) return '';
+                    return context.chart.data.labels[context.dataIndex] + '\n' + value;
+                },
+                textAlign: 'center',
+                display: function(context) {
+                    var total = context.chart.data.datasets[0].data.reduce(function(a, b) { return a + b; }, 0);
+                    return (context.chart.data.datasets[0].data[context.dataIndex] / total) > 0.05;
+                }
+            }
         }
-    }
+    },
+    plugins: [ChartDataLabels]
 });
 
 // Top Documents Chart
