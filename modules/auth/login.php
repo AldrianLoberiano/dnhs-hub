@@ -112,11 +112,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="icon" type="image/png" href="assets/images/school-logo.png">
+    <link rel="icon" type="image/png" href="<?php echo APP_URL; ?>/assets/images/school-logo.png">
     <title>Login - DNHS Hub</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="assets/css/login.css" rel="stylesheet">
+    <link href="<?php echo APP_URL; ?>/assets/css/login.css" rel="stylesheet">
 </head>
 <body>
     <div class="login-left">
@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="login-form-wrapper">
             <div class="login-header">
                 <div class="school-logo">
-                    <img src="assets/images/school-logo.png" alt="School Logo">
+                    <img src="<?php echo APP_URL; ?>/assets/images/school-logo.png" alt="School Logo">
                 </div>
                 <h1 class="system-name">DNHS Hub</h1>
                 <p class="system-subtitle">Sign in to your account</p>
