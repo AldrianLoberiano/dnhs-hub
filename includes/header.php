@@ -18,7 +18,7 @@ if (isLoggedIn()) {
         session_destroy();
         session_start();
         setFlashMessage('warning', $expiredMsg);
-        redirect(APP_URL . '/login.php');
+        redirect(APP_URL . '/modules/auth/login.php');
     }
     $_SESSION['last_activity'] = time();
 }
