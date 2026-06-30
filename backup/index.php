@@ -182,7 +182,7 @@ $backups = $stmt->fetchAll();
                         <label class="form-label">Select Backup File (.sql)</label>
                         <input type="file" class="form-control" name="backup_file" accept=".sql" required>
                     </div>
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to restore? This will overwrite all current data.');">
+                    <button type="submit" class="btn btn-danger" id="btnRestore">
                         <i class="fas fa-undo me-1"></i>Restore Database
                     </button>
                 </form>
@@ -190,6 +190,16 @@ $backups = $stmt->fetchAll();
         </div>
     </div>
 </div>
+
+<script>
+document.getElementById('btnRestore').addEventListener('click', function(e) {
+    e.preventDefault();
+    var form = this.closest('form');
+    confirmDelete('Restore this backup? This will overwrite all current data.', function() {
+        form.submit();
+    });
+});
+</script>
 
 <!-- Backup History -->
 <div class="card">
