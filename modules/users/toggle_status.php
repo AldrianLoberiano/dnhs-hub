@@ -10,12 +10,12 @@ requireAdmin();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     setFlashMessage('error', 'Invalid request method.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/users/index.php');
 }
 
 if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
     setFlashMessage('error', 'Invalid security token.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/users/index.php');
 }
 
 $db = getDBConnection();
@@ -23,13 +23,13 @@ $id = intval($_POST['id'] ?? 0);
 
 if (!$id) {
     setFlashMessage('error', 'Invalid user ID.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/users/index.php');
 }
 
 // Prevent self-deactivation
 if ($id == $_SESSION['user_id']) {
     setFlashMessage('error', 'You cannot deactivate your own account.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/users/index.php');
 }
 
 $stmt = $db->prepare("SELECT * FROM users WHERE id = ?");
@@ -38,7 +38,7 @@ $user = $stmt->fetch();
 
 if (!$user) {
     setFlashMessage('error', 'User not found.');
-    redirect(APP_URL . '/modules/index.php');
+    redirect(APP_URL . '/modules/users/index.php');
 }
 
 // Toggle status
@@ -50,4 +50,4 @@ $stmt->execute([$newStatus, $id]);
 
 logAudit("$action User", 'User Management', "{$action}d user: {$user['username']}");
 setFlashMessage('success', "User $action'd successfully.");
-redirect(APP_URL . '/modules/index.php');
+redirect(APP_URL . '/modules/users/index.php');
