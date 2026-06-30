@@ -125,6 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     if (searchInput.value) {
         searchInput.focus();
+        searchInput.setSelectionRange(searchInput.value.length, searchInput.value.length);
 });
 </script>
 
